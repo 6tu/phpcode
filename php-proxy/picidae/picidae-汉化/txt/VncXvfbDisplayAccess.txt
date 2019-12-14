@@ -1,0 +1,35 @@
+= How to access the Xvfb display via vnc =
+
+To access the Xvfb display on your Server install the program '''x11vnc''' on your server.
+
+== Install x11vnc ==
+
+||             || '''Debian'''                || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| x11vnc   || apt-get install x11vnc  ||                                      ||               ||                                      ||
+
+
+
+
+
+== start x11vnc ==
+
+To start the x11vnc server enter following command into your Terminal:
+{{{
+x11vnc -display :10
+}}}
+'''Attention:''' This vnc server session is wide open. Secure it via password or kill  the server immediately after your done with  your vnc session.
+
+
+Now you can access your virtual display on your server with a vnc client.
+
+Some free vnc clients:
+ * [http://www.tightvnc.com/download.html tightVNC] for Linux and Windows
+ * [http://sourceforge.net/projects/cotvnc/ Chicken of the VNC] for Mac OSX
+
+
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+﻿
+| 发新帖
+1 aoreal
+<test>goodboy</test>
+<test>
+good
+girl</test>
+我想提取<test>。。。</test>之间的内容，即goodboy和good girl(注意有换行符）,good girl总是无法提取出来，请高手给个正则答案，或者str的函数,如if (eregi("<test>(.*)</test>", $val,$title))
+非常感谢！
+2 061107
+可以先看看我的,我们碰到了一样的问题^
+取特征符中间的字符
+http://bbs.chinaunix.net/thread-1030421-1-1.html
+3 flynetcn
+< ? php
+$ str = < < < TT
+< test > goodboy < / test >
+< test >
+good
+girl < / test > < test > fgh dfghf < / test >
+TT ;
+preg_match_all ( "#<[^>]+>([^<]*)</[^>]+>#" , $ str , $ result , PREG_PATTERN_ORDER ) ;
+print_r ( $ result [ 1 ] ) ;
+? >
+4 epiepie
+preg_match("/<test>(.*)<\/test>/s",$val)
+5 sunable
+有无面向绝大多数HTML标签的正则表达式？？
+6 doudoukiki
+ 01.<?php
+ 02.$str        =        "<td><Dasda>\r\n<da></td><div>dsadasd</div>";
+ 03.$pattern        =        "/<([^>]+)>(.*?)<(\/\\1)>/is";
+ 04.preg_match_all($pattern,$str,$rs,PREG_SET_ORDER);
+ 05.print_r($rs);
+ 06.?> 复制代码
+[ 本帖最后由 doudoukiki 于 2007-12-24 11:51 编辑 ]
+发新帖 退出论坛模式 

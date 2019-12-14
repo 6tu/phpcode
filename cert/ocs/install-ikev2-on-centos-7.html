@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+<title>Install IKEv2 on CentOs 7 &#8211; Wallace Blog</title>
+
+<link rel='stylesheet' id='twentysixteen-style-css'  href='http://www.wa11ace.net/Blog/wp-content/themes/twentysixteen/style.css?ver=4.9.10' type='text/css' media='all' />
+
+	
+</head>
+
+<body class="post-template-default single single-post postid-364 single-format-standard custom-background custom-background-image">
+<div id="page" class="site">
+	<div class="site-inner">
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-364" class="post-364 post type-post status-publish format-standard hentry category-5 category-uncategorized category-8">
+	<header class="entry-header">
+		<h1 class="entry-title">Install IKEv2 on CentOs 7</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		<p><em>The IOS 10 has deleted the PPTP which is the most popular way connecting VPN due to the so-called "security consideration". I posted an article about how to install PPTP on CentOs 7 which can be found <a href="http://www.wa11ace.net/Blog/index.php/installing-pptp-vpn-server-on-centos7/">here</a>.</em></p>
+<p><em>Credit Claim: This post is primarily based on <a href="https://blog.itnmg.net/2015/04/03/centos7-ipsec-vpn/">this blog</a>.</em></p>
+<p><span id="more-364"></span></p>
+<h2>StrongSwan and Certificate</h2>
+<hr />
+<ul>
+<li><strong>Install Strongswan</strong>
+<ol>
+<li>First, we need to install some services. The best way is using Epel source. If you haven't had this source, please run:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">yum update -y # check and update components
+yum install epel-release -y
+</code></pre>
+</li>
+<li>And then install StrongSwan which is an open-source IPsec implementation:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">yum install strongswan
+systemctl enable strongswan
+systemctl start strongswan
+</code></pre>
+</li>
+</ol>
+</li>
+<li><strong>Generate Certificate</strong>
+<ol>
+<li>generate a private key and use this key to generate a certificate:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">strongswan pki --gen --outform pem &gt; ca.key.pem
+strongswan pki --self --in ca.key.pem --dn "C=CN, O=wallace, CN=wallace StrongSwan  CA" --ca --lifetime 3650 --outform pem &gt; ca.cert.pem
+</code></pre>
+<p>where <code>--self</code> means self-signed, <code>--in</code> is to input a key and <code>--dn</code> is for character identification:</p>
+<ul>
+<li>C stands for country;</li>
+<li>O is organization;</li>
+<li>CN is common name.</li>
+</ul>
+<p><code>--ca</code> means generating CA certificate and <code>--lifetime</code> is in unit of days.</p>
+</li>
+<li>
+<p>Next, generate key and certificate for the server. For the private key:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">strongswan pki --gen --outform pem &gt; server.key.pem
+</code></pre>
+</li>
+<li>And the pub key associated with the private key:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">strongswan pki --pub --in server.key.pem --outform pem &gt; server.pub.pem
+</code></pre>
+</li>
+<li>sign a certificate for our server using CA certificate:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">strongswan pki --issue --lifetime 3600 --cacert ca.cert.pem --cakey ca.key.pem --in server.pub.pem --dn "C=CN, O=wallace, CN=www.wa11ace.net" --san="www.wa11ace.net" --flag serverAuth --flag ikeIntermediate --outform pem &gt; server.cert.pem
+</code></pre>
+<p>Here pay attention to some parameters:</p>
+<ul>
+<li>For iOS client device, CN must be your server's URL or IP;</li>
+<li><code>--flag serverAuth</code> is required by Windows;</li>
+<li><code>--flag ikeIntermediate</code> is required by MacOS to show the purpose of the server;</li>
+<li><code>--san</code> is the server alternative name required by Android and iOS which is your server's IP and URL.</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>Install Certificate</strong>
+<p>Copy files we generated to the destiantion:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">cp -r ca.key.pem /etc/strongswan/ipsec.d/private/
+cp -r ca.cert.pem /etc/strongswan/ipsec.d/cacerts/
+cp -r server.cert.pem /etc/strongswan/ipsec.d/certs/
+cp -r server.pub.pem /etc/strongswan/ipsec.d/certs/
+cp -r server.key.pem /etc/strongswan/ipsec.d/private/
+</code></pre>
+<p>At the same time, you need to copy <code>ca.cert.pem</code> to your client device. For this step, you could email this file or upload it to your FTP server (if you have it).</p>
+</li>
+</ul>
+<h2>Configs</h2>
+<hr />
+<ol>
+<li>
+<p>Config VPN</p>
+<p>Open the file and edit:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/strongswan/ipsec.conf
+</code></pre>
+<p>Below are common parameters and their meanings in this file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">config setup
+#是否缓存证书吊销列表  whether caches lists of suspended certs
+#&lt;em&gt;cachecrls = yes&lt;/em&gt;
+
+#是否严格执行证书吊销规则 whether performs policy strictly
+#strictcrlpolicy=yes
+
+#如果同一个用户在不同的设备上重复登录,yes 断开旧连接,创建新连接;no 保持旧连接,并发送通知; never 同 no, 但不发送通知. If same account logs on several devices, yes means having a new connection after disconnecting old one, no means holding on the old connection while sending a notice, never is the same as no but not sending notice
+uniqueids=no
+
+
+#配置根证书, 如果不使用证书吊销列表, 可以不用这段. 命名为 %default 所有配置节都会继承它  configs for root cert, %default means all childs inherit from this config
+#ca %default
+
+#证书吊销列表url,可以是 LDAP, http, 或文件路径 URL for lists of suspended certs
+#crluri = &lt;uri&gt;
+
+
+#定义连接项, 命名为 %default 所有连接都会继承它
+conn %default
+
+#是否启用压缩, yes 表示如果支持压缩会启用. whether operate compression
+compress = yes
+
+#当意外断开后尝试的操作, hold, 保持并重连直到超时. action after loss of connection, hold means holding and reconnecting the connection until timeout
+dpdaction = hold
+
+#意外断开后尝试重连时长  time to try reconnection after loss
+dpddelay = 30s
+
+#意外断开后超时时长, 只对 IKEv1 起作用 timeout after loss
+dpdtimeout = 60s
+
+#闲置时长,超过后断开连接. time to disconnect after inactivity
+inactivity = 300s
+
+#数据传输协议加密算法列表 lists of encrypted algorithms for data transfer
+esp = aes256-sha256,aes256-sha1,3des-sha1!
+
+#密钥交换协议加密算法列表  lists of encrypted algorithms for key transfer
+ike = aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024!
+
+#默认的密钥交换算法, ike 为自动, 优先使用 IKEv2 default of encrypted algorithms for key transfer, ike is automatic
+keyexchange = ike
+
+#服务端公网ip, 可以是魔术字 %any，表示从本地ip地址表中取. ip for server public address
+left = %any
+#客户端ip, 同上 ip for client address
+right = %any
+
+#指定服务端与客户端的dns, 多个用","分隔
+leftdns = 8.8.8.8,8.8.4.4
+rightdns = 8.8.8.8,8.8.4.4
+
+#服务端用于ike认证时使用的端口, 默认为500,如果使用了nat 转发, 则使用4500 port for authentication for ike on server, default is 500, 4500 if NAT is on
+#leftikeport = &lt;port&gt;
+
+#服务器端虚拟ip地址  virtual ip of server address
+#leftsourceip = %config
+#客户端虚拟ip段  virtual ip of client address
+rightsourceip = 10.0.0.0/24
+
+#服务器端子网, 魔术字 0.0.0.0/0. 如果为客户端分配虚拟 IP 地址的话，那表示之后要做 iptables 转发，那么服务器端就必须是用魔术字 subnet of server
+leftsubnet = 0.0.0.0/0
+#rightsubnet = &lt;ip subnet&gt;[[&lt;proto/port&gt;]][,...]
+
+conn IKEv2-BASE
+
+#服务器端根证书DN名称  DN of root cert of server
+leftca = "C=CN, O=ITnmg, CN=ITnmg StrongSwan CA"
+
+#服务器证书, 可以是 PEM 或 DER 格式 Cert of server
+leftcert = server.cert.pem
+#不指定客户端证书路径 Cert of client, comment in default
+#rightcert = &lt;path&gt;
+
+#指定服务器证书的公钥  pub key for Cert of server
+leftsigkey = server.pub.pem
+#rightsigkey = &lt;raw public key&gt; | &lt;path to public key&gt;
+
+#是否发送服务器证书到客户端 whether send cert of server to client
+leftsendcert = always
+#客户端不发送证书 whether send cert of client
+rightsendcert = never
+
+#服务端认证方法,使用证书  authentication methods of server
+leftauth = pubkey
+#客户端认证使用 EAP 扩展认证 , 貌似 eap-mschapv2 比较通用 authentication methods of client
+rightauth = eap-mschapv2
+
+#服务端id, 可以任意指定, 默认为服务器证书的 subject, 还可以是魔术字 %any，表示什么都行. ID of server, arbitrary name as you like
+leftid = vpn.itnmg.net  
+#客户端id, 任意  ID of client, arbitrarily
+rightid = %any
+
+#ios, mac os, win7+, linux
+conn IKEv2-EAP
+also=IKEv2-BASE
+
+#指定客户端eap id, EAP ID of client
+eap_identity = %any
+
+#不自动重置密钥 whether reset key
+rekey = no
+
+#开启IKE 消息分片
+fragmentation = yes
+
+#当服务启动时, 应该如何处理这个连接项. add 添加到连接表中. action to a new connection, add means adding this conenction to the list
+auto = add
+</code></pre>
+<p>Below are my configs:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash"># ipsec.conf - strongSwan IPsec configuration file
+
+# basic configuration
+
+config setup
+    # strictcrlpolicy=yes
+    # uniqueids = no
+    uniqueids=no
+# Add connections here.
+conn %default
+    compress = yes
+    esp = aes256-sha256,aes256-sha1,3des-sha1!
+    ike = aes256-sha256-modp2048,aes256-sha1-modp2048,aes128-sha1-modp2048,3des-sha1-modp2048,aes256-sha256-modp1024,aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024!
+    keyexchange = ike
+    keyingtries = 1
+#       dpdaction = hold
+#       dpddelay = 30s
+#       inactivity = 1200s
+    leftdns = 8.8.8.8,8.8.4.4
+    rightdns = 8.8.8.8,8.8.4.4
+conn ikev2-eap
+    leftca = "C=CN, O=wallace, CN=wallace StrongSwan CA"
+    leftcert = server.cert.pem
+    leftsendcert = always
+    rightsendcert = never
+    leftid = www.wa11ace.net
+    left = %any
+    right = %any
+    leftauth = pubkey
+    rightauth = eap-mschapv2
+    leftfirewall = yes
+    leftsubnet = 0.0.0.0/0
+    rightsourceip = 10.1.0.0/16
+    fragmentation = yes
+    rekey = no
+    eap_identity = %any
+    auto = add
+</code></pre>
+</li>
+<li>Config DNS<br />
+Open the file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/strongswan/strongswan.d/charon.conf
+</code></pre>
+<p>Modify the file like this:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">charon {
+ duplicheck.enable = no 
+
+
+dns1 = 8.8.8.8
+dns2 = 8.8.4.4
+
+
+filelog {
+    /var/log/charon.log {
+        # add a timestamp prefix
+        time_format = %b %e %T
+        # prepend connection name, simplifies grepping
+        ike_name = yes
+        # overwrite existing files
+        append = no
+        # increase default loglevel for all daemon subsystems
+        default = 1
+        # flush each line to disk
+        flush_line = yes
+    }
+}
+}
+</code></pre>
+</li>
+<li>Add users and config password
+<p>Open the file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/strongswan/ipsec.secrets
+</code></pre>
+<p>Type below in:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">#format : RSA &lt;private key file&gt; [ &lt;passphrase&gt; | %prompt ]
+: RSA server.key.pem
+
+#format [ &lt;id selectors&gt; ] : PSK &lt;secret&gt;
+%any : PSK "password"
+
+
+#EAP method
+user : EAP "password"
+
+#XAUTH method applicable only to ikve1
+#format [ &lt;servername&gt; ] &lt;username&gt; : XAUTH "&lt;password&gt;"
+user : XAUTH "password"
+</code></pre>
+</li>
+<li>Open kernel forwarding
+<p>Open the file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/sysctl.conf
+</code></pre>
+<p>Type in:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding=1
+</code></pre>
+<p>and run the command:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">sysctl -p
+</code></pre>
+</li>
+</ol>
+<h2>Config iptables or firewall</h2>
+<hr />
+<p>This step we will config firewall to allow the connection of our service and do the IP masquerade job. If you are using iptable on your server, please operate as the following. Or you are using firewall service, please skip the following part and jump to firewall part.</p>
+<ul>
+<li><strong>Iptable</strong><br />
+Open the file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/sysconfig/iptables
+</code></pre>
+<p>and type in:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash"># Generated by iptables-save v1.4.21 on Tue Mar  8 11:51:16 2016
+*nat
+:PREROUTING ACCEPT [24:1171]
+:INPUT ACCEPT [18:860]
+:OUTPUT ACCEPT [12:792]
+:POSTROUTING ACCEPT [12:792]
+-A POSTROUTING -s 192.168.0.0/24 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 10.1.0.0/16 -o eth1 -m policy --dir out --pol ipsec -j ACCEPT
+-A POSTROUTING -s 10.1.0.0/16 -o eth1 -j MASQUERADE
+COMMIT
+# Completed on Tue Mar  8 11:51:16 2016
+# Generated by iptables-save v1.4.21 on Tue Mar  8 11:51:16 2016
+*filter
+:INPUT ACCEPT [2231:169833]
+:FORWARD ACCEPT [974:46182]
+:OUTPUT ACCEPT [1406:197987]
+-A FORWARD -s 10.1.0.0/16 -j ACCEPT
+-A INPUT -s 115.28.47.223 -j DROP
+COMMIT
+# Completed on Tue Mar  8 11:51:16 2016
+</code></pre>
+<p>But we do not recommend doing like this since it is not safe for your server, instead, you can type following in (be sure you understand the meaning and can change some parameters according to your server before typing in, if not, please self-learn some basics about iptable service before this step):</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING -s 10.1.0.0/16 -o eth0 -m policy --dir out --pol ipsec -j ACCEPT      #replace eth0 by your network card
+-A POSTROUTING -s 10.1.0.0/16 -o eth0 -j MASQUERADE
+COMMIT
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT # allow ping
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT # allow ssh
+-A INPUT -p udp -m udp --dport 500 -j ACCEPT
+-A INPUT -p udp -m udp --dport 4500 -j ACCEPT
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -s 10.1.0.0/16 -j ACCEPT
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+COMMIT
+</code></pre>
+<p>and restart the iptable:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">systemctl restart iptables
+</code></pre>
+</li>
+<li><strong>Firewall</strong><br />
+Since CentOS has replaced iptables by firewall, if you want to use firewall, here are configs for firewall. But I haven't tested these. If you want to replace firewall by iptables, please refer to <a href="http://www.wa11ace.net/Blog/index.php/replacing-firewall-with-iptables-on-centos7/">this post</a>.</p>
+<ol>
+<li>Fisrt, find your public network card by:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">ip addr
+</code></pre>
+<p>Open the file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/sysconfig/network-scripts/ifcfg-eth0 # you need to replace eth0 by your public network card you find above
+</code></pre>
+<p>Add the following at the end, save and quit:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">ZONE=public
+</code></pre>
+</li>
+<li>Next, restart the service:
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">systemctl restart network
+systemctl restart firewalld
+</code></pre>
+</li>
+<li>Add a new service<br />
+Open the file:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">vim /etc/firewalld/services/strongswan.xml
+</code></pre>
+<p>Put the following in:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;service&gt;
+&lt;short&gt;Strongswan&lt;/short&gt;
+&lt;description&gt;Strongswan VPN&lt;/description&gt;
+&lt;port protocol="udp" port="500,4500"/&gt;
+&lt;/service&gt;
+</code></pre>
+<p>Run the following commands:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash"># add service in the public area
+firewall-cmd --permanen --add-service=strongswan
+#IP masquerade
+firewall-cmd --permanen --add-rich-rule='rule family="ipv4" source address="10.1.0.0/16" masquerade'
+#Add NAT forwarding
+firewall-cmd --permanen --add-rich-rule='rule family="ipv4" source address="10.1.0.0/16" forward-port port="4500" protocol="udp" to-port="4500"'
+firewall-cmd --permanen --add-rich-rule='rule family="ipv4" source address="10.1.0.0/16" forward-port port="500" protocol="udp" to-port="500"'
+#reload
+firewall-cmd --reload
+</code></pre>
+<p>Or, if you do not want to run the above commands, then type the following in the file <code>/etc/firewalld/zones/public.xml</code>:</p>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;zone&gt;
+&lt;short&gt;Public&lt;/short&gt;
+&lt;description&gt;For use in public areas. You do not trust the other computers on networks to not harm your computer. Only selected incoming connections are accepted.&lt;/description&gt;
+&lt;service name="strongswan"/&gt;
+&lt;service name="ssh"/&gt;
+&lt;rule family="ipv4"&gt;
+    &lt;source address="10.1.0.0/16"/&gt;
+    &lt;forward-port to-port="4500" protocol="udp" port="4500"/&gt;
+&lt;/rule&gt;
+&lt;rule family="ipv4"&gt;
+   &lt;source address="10.1.0.0/16"/&gt;
+   &lt;forward-port to-port="500" protocol="udp" port="500"/&gt;
+&lt;/rule&gt;
+&lt;rule family="ipv4"&gt;
+  &lt;source address="10.1.0.0/16"/&gt;
+  &lt;masquerade/&gt;
+&lt;/rule&gt;
+&lt;/zone&gt;
+</code></pre>
+<p>Reload the configs of firewall:</p>
+</li>
+</ol>
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">firewall-cmd --reload
+</code></pre>
+</li>
+</ul>
+<h2>Restart Strongswan:</h2>
+<hr />
+<pre class="line-numbers prism-highlight" data-start="1"><code class="language-bash">systemctl restart strongswan
+</code></pre>
+<h2>Configs on the Client Device</h2>
+<hr />
+<p>Up to now, all configs on the server are done. Now we need to config on the client device. I only test successfully on the Iphone iOS 10 (or later) with username authentication. If you want to use certificate authentication on client device, please see other posts.</p>
+<p>First thing is to install <code>ca.cert.pem</code> (we made in the first step) on your device. You could mail or use ftp service.</p>
+<ul>
+<li>For iOS system, install the cert on your phone. And go to <code>General&gt;VPN&gt;IKEV2</code> and config the following:
+<ul>
+<li>Description: Any</li>
+<li>Server: your server's IP or URL</li>
+<li>Remote ID: leftid in the file ipsec.conf</li>
+</ul>
+<p>And choose username authentication, put username and password of EAP as you wrote in the file <code>ipsec.secrets</code>.</p>
+</li>
+<li>
+<p>For Mac OS, you need to rename the file <code>ca.cert.pem</code> to <code>ca.cert.crt</code> and install it (put it into the <code>KeyChain Access &gt; Login</code> and <code>KeyChain Access &gt; System</code>, make sure these certs are marked as trusted, you may need to be an administrator of your Mac in this step). Then go to <code>System Preference &gt; Network</code> and click the &#43; symbol to setup a new VPN connection.</p>
+</li>
+</ul>
+<p>Now you are all set!</p>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><span class="screen-reader-text">Author </span> <a class="url fn n" href="http://www.wa11ace.net/Blog/index.php/author/wallace/">wallace</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="http://www.wa11ace.net/Blog/index.php/install-ikev2-on-centos-7/" rel="bookmark"><time class="entry-date published" datetime="2017-02-03T15:04:03+00:00">03/02/2017</time><time class="updated" datetime="2018-01-01T15:53:18+00:00">01/01/2018</time></a></span><span class="cat-links"><span class="screen-reader-text">Categories </span><a href="http://www.wa11ace.net/Blog/index.php/category/%e5%bb%ba%e7%ab%99/" rel="category tag">建站</a>, <a href="http://www.wa11ace.net/Blog/index.php/category/uncategorized/" rel="category tag">未分类</a>, <a href="http://www.wa11ace.net/Blog/index.php/category/%e8%ae%a1%e7%ae%97%e6%9c%ba/" rel="category tag">计算机</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+
+
+</div><!-- .content-area -->
+</div>
+
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			<div class="site-info">
+								<span class="site-title"><a href="http://www.wa11ace.net/Blog/" rel="home">Wallace Blog</a></span>
+				<a href="/">Wallace HomePage</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+
+
+</body>
+</html>
+
+

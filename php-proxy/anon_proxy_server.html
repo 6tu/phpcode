@@ -1,0 +1,723 @@
+<html>
+<head>
+<title>Anon Proxy server docs</title>
+</head>
+<link rel='stylesheet' href='anon_proxy_server.css' />
+<body>
+
+<p />
+
+<table border=0><tr><td valign=top class='etd'>
+<script language='javascript'>
+
+currentDiv=null;
+function displayDiv(divName)
+{
+
+        if(mainDiv && mainDiv.filters) {
+                mainDiv.filters[0].Apply();
+        }
+
+	var div=document.getElementById(divName);
+	if(currentDiv!=null) { currentDiv.style.display="none"; }
+	div.style.display="block";
+	currentDiv=div;
+        if(mainDiv && mainDiv.filters) {
+                mainDiv.filters[0].Play();
+        }
+}
+
+</script>
+<table class='pps_table' width=200>
+<tr>
+<td><center>
+<a href="index.php"></a>
+</center>
+</td></tr>
+<tr><th>Docs...</th></tr>
+<tr><td>
+<table border='0' cellspacing='0' cellpadding='2'>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('installation')">安装</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('anonProxy')">匿名 proxy</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('access')">授权规则</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('userAuth')">User Authentication</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('compiling')">Compiling</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('anonProxyHomeBase')">Changing Home Anon Proxy</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('misc')">Misc</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('startup')">Adding to your computer's startup</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('stats')">Extra statistics</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('browserToProxy')">Browser to proxy encryption</a></td></tr>
+<tr><td>&raquo;</td><td class='largef'><a href="javascript:displayDiv('unsupported')">Unsupported</a></td></tr>
+<tr><td colspan='2'>
+</td></tr>
+</table>
+</font>
+</td></tr>
+</table>
+</td><td class='etd' valign=top>
+
+
+<div id='mainDiv' style="filter:progid:DXImageTransform.Microsoft.Fade(MaxSquare='5',percent='1'); position: absolute; max-width: 600px; width: 600px;">
+
+
+<div id='empty' style="display:none">
+<table class='pps_table'>
+<tr><th>Title</th></tr>
+<tr><td>
+text
+
+
+
+</td></tr>
+</table>
+</div>
+
+
+
+<div id='browserToProxy' style="display:none">
+<table class='pps_table'>
+<tr><th>Browser to proxy encryption</th></tr>
+<tr><td class='td2'>Encryption</td></tr>
+<tr><td>
+Normally, the proxy is accessed on the same computer as the browser.
+But when the proxy is on a different computer to the browser you may want to encrypt it.
+<br />
+<br />
+Browsers don't support encrypted connections to proxys so we need to do this with other methods.
+</td></tr>
+
+<tr><td class='td2'>stunnel</td></tr>
+<tr><td>
+
+Download stunnel from <a target='_blank' href='www.stunnel.org'>www.stunnel.org</a>
+<br />
+<br />
+On the browser's computer run...
+
+<br />
+stunnel -c -d 8443 -r proxyhostname.com:8443
+<br />
+Then setup the browser to use localhost:8443 as the proxy.
+Note: Change "proxyhostname" to whatever your proxy's host name/ip address is.<br />
+<br />
+<br />
+On the proxy's computer...
+<br />
+stunnel -p /etc/stunnel/stunnel.pem -d 8443 -r 127.0.0.1:8080
+<br />
+...and open up port 8443 in the proxy's firewall<br />
+Note: You may have to change stunnel.pem to your own custom certifcate file.
+<br />
+<br />
+
+</td></tr>
+<tr><td class='td2'>VPN</td></tr>
+<tr><td>
+You can also setup a vpn from the proxy to the browser to encrypt the information.
+
+</td></tr>
+</table>
+</div>
+
+
+
+<div id='unsupported' style="display:none">
+<table class='pps_table'>
+<tr><th>Unsupported</th></tr>
+<tr><td>
+<font class='largef'>SOCKS misc.</font><br /><br />
+Only TCP connects are supported so far.
+<br />
+Seems to be enough to run most Instand Messaging programs.
+<br />
+<br />
+User authentication is not supported in socks.
+You can disable access to socks by adding a "block" rule with "url" "is" "socks://"
+<br />
+<br />
+<!--
+
+<tr><td class='largef'>Old PHP version</td><td>
+Originally I had done this as a full php project but php doesn't come installed
+with sockets normally, so it would be a hassle to ask everyone to recompile.
+<br />
+The only reason why you may want to use the php version is if you can't
+get pserver.c to compile on your computer for whatever reason.
+<br />
+<br />
+If your php didn't come with sockets you need to compile it from source with...<br />
+./configure --enable-sockets<br />
+<br />
+To start the php version, 
+run from the command line: <i>php cache/proxy_server.php 8080</i>
+<br />
+But it's missing alot of the features.
+<br />
+</td>
+-->
+
+</td></tr>
+</table>
+</div>
+
+<div id='installation' style="display:none">
+<table class='pps_table'>
+<tr><th>To install from tar file...</th></tr>
+<tr><td>
+
+<b>要求: 支持PHP的WEB服务器</b><br />
+可以运行在 linux/windows 系统上, 其它的操作的系统需要 <a href="doc.html?f=compile">C 程序编译器</a>.
+<p />
+解压缩到WEB服务器目录，修改pserver*为pserver*.exe，然后访问... http://localhost/anon_proxy_server/index.php (或者你解压缩到的位置)<br />
+(如果你得到服务器的授权错误, 编辑或者删除 .htaccess 文件, 它默认的仅能使用 localhost)
+<p />
+Then follow the instructions until you get a "tick" on all the required
+options and then click "save".
+<p />
+建议开始使用之前清除浏览器的缓存 or else the
+server's cache won't ever get a copy of what you're browsing.
+<p />
+<a href="mailto:niknah@users.sourceforge.net">tell me</a> if you have problems installing/running it, or just have general comments.
+
+
+</td></tr>
+</table>
+</div>
+
+<div id='anonProxyHomeBase' style="display:none">
+<table class='pps_table'>
+<tr><th>Setup your own home proxy</th></tr>
+<tr><td>
+By changing the home proxy you can create your own group of proxys,
+ you can gather a group of people you trust and only use their proxys.
+So the web site won't know which location you're coming from.
+<br />
+<br />
+This feature has some problems that can be temporarily fixed by reloading web pages that fail or restarting the server.
+<br />
+</td></tr>
+<tr><td class='td2'>
+Setup a home proxy...
+</td>
+<tr><td>
+<b>On the non-home proxys:</b>
+<br /><br />
+Put the url of the home proxy's installation into the "home proxy" box.
+The url is the same as the "url of this configuration" on the home proxy,
+except "localhost" should be changed to your public host name(you may need dyndns or something similiar).
+<p />
+<b>On the home proxy:</b>
+<br />
+<br />
+I recommend listening on another port other 
+than port 80 because
+some isps force you into their transparent cache.
+<p />
+If you're using the windows binary version you'll need to
+edit the httpd.conf and remove the the "Listen" line and
+add "Listen 80", "Listen 443".
+<p />
+You'll need at least 2 proxies pointed to the same home proxy url for
+anything to happen.  The home proxy doesn't have to be started
+for other proxys to use it as their home, they just need to be
+able to access the anon.php file.
+<p />
+</td>
+</tr>
+</table>
+</div>
+
+
+<div id='anonProxy' style="display:none">
+<table class='pps_table'>
+<tr><th>Anonymous Proxy</th></tr>
+<tr><td class='td2'>What it does...</td></tr>
+<tr><td>
+It protects you from being tracked by the web server at the other side,
+you probably should clear your cookies and 
+change your browser's config to not accept cookies
+before you start using it, as some sites maybe able to match up your 
+previous ip address with a cookie.
+<p />
+The "proxy to proxy" communications is encrypted via SSL
+but it is unencrypted from "proxy to web server" and "browser to proxy"
+<p />
+So the best protection from people listening inbetween you and the server is by using https:
+<p />
+</td>
+</tr>
+<tr><td class='td2'>How to use...</td>
+<tr><td>
+If you tick "anonymous proxy" in the configuration section, you'll enable
+the anonymous P2P proxy.
+<p />
+This will allow other people to use your proxy for web browsing, and
+you can use other peoples' proxys for your browsing.
+<p />
+The result is that the web server won't know where you're
+coming from, but the browsing will be slower.
+<!--
+<p />
+Be careful not to tick anon proxy mode on a firewall installation as it'll allow people to contact the hosts inside your firewall.  To avoid this you can block
+out going connections from the firewall to inside your network.<br />
+In linux, this line should do it... (change 10.0.0.0/8 to your internal network)<br />
+/sbin/iptables -A OUTPUT --destination 10.0.0.0/8 -m state --state NEW -j DROP<br />
+-->
+<p />
+
+<!--
+
+Why not block cookies?
+Blocking cookies is best set on the browser's side
+as some cookies are sent via javascript.
+And some other ones are sent via the url or post inputs.
+
+
+
+
+
+Usages...
+Most web hosters nowadays offer a log viewer which show 
+web site owners when/where people have have been visiting their site.
+
+
+
+
+-->
+</td></tr>
+<tr><td class='td2'>How it works...</td></tr>
+<tr><td>
+When you tick "anon proxy" mode, the proxy will
+register itself into the home proxy(which is a url to any other anonproxyserver installation).
+<p />
+The home proxy will then check whether your proxy can be reached 
+(if you have a firewall, you have to setup your firewall to
+forward port 8082 to the computer that's running your proxy).
+If everything went ok, your proxy server will receive a list of proxys it can use, and the keys to use them.
+You can check if the registration went ok by clicking on <i>info -> general</i>.
+<p />
+If you only want to send
+certain urls via the anonymous proxy network, you
+can set this up in the access section by selecting "Anon" as the action.
+<p />
+The proxy will then register itself again check every few minutes
+with a new key so that only people who let you use their proxy server
+can use your proxy server and vice versa.
+<p />
+</td></tr>
+<tr><td class='td2'>Comparison...</td></tr>
+<tr><td>
+The pros/cons of p2p proxy over tor, jap, paid services(anonimizer.com, etc.)...<br />
+<b>Pros...</b><br />
+<img src="img/move_right.gif" /> Infinite number of ip addresses are available.<br />
+<img src="img/move_right.gif" /> Privacy is protected by fellow users.<br />
+<p />
+<b>Cons...</b><br />
+<img src="img/move_right.gif" /> Other people can use your proxy and you may not know what they're doing or if you can trust them.<br />
+</td></tr>
+
+</table>
+</div>
+
+
+
+
+
+
+
+
+<div id='access' style="display:none">
+<table class='pps_table'>
+<tr><th>Access rules</th></tr>
+<tr><td class='td2'>Samples...</td></tr>
+<tr><td>
+
+
+<table border='0' cellspacing='0'>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessOr.htm' target='_blank'>Basic "or" access</a>
+</td>
+<td valign='top'>&nbsp;</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessAnd.htm' target='_blank'>Basic "and" access</a>
+</td>
+<td valign='top'>&nbsp;</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessOrder.htm' target='_blank'>Order of the access</a>
+</td>
+<td valign='top'>What order the access rules are in is important.</td>
+</tr>
+
+<tr><td valign='top'>
+<a href='PlayBacks/AccessBlock.htm' target='_blank'>Simple Block</a>
+</td>
+<td valign='top'>Block access to things with a customizable message.
+</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessRedirect.htm' target='_blank'>Redirect</a>
+</td>
+<td valign='top'>
+Instead of blocking you can redirect people to another site.
+</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessLabels.htm' target='_blank'>Labelling rules</a>
+</td>
+<td valign='top'>
+An access rule can be labelled for re-use in multiple rules later on.
+</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessNoProxy.htm' target='_blank'>No proxy</a>
+</td>
+<td valign='top'>
+Avoid the proxy, useful for intranets, etc.
+</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/AccessOtherProxy.htm' target='_blank'>Use other proxies</a>
+</td>
+<td valign='top'>
+Use a different proxy sometimes, if you want to avoid anon proxy server for certain things.
+</td>
+</tr>
+<tr><td valign='top'>
+<a href='PlayBacks/ConfigureRouter.htm' target='_blank'>Sample router configuration</a>
+</td>
+<td valign='top'>
+This will vary depending on your model of router.
+</td>
+</tr>
+<tr><td valign='top'>
+<a href='' target='_blank'></a>
+</td>
+<td valign='top'></td>
+</tr>
+</table>
+
+<br />
+The samples here are usually of "url" type, you can also restrict things by time, day, ip address, port.
+<br /><br />
+
+Note that "no proxy" + "other proxy" are implemented on the browser instead of the server and somethings will not work, like <i>port, label, user auth</i>.  
+
+
+</td></tr>
+
+</table>
+</div>
+
+
+
+
+
+<div id='compiling' style="display:none">
+<table class='pps_table'>
+<tr><th>Compiling</th></tr>
+<tr><td>
+The installation comes with windows + linux(uclibc) pre-compiled, but
+if you have any other OS or have a better compiler, here's how to do it...
+<br />
+<br />
+</td>
+<tr><td class='td2'><font class='largef'>Windows</font></td></tr>
+<tr><td>
+To compile in Visual Studio, use the project files in pserver_w32
+<br />
+<ol>
+<li>Get openssl for windows.  You can get a precompiled one here... <a href='http://www.slproweb.com/products/Win32OpenSSL.html'>http://www.slproweb.com/products/Win32OpenSSL.html</a></li>
+<li>Go to project > properties > C/C++ > General > "Additional include Directories" > change paths to where the "src" folder is and where openssl's include folder is.</li>
+<li>Go to project > properties > Linker > General > "Additional library Directories" > change to the openssl's lib/VC folder</li>
+</ol>
+<br />
+To compile in MSYS, you'll need to compile and install...
+<br />
+<ol>
+<li><a href="http://ftp.gnu.org/pub/gnu/regex/">GNU Regex</a> (copy the regex.o to the anonproxyserver folder)</li>
+<li><a href="http://www.openssl.org/">openssl</a>, then edit src/Makefile and change the OPENSSL variables to where you've installed openssl</li>
+<li>Then run...
+<br />
+<pre>make pserver.exe</pre>
+</li>
+<p />
+
+<br />
+<br />
+</td>
+<tr><td class='td2'><font  class='largef'>Linux</font></td></tr>
+<tr><td>
+<b>make pserver</b>
+<br />
+<br />
+When you start the server, it looks for a "pserver" executable first 
+if it is not found, "pserver.uclibc" will be used.
+<br />
+<br />
+</td></tr>
+<tr><td class='td2'><font  class='largef'>Linux with uclibc</font></td></tr>
+	<tr><td>
+A static linked uclibc version is distributed
+because in the past I've found that it is
+compatible across most kernel/glibc/libc versions, 
+it's the closest thing linux has to windows style
+binary compatibility.
+<br />
+Plus it is small.
+<br />
+<br />
+You'll need to compile openssl using uclibc and install it into a separate directory, here's how...<br />
+* tar -xzf openssl-....<br />
+* mkdir /usr/i386-uclibc-linux/local<br />
+* edit config and change "CC=gcc" to "CC=i386-uclibc-linux-gcc"<br />
+* ./config --prefix=/usr/i386-uclibc-linux/local no-dso<br />
+* edit the Makefile and change "gcc" to "i386-uclibc-linux-gcc" (in Ubuntu 6 I also had to add "-fno-stack-protector" to CFLAGS or else it'll complain about not linking some stack related thing.<br />
+* make install<br />
+* Go back to the anonproxyserver folder and run "make pserver.uclibc"<br />
+<br />
+Edit the first few lines of src/Makefile to change the settings to the directories on your computer.
+<!--
+To compile the uclibc version...
+<p />
+Get uclibc from <a href="http://www.uclibc.org/downloads/">http://www.uclibc.org/downloads/</a>
+<br />
+<br />
+* Type <b>bzip2 -dc ./root_fs_i386.ext2.bz2</b> to uncompress it.<br />
+* Compile openssl and install it on the uclibc file system.<br />
+* Change the src/Makefile to where you've put this file.<br />
+* Either run as root or add the compile_uclibc file to /etc/sudoers<br />
+* Type...  <b>make pserver.uclibc</b>
+<br />
+<br />
+Compiling openssl is a few more steps...<br />
+<pre>
+mkdir /tmp/uclibc_orig /tmp/uclibc
+mount -o loop /tmp/uclibc_orig
+cp -a /tmp/uclibc/orig/. /tmp/uclibc/.
+cd /tmp/uclibc/tmp/
+tar -xzf openssl-...
+chroot /tmp/uclibc
+cd /tmp/openssl-...
+./config
+make install
+exit
+</pre>
+
+-->
+</td></tr>
+<tr><td class='td2'><font  class='largef'>Debugging</font></td></tr>
+<tr><td>
+To compile and run the debug version...
+<br />
+make pserver.debug (or make pserver.debug.exe in windows)<br />
+touch cache/startWanted.txt<br />
+./pserver.debug<br />
+<br />
+<br />
+You can adjust the debug level by running "pserver -debug ??"
+<br />
+Where ?? is...<br />
+5 only major stuff.<br />
+10 medium level of details.<br />
+20 lots of details.<br />
+25 Almost Everything.<br />
+<br />
+<br />
+To run valgrind with openssl it needs to be rebuilt with -DPURIFY or else it'll print alot of errors.  The openssl directory can be changed in src/Makefile.
+</td></tr>
+</table>
+<p />
+</div>
+
+<div id='startup' style="display:none">
+<table class='pps_table'>
+<tr><th>Adding to Startup</th></tr>
+<tr><td class='td2'><font  class='largef'>Linux</font></td></tr>
+<tr><td>
+Add to /etc/rc.d/ rc.local or boot.local or whatever...
+<p />
+<b>cd /usr/local/apache2/htdocs/anon_proxy_server; su -c ./pserver.uclibc apache</b>
+<p />
+Change "apache" to whatever user your web server is in,
+change "/usr/local/apache2/htdocs/anon_proxy_server" to where ever you've
+unzipped the installation to.
+<p />
+</td></tr>
+</table>
+<p />
+</div>
+
+<div id='userAuth' style="display:none">
+<table class='pps_table'>
+<tr><th>User Auth examples</th></tr>
+<tr><td>
+User authentication can be added by selecting "User auth" in the access
+section.
+<p />
+User auth is set to "is not" and "block" by default, 
+it won't work with any other setting.
+<p />
+The external authentication program is checked every 5 mins if the user
+is still using the proxy.
+<p />
+You can put in any program, if the program returns 0 the authentication
+is considered ok, anything else it'll fail.
+<br />
+If your command doesn't work, errors outputted from them can be found in
+the error log.
+<br />
+Here're some examples...
+<p />
+</td></tr>
+
+<tr><td class='td2'>
+<font class='largef'>In windows...</font>
+</td></tr><tr><td>
+You'll need the web server's user(system) to have permission to use "LogonUser" for these to work...
+<p />
+<b>windows:xxxx</b><br />
+where xxx is the domain name.
+<p />
+<p />
+Or...<br />
+<b>net use \\XXX\YYY "/user:%s" "%s"</b>
+<p />
+Where XXX  is the computer.<br />
+and YYY is the share folder.<br />
+If the user can open the share folder they'll have access.
+</td></tr>
+<tr><td class='td2'>
+<font class='largef'>Via samba...</font>
+</td></tr><tr><td>
+<br />
+Via another windows or samba machine...
+<br />
+<b>/usr/local/samba/bin/smbclient //XXXX/YYYY -U '%s' '%s' -c quit</b>
+<br />
+XXXX is the computer with windows or samba.<br />
+YYYY is the share folder.<br />
+<p />
+Via winbindd(must be running on the computer with the proxy server)...
+<br />
+<b>/usr/local/samba/bin/ntlm_auth '--username=%s' '--password=%s' '--domain=xxx'"</b>
+<p />
+</td></tr>
+<tr><td class='td2'>
+<font class='largef'>Via plain text file...</font>
+</td></tr>
+<tr><td>
+<br />
+<b>grep -F '%s %s' /etc/plain_passwords</b>
+<br />
+<br />
+Password format would be...
+<br />
+<pre>
+username password
+joeblow joeblowspassword
+</pre>
+</td></tr>
+<tr><td class='td2'>
+<font class='largef'>Via apache's htpasswd...</font>
+</td></tr>
+<tr><td>
+<br />
+<b>cat /etc/apache2/htpasswd | perl -ne '{ if(m#%s:((..).*$)# && crypt("%s",$2) eq $1) { print "ok"; } }' | grep .</b>
+<br />
+<br />
+Use the normal apache htpasswd commands to add/remove users. 
+<br />
+Add: htpasswd /etc/apache2/htpasswd username
+<br />
+Remove: htpasswd -D /etc/apache2/htpasswd username
+<br />
+<br />
+</td></tr>
+<tr><td class='td2'>
+<font class='largef'>Via mysql...</font>
+</td></tr><tr><td>
+<br />
+<b>/usr/local/mysql/bin/mysql -u xxx '--password=yyy' phpbb -e "select username from phpbb_users where username = '%s' and user_password = MD5('%s')" | grep .</b>
+<br />
+xxx/yyy is the mysql user login/password<br />
+And change "phpbb" and "phpbb_users" the sql statement if you're using anything other than phpbb.<br />
+</td>
+</table>
+<p />
+</div>
+
+<div id='misc' style="display:none">
+<table class='pps_table'>
+<tr><th>Misc...</th></tr>
+<tr><td>
+A diagnoses link will show up when you can't access a web page, it works best with <a href="http://michael.toren.net/code/tcptraceroute/">tcptraceroute</a> installed.
+<P>
+It will use normal traceroute if no tcptraceoute is found, but the trace won't go through firewalls.<br />
+
+<br />
+</td></tr>
+<tr><th>Default Ports...</th></tr>
+<tr><td>
+<table border='0' cellspacing='0'>
+<tr>
+<td><b>Item</b></td>
+<td><b>Port</b></td>
+<td><b>Where to change</b></td>
+</tr>
+<tr><td>HTTP/Socks Proxy</td><td>8080</td>
+<td>Can be changed in the web configuration</td></tr>
+<tr><td>Web configuration</td><td>8081</td>
+<td>Can be changed in conf/httpd.conf in the installation directory.(usually c:\program files\anon proxy server\).  Need to be opened on the firewall for anon proxy mode.</td></tr>
+<tr><td>SSL anon proxy port</td><td>8082</td>
+<td>Can be changed in the web configuration. Need to be opened on the firewall for anon proxy mode.  Unused if the proxy is not setup for Anon proxy.</td></tr>
+</table>
+
+</td></tr>
+</table>
+</div>
+
+
+<div id='stats' style="display:none">
+<table class='pps_table'>
+<tr><th>AWSTATS</th></tr>
+<tr><td>
+
+To use <a href='http://awstats.sf.net/' target='_blank'>awstats</a>, you need to <a href='awstats.pl.patch'>apply this patch</a>
+and change these 2 lines in the awstats.???.conf file...
+<p />
+<pre style='font-size: 8pt'>
+LogFormat = "%time4 %extra1 %host %extra4 %bytesd %extra2 %code %method %extra3 %url" 
+LogSeparator="\t" 
+</pre>
+
+and point the "LogFile" line to the htdocs/anon_proxy_server/cache/access.log file in the installation dir.
+<P />
+</td></tr>
+<tr><th>Download logs</th></tr>
+<tr><td>
+
+<a href='http://anonproxyserver.svn.sourceforge.net/viewvc/anonproxyserver/trunk/anon_proxy_server/log.php?view=markup'>Visit the SVN here</a> and click "download" to get the log.php file to save over the existing one(in the htdocs/anon_proxy_server folder), so you can enable the "download" links in the "usage log" section.
+<P />
+This will be released in the next version.
+<P />
+</td></tr>
+</table>
+</div>
+
+
+</div>
+
+</td></tr></table>
+
+
+<script language=javascript>
+var srch=window.document.location.search.substr(1);
+if(srch.substr(0,2)=="d=") { displayDiv(srch.substr(2)); }
+
+</script>
+
+
+</body>
+</html>

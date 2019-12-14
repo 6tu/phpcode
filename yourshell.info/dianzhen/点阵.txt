@@ -1,0 +1,14 @@
+T-800 php趣味程序  http://t.8  shang.com/vking/
+
+随便吧             http://www.388g.com/dianzhen/
+
+PHP 生成BMP图      http://www.ugia.cn/?p=96
+读取汉字点阵数据   http://www.ugia.cn/?p=82 
+
+在PHP中用描点法“绘制”中文
+
+http://www.pc6.com/infoview/Article_788.html
+http://developer.51cto.com/art/200509/2671.htm
+
+http://yfyfj.blog.163.com/
+

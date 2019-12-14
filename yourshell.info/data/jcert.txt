@@ -1,0 +1,31 @@
+http://mamun7.wen9.com/javacertfier.html
+http://www.gears.wap3.org/pages/jcert.php
+http://minxi.tk/javacert/
+http://75hu.com/gongju/java2/index.php
+
+http://mg.shouji.com.cn/do/jad
+
+
+
+Choose your phone and click box to mark.  Put url adress below.
+
+Make Your Phone
+ Siemens 
+ SGold 
+ Nokia ((Used EXP (Darkman) certificate)) 
+ SonyEricsson ((Used HALMER certificate)) 
+Permits for Midlets 
+ FILE_SYSTEM - Access to file system read/write 
+ INTERNET - Internet Access 
+ BLUETOOTH - Communication on bluetooth 
+ MEDIA - Filming and recording of the Midlet 
+ ADDRESSBOOK - Working with mobile phone address book 
+ EVENT - Work with Organizer 
+ COMM - Work with Comfort 
+ PUSHREGISTRY - Automatically run the MIDlet triggering 
+ MMS - sending MMS 
+ PHONECALL - Call of Application 
+ SMS - Sending and recieving SMS  *Not recomended!! 
+Enter the Address of the file. JAR (URL http://):
+
+

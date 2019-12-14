@@ -1,0 +1,12 @@
+
+        //date_default_timezone_set('Asia/Shanghai');
+        $dir = './';
+        $dh = opendir($dir);
+        while (($file = readdir($dh)) !== false) {
+            if(filetype($dir . $file) !== "dir"){
+                $ftime = filectime($dir.$file);
+                if((time() - $ftime) > 60 && strstr($file,'.js')) unlink($dir.$file);
+                //echo "$file \n";
+            }
+        }
+        closedir($dh);

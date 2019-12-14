@@ -1,0 +1,21 @@
+[[TOC(PiciServerLinux, TroubleShootingLinux, ImproveLinuxPiciServer, MaintainLinuxPiciServer )]]
+
+= Help improving pici-Server on Linux =
+
+== Solve the Biggest problems ==
+ * There is a limitation in picture length. If a Site would be longer, the picture would show grey, unrendered parts on top and at the end of the image. Does anybody know the reason therefore?
+ * web2pici should create a much faster Timeout error if the Address is not found. (e.g. after 5 seconds if an address can not be resolved).
+ * There is the need to manually accept all cookies the first time after a pici-server is set up. It would be nice if this could be done automatically.
+
+== Improve pici-Server ==
+ * Create an automatically installable Version for your own Linux Distribution.
+
+
+Feel free to add here your thoughts, solutions and ideas.
+
+Make server version for Gnome/KDE/Console
+Make connectors for other BDD (like PostGreSQL)
+
+Disable the use of sudo who is a security hole. Restrict the access of the directory (chmod 777 pretty un-secure)
+----
+----

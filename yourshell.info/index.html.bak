@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome to XAMPP</title>
+  </head>
+  <body>
+    <br>
+	<p><b> You have successfully installed XAMPP on this system! <br>Now you can start using Apache, MariaDB, PHP and other components.</b></p>
+	<p> Start the XAMPP Control Panel to check the server status.</p>
+    <p> Copyright (c) 2015, Apache Friends</p>
+  </body>
+</html>

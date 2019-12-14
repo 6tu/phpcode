@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CentOS7使用Ocserv搭建CiscoAnyconnect服务器-荒岛</title>
+
+<link rel='stylesheet' id='_bootstrap-css'  href='https://lala.im/wp-content/themes/dux/css/bootstrap.min.css?ver=5.0' type='text/css' media='all' />
+
+<link rel='stylesheet' id='_main-css'  href='https://lala.im/wp-content/themes/dux/css/main.css?ver=5.0' type='text/css' media='all' />
+</head>
+
+<body data-rsssl=1 class="post-template-default single single-post postid-3684 single-format-standard nav_fixed m-excerpt-cat comment-open site-layout-2">
+<header class="header">
+	<div class="container">
+		<div class="logo"><a href="https://lala.im" title="荒岛-分享创造快乐"><img src="https://lala.im/wp-content/themes/dux/img/logo.png" alt="荒岛-分享创造快乐">荒岛</a></div>
+			</div>
+</header>
+
+<section class="container">
+	<div class="content-wrap">
+	<div class="content">
+				<header class="article-header">
+			<h1 class="article-title"><a href="https://lala.im/3684.html">CentOS7使用Ocserv搭建CiscoAnyconnect服务器</a></h1>
+			<div class="article-meta">
+				<span class="item">2018-06-25</span>
+												<span class="item">分类：<a href="https://lala.im/category/jiaocheng" rel="category tag">学无止境</a></span>
+				<span class="item post-views">阅读(7302)</span>				<span class="item">评论(28)</span>
+				<span class="item"></span>
+			</div>
+		</header>
+				<article class="article-content">
+				<p>最近这段时间我朝的墙是越来越猛，有点赶尽杀绝的意思，也不知道是有什么重要日子？</p>
+<p>对于搭自用梯子的话，目前有一个比较好的方案可以非常有效的“防封”，就是今天要给大家介绍的Ocserv（OpenConnect）以下简称Ocserv。</p>
+<p>因为Anyconnect是思科开发出来的，众所周知思科的网络设备天下第一，很多大型的企业都是用思科的设备，包括Anyconnect这种VPN解决方案，所以墙不敢随便封这种协议的梯子。</p>
+<p>但是由于思科只允许Anyconnect运行在思科的设备上，所以就有了今天的Ocserv服务端。Ocserv诞生的主要目的就是可以让任何设备都能安装上Anyconnect而不在局限于思科。</p>
+<p>因为最近墙实在是太鸡儿猛了，所以没办法才用Anyconnect的，一般情况下这玩意我都不想碰，毕竟搭建和配置都比较麻烦，而且也不是很好配合其他的加速软件，所以就一直没想写这方面的文章，今天就详细写一下吧。</p>
+<p>为了教程更简便，这里我直接用EPEL源安装Ocserv，可以省去麻烦的编译过程。首先安装EPEL源：</p>
+<pre>yum -y install epel-release</pre>
+<p>然后就可以直接YUM安装Ocserv了：</p>
+<pre>yum -y install ocserv</pre>
+<p>新建一个目录，用来存放SSL证书相关文件，然后进入到这个目录内：</p>
+<pre>mkdir ssl
+cd ssl</pre>
+<p>新建一个证书模板：</p>
+<pre>vi ca.tmpl</pre>
+<p>写入：</p>
+<pre>cn = "LALA"
+organization = "LALA.IM"
+serial = 1
+expiration_days = 9999
+ca
+signing_key
+cert_signing_key
+crl_signing_key</pre>
+<p>注：LALA和LALA.IM可以根据自己的需要更改，反正都是自签证书，随便瞎鸡儿写也没关系。。。</p>
+<p>然后生成私钥和CA证书：</p>
+<pre>certtool --generate-privkey --outfile ca-key.pem
+certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --outfile ca-cert.pem</pre>
+<p>接着来生成服务器证书，还是老样子新建一个证书模板：</p>
+<pre>vi server.tmpl</pre>
+<p>写入：</p>
+<pre>cn = "你的服务器IP"
+organization = "LALA.IM"
+expiration_days = 9999
+signing_key
+encryption_key
+tls_www_server</pre>
+<p>注：cn后面的值改成你的服务器公网IP。</p>
+<p>然后生成私钥和证书：</p>
+<pre>certtool --generate-privkey --outfile server-key.pem
+certtool --generate-certificate --load-privkey server-key.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-key.pem --template server.tmpl --outfile server-cert.pem</pre>
+<p>然后我们把证书文件用移动到Ocserv默认的目录下：</p>
+<pre>cp server-cert.pem /etc/pki/ocserv/public/
+cp server-key.pem /etc/pki/ocserv/private/
+cp ca-cert.pem /etc/pki/ocserv/cacerts/</pre>
+<p>现在编辑ocserv的配置文件（需要改动的地方很多，如果vi不好用就自己用SFTP把这个文件下载到本地用专业的编辑器编辑）：</p>
+<pre>vi /etc/ocserv/ocserv.conf</pre>
+<p>让我们一起来看看需要改哪些地方：</p>
+<p>1、auth也就是验证方式要改为：</p>
+<pre>auth = "plain[passwd=/etc/ocserv/ocpasswd]"</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-33-22.png" alt="" width="625" height="101" class="alignnone size-full wp-image-3686" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-33-22.png 625w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-33-22-300x48.png 300w" sizes="(max-width: 625px) 100vw, 625px" /></p>
+<p>2、默认的监听端口为443，如果你的服务器上跑着HTTPS的WEB站点，那么443端口肯定是被占用了的，所以如果有需求的话，可以更改下面的值：</p>
+<pre># TCP and UDP port number
+tcp-port = 443
+udp-port = 443</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-36-53.png" alt="" width="499" height="123" class="alignnone size-full wp-image-3687" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-36-53.png 499w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-36-53-300x74.png 300w" sizes="(max-width: 499px) 100vw, 499px" /></p>
+<p>3、Anyconnect有一个设置连接欢迎信息的功能，也就是你在连接的时候会弹出一个提示框，提示框的内容就可以自行设置，如有需要可以更改下面的值：</p>
+<pre># A banner to be displayed on clients
+banner = "Welcome LALA.IM"</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-38-52.png" alt="" width="349" height="41" class="alignnone size-full wp-image-3688" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-38-52.png 349w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-38-52-300x35.png 300w" sizes="(max-width: 349px) 100vw, 349px" /></p>
+<p>4、Anyconnect可以限制最大允许连接的设备数量，如有需要可以更改下面这两个值：</p>
+<pre>max-clients = 16
+max-same-clients = 2</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-41-31.png" alt="" width="537" height="100" class="alignnone size-full wp-image-3689" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-41-31.png 537w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-41-31-300x56.png 300w" sizes="(max-width: 537px) 100vw, 537px" /></p>
+<p>5、更改服务器证书以及私钥的路径为我们刚才移动的路径：</p>
+<pre>server-cert = /etc/pki/ocserv/public/server-cert.pem
+server-key = /etc/pki/ocserv/private/server-key.pem</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-43-09.png" alt="" width="580" height="122" class="alignnone size-full wp-image-3690" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-43-09.png 580w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-43-09-300x63.png 300w" sizes="(max-width: 580px) 100vw, 580px" /></p>
+<p>6、更改CA证书的路径为我们刚才移动的路径：</p>
+<pre>ca-cert = /etc/pki/ocserv/cacerts/ca-cert.pem</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-44-23.png" alt="" width="517" height="70" class="alignnone size-full wp-image-3691" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-44-23.png 517w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-44-23-300x41.png 300w" sizes="(max-width: 517px) 100vw, 517px" /></p>
+<p>7、取消如下几个参数的注释（去掉#号就是去掉注释）：</p>
+<pre>ipv4-network
+ipv4-netmask</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-45-33.png" alt="" width="578" height="155" class="alignnone size-full wp-image-3692" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-45-33.png 578w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-45-33-300x80.png 300w" sizes="(max-width: 578px) 100vw, 578px" /></p>
+<p>8、去掉如下参数的注释以及设置DNS服务器地址：</p>
+<pre>tunnel-all-dns = true
+dns = 8.8.8.8
+dns = 8.8.4.4</pre>
+<p>如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-47-04.png" alt="" width="592" height="124" class="alignnone size-full wp-image-3693" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-47-04.png 592w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_12-47-04-300x63.png 300w" sizes="(max-width: 592px) 100vw, 592px" /></p>
+<p>确定你已经修改好上面的内容，然后保存即可。</p>
+<p>现在来创建一个VPN用户：</p>
+<pre>ocpasswd -c /etc/ocserv/ocpasswd lala</pre>
+<p>盲输两遍密码即可。如果不想让这个用户继续使用了，可以执行下面的命令删除指定的用户：</p>
+<pre>ocpasswd -c /etc/ocserv/ocpasswd -d lala</pre>
+<p>现在我们开启机器的IPV4转发功能：</p>
+<pre>echo 1 > /proc/sys/net/ipv4/ip_forward</pre>
+<p>然后启动CentOS7的Firewalld防火墙：</p>
+<pre>systemctl start firewalld.service</pre>
+<p>放行Anyconnect的端口（我这里之前设置的是默认的443端口，如果你修改了端口，那么这里也要对应）：</p>
+<pre>firewall-cmd --permanent --zone=public --add-port=443/tcp
+firewall-cmd --permanent --zone=public --add-port=443/udp</pre>
+<p>设置转发：</p>
+<pre>firewall-cmd --permanent --add-masquerade
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING -o eth0 -j MASQUERADE</pre>
+<p>注：eth0是你的公网网卡名字，每个机器的名字可能都不一样，自己用ifconfig命令查一下就行了。</p>
+<p>重加载，让新的配置生效：</p>
+<pre>firewall-cmd --reload</pre>
+<p>现在就可以尝试运行一下Ocserv了：</p>
+<pre>ocserv -f -d 1</pre>
+<p>如果一切正常，回显的内容大致如下图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_11-36-37.png" alt="" width="825" height="189" class="alignnone size-full wp-image-3694" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_11-36-37.png 825w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_11-36-37-300x69.png 300w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_11-36-37-768x176.png 768w" sizes="(max-width: 825px) 100vw, 825px" /></p>
+<p>确定正常后按键盘组合键Ctrl+C退出运行，现在我们就可以直接用systemctl来管理Ocserv的进程。</p>
+<p>设置Ocserv开机启动：</p>
+<pre>systemctl enable ocserv</pre>
+<p>启动Ocserv：</p>
+<pre>systemctl start ocserv</pre>
+<p>Anyconnect支持多平台客户端，Win/iOS/Android都是支持的，软件下载地址：</p>
+<p>https://software.cisco.com/download/home/286281283/type/282364313/release/4.6.01103</p>
+<p>iOS的话直接在商店里面搜索Anyconnect安装就行了。下面我拿iOS设备示范一下。</p>
+<p>首先打开APP点击“设置”，把“阻止不信任的服务器”这个选项关闭，如图所示：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_13-04-29.png" alt="" width="459" height="115" class="alignnone size-full wp-image-3696" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_13-04-29.png 459w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_13-04-29-169x300.png 169w" sizes="(max-width: 459px) 100vw, 459px" /></p>
+<p>接着点击“连接”-“添加VPN连接”，按如下图配置：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_13-02-40.png" alt="" width="458" height="113" class="alignnone size-full wp-image-3695" srcset="https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_13-02-40.png 458w, https://lala.im/wp-content/uploads/2018/06/lala.im_2018-06-25_13-02-40-169x300.png 169w" sizes="(max-width: 458px) 100vw, 458px" /></p>
+<p>现在就可以连接了，会提示你不信任的服务器，点“继续”：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/IMG_4627.png" alt="" width="640" height="136" class="alignnone size-full wp-image-3697" srcset="https://lala.im/wp-content/uploads/2018/06/IMG_4627.png 640w, https://lala.im/wp-content/uploads/2018/06/IMG_4627-169x300.png 169w, https://lala.im/wp-content/uploads/2018/06/IMG_4627-577x1024.png 577w" sizes="(max-width: 640px) 100vw, 640px" /></p>
+<p>然后就是输入用户名密码了，这里就不多说了，用户名和密码就是之前你自己在终端内创建的那个，如果用户名和密码验证正确的话，那么最后就会弹出你设置的欢迎信息：</p>
+<p><img src="https://lala.im/wp-content/uploads/2018/06/IMG_4630.png" alt="" width="640" height="1136" class="alignnone size-full wp-image-3698" srcset="https://lala.im/wp-content/uploads/2018/06/IMG_4630.png 640w, https://lala.im/wp-content/uploads/2018/06/IMG_4630-169x300.png 169w, https://lala.im/wp-content/uploads/2018/06/IMG_4630-577x1024.png 577w" sizes="(max-width: 640px) 100vw, 640px" /></p>
+<p>现在就开始爱国吧。。。</p>
+<p>写在最后：</p>
+<p>其他客户端的配置都大同小异。因为我们是自签的证书，所以不管在哪个客户端上只要把“阻止不信任的服务器”这种类似的功能关闭就行了。</p>
+		</article>
+								            <div class="post-actions">
+            	<a href="javascript:;" class="post-like action action-like" data-pid="3684"><i class="fa fa-thumbs-o-up"></i>赞(<span>3</span>)</a>            	            	            </div>
+        		<div class="post-copyright">未经允许不得转载：<a href="https://lala.im">荒岛</a> &raquo; <a href="https://lala.im/3684.html">CentOS7使用Ocserv搭建CiscoAnyconnect服务器</a>
+				
+				</div>
+
+	</div></div>
+	</section>
+
+
+<footer class="footer">
+	<div class="container">
+							<div class="fcode">
+				<p><p id="hitokoto">:D 获取中...</p>			</div>
+				<p>&copy; 2019 <a href="https://lala.im">荒岛</a> &nbsp; <a href="https://lala.im/sitemap.xml">网站地图</a>
+</p>
+
+</div>
+</footer>
+
+
+</body>
+</html>

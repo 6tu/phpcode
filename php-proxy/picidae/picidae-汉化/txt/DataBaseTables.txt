@@ -1,0 +1,28 @@
+== pici-server database tables ==
+
+pici-server has the following database scheme:
+
+ * form
+  * idx: bigint(20): primary key: autoincrement
+  * url: varchar(255)
+  * cipher_key: varchar(255)
+  * ref: varchar(255): indexed
+  * formfields: varchar(255)
+  * hiddenfields: varchar(255)
+  * ip: varchar(255)
+  * created: double: indexed
+ * ref2url
+  * idx: bigint(20): primary key: autoincrement
+  * ref: varchar(255): indexed
+  * url: varchar(255)
+  * created: double: indexed
+  * requested: int(11)
+  * ip: varchar(255)
+  * idx_url: bigint(20)
+ * url2pic
+  * idx: bigint(20): primary key: autoincrement
+  * url: varchar(255): indexed
+  * pic: varchar(255)
+  * created: double: indexed
+  * loading: int(11): default 1
+  * displaynr: int(11)

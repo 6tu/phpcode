@@ -1,0 +1,24 @@
+php-dynamic-mirror-0.1.zip 
+
+打开 index.php ，找到
+
+22行 $_SERVER['CONTENT_TYPE']    改为  @$_SERVER['CONTENT_TYPE']
+40行 $reponse = '';    改为 $response = '';
+
+=========================================
+
+pe_20110512.rar
+
+打开 index.php ，找到
+
+//默认代理网站
+$_myhost='false'; //true为开，其它字符为关闭
+$_one_host_url='http://localhost/phpbb2/';//完整的URL，本机的WEB目录文件，别忘了本机域名
+
+
+修改
+
+$_myhost='true';
+http://localhost/phpbb2/ 为你的域名或者是特定的网址
+
+

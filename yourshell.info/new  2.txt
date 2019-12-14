@@ -1,0 +1,7 @@
+https://www.apachelounge.com/download/
+https://www.apachelounge.com/download/additional/
+
+del c:\windows\system32\libeay32.dll
+del c:\windows\system32\libssl32.dll
+del c:\windows\system32\libintl3.dll
+del c:\windows\system32\libiconv2.dll

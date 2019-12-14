@@ -1,0 +1,17 @@
+[[TOC(InstallationInstructions, MySqlSetup, PhpSetup, PythonSetup, AppleWebKit, svnAccess)]]
+
+= PHP Setup =
+
+To setup the pici-server you need a running PHP
+ * GD grafics framework
+ * !FreeType font support (optional but recommended. For it is used for the error-messages. This package is not included in the built in PHP-package of OSX.)
+ * mcrypt (optional but recommended. Needed for PPC processors.)
+
+Easiest way to set this up is to install Marc Lianages PHP-package:[[BR]]
+
+|| '''Tiger (10.4)''' || '''Leopard (10.5)''' ||
+|| http://www.entropy.ch/software/macosx/php/#install [[BR]][[BR]] If you run Apples default Apache webserver, choose the package for Apache 1.3 || http://www.entropy.ch/phpbb2/viewtopic.php?t=2945 [[BR]][[BR]][[BR]] ||
+
+
+
+

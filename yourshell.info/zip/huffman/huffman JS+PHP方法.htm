@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+ lang="en" dir="ltr">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>
+    huffman    [Oliver's External Hacker Brain]
+  </title><head><body>
+<h1><a name="huffman_coding_with_php_and_javascript" id="huffman_coding_with_php_and_javascript">Huffman Coding with PHP and JavaScript</a></h1>
+<div class="level1">
+
+<p>
+
+There may be times when you want to compress data on the server or in the browser. I&#039;m providing an implementation of the <a href="http://en.wikipedia.org/wiki/Huffman_coding" class="urlextern" title="http://en.wikipedia.org/wiki/Huffman_coding"  rel="nofollow">Huffman Coding</a> algorithm in <acronym title="Hypertext Preprocessor">PHP</acronym> and in JavaScript.
+</p>
+
+</div>
+
+<h2><a name="download_source_code" id="download_source_code">Download Source Code</a></h2>
+<div class="level2">
+
+<p>
+
+<a href="http://code.kuederle.com/_media/huffman.zip" class="media mediafile mf_zip" title="huffman.zip">huffman.zip (9 KB)</a>
+</p>
+
+</div>
+
+<h2><a name="simple_string_compression" id="simple_string_compression">Simple String Compression</a></h2>
+<div class="level2">
+
+<p>
+
+<acronym title="Hypertext Preprocessor">PHP</acronym> Example (in JavaScript, it&#039;s almost the same):
+</p>
+<pre class="code php"><span class="re0">$original</span> <span class="sy0">=</span> <span class="st0">&quot;This is the text that you want to compress.&quot;</span><span class="sy0">;</span>
+<span class="re0">$huffman</span> <span class="sy0">=</span> <span class="kw2">new</span> Huffman<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$compressed</span> <span class="sy0">=</span> <span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">compress</span><span class="br0">&#40;</span><span class="re0">$original</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="coMULTI">/* ... */</span>
+<span class="re0">$huffman2</span> <span class="sy0">=</span> <span class="kw2">new</span> Huffman<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$decompressed</span> <span class="sy0">=</span> <span class="re0">$huffman2</span><span class="sy0">-&gt;</span><span class="me1">decompress</span><span class="br0">&#40;</span><span class="re0">$compressed</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">echo</span> <span class="re0">$decompressed</span><span class="sy0">;</span> <span class="co1">// Should output &quot;This is a text...&quot;</span></pre>
+
+</div>
+
+<h2><a name="simple_array_compression" id="simple_array_compression">Simple Array Compression</a></h2>
+<div class="level2">
+
+<p>
+
+You can also compress arrays which may contain any kind of data (numbers, objects, strings, etc.). What you get after compression, however, is also an array which contains these objects. This is needed to properly restore the original data during decompression.
+</p>
+
+<p>
+JavaScript example (it&#039;s the same in <acronym title="Hypertext Preprocessor">PHP</acronym>):
+</p>
+<pre class="code javascript"><span class="kw2">var</span> original <span class="sy0">=</span> <span class="kw2">new</span> Array<span class="br0">&#40;</span><span class="nu0">1000</span><span class="sy0">,</span><span class="nu0">1000</span><span class="sy0">,</span><span class="st0">&quot;text&quot;</span><span class="sy0">,</span><span class="nu0">1000</span><span class="sy0">,</span><span class="nu0">1000</span><span class="sy0">,</span><span class="st0">&quot;text&quot;</span><span class="sy0">,</span><span class="kw2">new</span> Array<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw2">var</span> huffman <span class="sy0">=</span> <span class="kw2">new</span> Huffman<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw2">var</span> compressed <span class="sy0">=</span> huffman.<span class="me1">compress</span><span class="br0">&#40;</span>original<span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="co2">/* ... */</span>
+<span class="kw2">var</span> huffman2 <span class="sy0">=</span> <span class="kw2">new</span> Huffman<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw3">alert</span><span class="br0">&#40;</span>huffman2.<span class="me1">decompress</span><span class="br0">&#40;</span>compressed<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">// Should display the original array items.</span></pre>
+
+</div>
+
+<h2><a name="re-using_huffman_trees" id="re-using_huffman_trees">Re-using Huffman Trees</a></h2>
+<div class="level2">
+
+<p>
+
+In the above examples, the Huffman tree (also called the “dictionary”) which maps values (or characters) to bits is embedded in the compressed data. Sometimes, however, you may want to re-use the dictionary for more than one item to compress. This is how it works:
+</p>
+<pre class="code php"><span class="re0">$original1</span> <span class="sy0">=</span> <span class="st0">&quot;This is the first text we want to compress.&quot;</span><span class="sy0">;</span>
+<span class="re0">$original2</span> <span class="sy0">=</span> <span class="st0">&quot;This is the second text we want to compress.&quot;</span><span class="sy0">;</span>
+<span class="re0">$huffman</span> <span class="sy0">=</span> <span class="kw2">new</span> Huffman<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">buildTree</span><span class="br0">&#40;</span><span class="re0">$original1</span><span class="sy0">.</span><span class="re0">$original2</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$dictionary</span> <span class="sy0">=</span> <span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">getDictionary</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$compressed1</span> <span class="sy0">=</span> <span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">compressData</span><span class="br0">&#40;</span><span class="re0">$original1</span><span class="sy0">,</span><span class="kw4">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$compressed2</span> <span class="sy0">=</span> <span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">compressData</span><span class="br0">&#40;</span><span class="re0">$original2</span><span class="sy0">,</span><span class="kw4">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="coMULTI">/* ... */</span>
+<span class="re0">$huffman2</span> <span class="sy0">=</span> <span class="kw2">new</span> Huffman<span class="br0">&#40;</span><span class="re0">$dictionary</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="kw1">echo</span> <span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">decompressData</span><span class="br0">&#40;</span><span class="re0">$compressed1</span><span class="sy0">,</span><span class="kw4">false</span><span class="br0">&#41;</span><span class="sy0">.</span><span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="sy0">;</span>
+<span class="kw1">echo</span> <span class="re0">$huffman</span><span class="sy0">-&gt;</span><span class="me1">decompressData</span><span class="br0">&#40;</span><span class="re0">$compressed2</span><span class="sy0">,</span><span class="kw4">false</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="co1">// Should output both original strings.</span></pre>
+
+<p>
+This works exactly the same with arrays but you&#039;ll have to let the functions know that you want arrays with “true” instead of “false” in the functions above. See also documentation in source code.
+</p>
+
+<p>
+And of course, this also works in JavaScript.
+</p>
+
+</div>
+
+<h2><a name="javascript_tip" id="javascript_tip">Javascript Tip</a></h2>
+<div class="level2">
+
+<p>
+
+If you load a binary file from the server using <acronym title="Asynchronous JavaScript and XML">AJAX</acronym>, you should make sure you override the <acronym title="Multipurpose Internet Mail Extension">MIME</acronym> type as follows:
+</p>
+<pre class="code javascript"><span class="co1">// xmlhr is an XMLHttpRequest object.</span>
+xmlhr.<span class="me1">overrideMimeType</span><span class="br0">&#40;</span><span class="st0">'text/plain; charset=x-user-defined'</span><span class="br0">&#41;</span><span class="sy0">;</span></pre>
+
+</div>
+
+    <!-- wikipage stop -->
+  </div>
+
+  <div class="clearer">&nbsp;</div>
+
+  
+  <div class="stylefoot">
+
+    <div class="meta">
+      <div class="user">
+              </div>
+      <div class="doc">
+        huffman.txt &middot; Last modified: 2010/12/17 17:23 by admin      </div>
+    </div>
+
+ 
+</div>
+
+<div class="no"><img src="/lib/exe/indexer.php?id=huffman&amp;1307507129" width="1" height="1" alt=""  /></div>
+</body>
+</html>

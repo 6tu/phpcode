@@ -1,0 +1,45 @@
+如何用 PHP 中的 CURL 获取 SSL 证书？
+
+No. EDIT : A CURLINFO_CERTINFO option has been added recently. See http://bugs.php.net/49253
+Apparently, that information is being given to you by your proxyin the response headers. If you want to rely on that, you can use curl's CURLOPT_HEADER option to true to include the headers in the output.
+However, to retrieve the certificate without relying on some proxy, you must do
+
+<?php
+$g = stream_context_create(array("ssl" => array("capture_peer_cert" => true)));
+$r = fopen("https://www.google.com/" , "rb" , false , $g);
+$cont = stream_context_get_params($r);
+var_dump($cont ["options"]["ssl"]["peer_certificate"]);
+
+You can manipulate the value of $cont["options"]["ssl"]["peer_certificate"] with the OpenSSL extension.
+EDIT : This option is better since itdoesn't actually make the HTTP request and does not require allow_url_fopen :
+
+<? php
+$g = stream_context_create(array("ssl" => array("capture_peer_cert" => true)));
+$r = stream_socket_client("ssl://www.google.com:443" , $errno , $errstr , 30 ,STREAM_CLIENT_CONNECT , $g);
+$cont = stream_context_get_params($r);
+var_dump($cont ["options"]["ssl"]["peer_certificate"]);
+
+CURLOPT_SSL_VERIFYPEER and CURLOPT_SSL_VERIFYHOST
+
+
+<?php
+if($fp = tmpfile()){  
+$ch = curl_init();  
+curl_setopt($ch, CURLOPT_URL,"https://www.digicert.com/");  
+curl_setopt($ch, CURLOPT_STDERR, $fp);  
+curl_setopt($ch, CURLOPT_CERTINFO, 1);  
+curl_setopt($ch, CURLOPT_VERBOSE, 1);  
+curl_setopt($ch, CURLOPT_HEADER, 1);  
+curl_setopt($ch, CURLOPT_NOBODY, 1);  
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);  
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);  
+curl_setopt($ch, CURLOPT_SSLVERSION,3);  
+$result = curl_exec($ch);  
+curl_errno($ch)==0 or die("Error:".curl_errno($ch)."".curl_error($ch));  
+fseek($fp, 0);//rewind  
+$str='';  
+while(strlen($str.=fread($fp,8192))==8192); echo $str;  
+fclose($fp);
+}
+?>
+Zend_HTTP_Client

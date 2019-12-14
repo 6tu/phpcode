@@ -1,0 +1,49 @@
+
+
+你是用2009年的那个代码吗？那个是我刚开始改写的东西，它的JS部分有个Bug，IE下是可以的，但是对JS有严格要求的firefox就不行，这个也正常，毕竟我是业余的，09年我刚开始自学PHP，对JS用都不会用。
+
+前几天又修改了这个代码，修改了一些Bug，增加了限制一些国家的访问者使用这一代理服务，增加了默认代理网站开关，使用了比较简单的加密算法。
+
+现在正在调试这个对cookie更复杂的加密和解密，cookie是文件头中的数据，也是在网上传输的，貌似GFW也是要扫描的，对一些有cookie的网站，可能泄露网站的域名。需要修改的代码：
+
+在 add_cookie() 函数中，rawurlencode($name) 是一个整体，就是下面的 $cookie_id ，若修改如下： 
+rawurlencode(rawurlencode($name))  ——>  rawurlencode(base64_encode(rawurlencode($name))) 
+
+那在请求头中需要相应的解码操作：
+$cookie_id      = explode(';', rawurldecode($cookie_id));  ——>  
+$cookie_id      = explode(';', base64_decode(rawurldecode($cookie_id)));
+
+虽然这样修改了，但是并不见得能突破GFW，毕竟不是成熟的，修改glype更有意义，:) 邮件中附带了测试文件
+
+下面的这些网站是测试和更新这个小工具的：
+
+https://cmded.net/~walk/pe 或者是 p
+http://yourshell.info/pe   或者是 p
+
+http://code.google.com/p/encrypt-phproxy/  *停止更新
+http://sourceforge.net/projects/eproxy/
+http://tty521.download.csdn.net/
+
+
+顺祝好运！
+
+
+
+2011/5/12, qwerqq@users.sourceforge.net <qwerqq@users.sourceforge.net>:
+> 您好  我有用过您的phpproxy
+>
+> 但是在firefox似乎没办法正常显示?
+>
+> 我的email  是 freeair3210@gmail.com
+> 可以的话请回覆给我
+> 谢谢
+>
+> --
+> This message has been sent to you, a registered SourceForge.net user,
+> by another site user, through the SourceForge.net site.  This message
+> has been delivered to your SourceForge.net mail alias.  You may reply
+> to this message using the "Reply" feature of your email client, or
+> using the messaging facility of SourceForge.net at:
+> https://sourceforge.net/sendmessage.php?touser=3384308
+>
+>

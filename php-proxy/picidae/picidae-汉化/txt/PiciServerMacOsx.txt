@@ -1,0 +1,130 @@
+[[TOC(PiciServerMacOsx, MySqlSetup, PhpSetup, PythonSetup, AppleWebKit, svnAccess)]]
+
+= Install a pici-Server on Mac OSX =
+
+Let's install a pici-server on an Apple Macintosh running OSX.
+||[[Image(macmini_pici-server.jpg)]]|| [[BR]][[BR]][[BR]]'''Does this all look too complicated to you?'''[[BR]] [PiciProxyInstallation Install a pici-proxy]||
+
+----------
+== Setup external dependencies ==
+You need to have the following programs installed on your computer to successfully run a pici-server:
+ * Apache (simply switch on websharing in the System Preferences of Mac OSX)
+ * [MySqlSetup MySQL]
+ * [PhpSetup PHP] (with included GD, mcrypt and !FreeType support)
+ * [PythonSetup Python] (already included in MacOSX 10.5, Leopard)
+  * [PythonSetup pyobjc] the Python <-> Objective-C Bridge (already included in MacOSX 10.5, Leopard)
+ * [AppleWebKit Webkit] (the developer version of apples Safari web browser)
+
+-----------
+== Setup pici-server ==
+=== Download the pici-server software ===
+Download the pici-server software. You may download one of the nightly snapshots or get subversion access:
+ * [http://dev.picidae.net/pici-server_snapshot.zip pici-server_snapshot.zip]
+ * [http://dev.picidae.net/pici-server_snapshot.tar.gz pici-server_snapshot.tar.gz]
+ * [wiki:svnAccess svnAccess]
+
+Unpack the pici-server software into your web server ( /Library/WebServer/Documents/ ). Please make sure that the path doesn't contain pici or picidae (see http://www.picidae.net/questions-and-answers/). Best to have the pici-server on webservers root.  
+
+
+=== Set rights for the CACHE folder ===
+Allow your www-user to create files in the CACHE folder. You may change the rights  via shell:
+{{{
+chmod -R 777 /Library/WebServer/Documents/CACHE
+}}}
+or via: right mouse click > Get Info: Change the 'Ownership & Permissions' Details to read and write for everybody or make your www-user the owner of this folder.
+
+
+=== Give your user access to the python-script ===
+For having the rights to access the Apple-Window-System you need to use the user account of a logged in user or when no GUI-user is logged in, pici-server needs to run the python script as root user (not recommended). 
+Configure in your configuration file the user you would like to be used for invoking !WebKit.
+Therefore we need to give the www-user sudo rights for the script. For that we don't have to store the password in plain text on the computer we give it the right to execute the python-script in sudo mode without password.
+
+www-user:[[BR]]
+Tiger 10.4: www[[BR]]
+Leopard 10.5: _www[[BR]]
+
+Open a Shell (also called Terminal) and type:
+{{{
+sudo visudo
+}}}
+(This will open the sudoers file within your standard shell-editor: "vi" in my case)
+
+Add the following line to the visudo file. Pay attention that the path points to your the shellscript mkpicture.sh! (The path given in this example is only correct, if you installed pici-server in the main directory of your web server.)
+{{{
+www     ALL=(ALL) NOPASSWD: /Library/WebServer/Documents/ADMIN/mkpicture.sh
+}}}
+The Editor vi is not that easy to handle (here a short explanation): 
+ 1. go with the cursor to the position where you would like to insert the new line.
+ 2. press "i" 
+  * move the cursor with the arrow keys to the end of the last line and press return to insert a new line.
+  * insert then the new line.
+{{{
+www     ALL=(ALL) NOPASSWD: /Library/WebServer/Documents/ADMIN/mkpicture.sh
+}}}
+ 3. press the "escape"-key to leave the insert mode.
+ 4. type the following to save the file
+{{{
+:wq
+}}}
+ 5. Hit enter and your done.
+
+
+=== Create MySQL database ===
+Make shure [MySqlSetup MySQL] is up and running. Install then the Database.
+There are many ways to install a [MySqlSetup MySQL] database. Here is a quick description via terminal:
+{{{
+/usr/local/mysql/bin/mysql -u root -p
+}}}
+insert then your MySQL password you used in the installation. in the MySQL console type then:
+{{{
+create database picidae;
+exit;
+}}}
+
+
+=== Setup the configuration file ===
+Copy the configuration-file 'ADMIN/sample.config.php' to 'ADMIN/config.php' and  setup the correct paths in the configuration file.
+
+
+
+=== Create the database tables ===
+To setup the database structure for pici-server you should invoke the file ADMIN/setup.php in your web browser and follow the installation instructions.[[BR]]
+( http://localhost/ADMIN/setup.php if pici-server resides in the main directory of your web server ) 
+
+The setup script will also check whether you correctly configured pici-server and will warn you if something is wrong.
+If you receive an error message, fix the problem and reinvoke the setup-scrip until you receive the final success message.
+
+ 
+=== pici-server successfully installed ===
+Now you can try to access your pici-server, it should be up and running:[[BR]]
+http://localhost/
+
+----------
+
+= Troubleshooting =
+If you do have problems with your installation, check our TroubleShooting page.
+
+== Connect pici-server to the internet ==
+If your pici-server is running on your home DSL internet connection with a dynamic IP-adress you may get a free dynamic Domainname that points then to your computer. There are different free dynamic DNS Services available:[[BR]]
+http://www.dyndns.com/services/dns/dyndns/ [[BR]]
+http://www.no-ip.com/services/managed_dns/free_dynamic_dns.html [[BR]]
+http://freedns.afraid.org/ [[BR]]
+
+
+== Let the world know  ==
+To let the world know about the your pici-proxy, make a link to it from your homepage. [[BR]]
+[http://info.picidae.net/en/join_picidae/banner-tags/ On this site you find many tags and banners for your link.]
+
+Please pay attention not to use the word "pici" or "picidae" when linking to a pici-server or pici-proxy. If a censorship authority places "picidae" onto the index, your link  will remain undiscovereable.
+
+We are always curios to hear about new pici-server installations! [[BR]]
+Drop us a mail to inform us about your pici-server: [http://info.picidae.net/en/contact/ email us]
+
+
+== Optimisations ==
+ * To make people read all the webpages they called via your pici-server, '''install as many different language fonts as possible! ''' You'll find them on your Apple operation system CD.[[BR]] To check whether you've installed these packages go to our LanguageSite.
+ * [SecurePiciServer Secure pici-server]
+  *  [ConfigureWebKit Secure your WebKit]
+
+----------
+----------

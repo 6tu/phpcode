@@ -1,0 +1,49 @@
+DATA: 20110604 182902
+REMOTE_ADDR: 76.73.108.34
+REFERER: 
+LANGUAGE: zh-cnUSER_AGENT: 
+
+http://surf.ecvps.info/index.php version=0.62
+***************
+DATA: 20110604 153109
+REMOTE_ADDR: 109.169.67.202
+REFERER: 
+LANGUAGE: zh-cnUSER_AGENT: 
+
+https://cmded.net/~walk/pe/index.php version=0.62
+***************
+DATA: 20110603 214622
+REMOTE_ADDR: 221.199.9.11
+REFERER: 
+LANGUAGE: zh-cnUSER_AGENT: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13
+
+http://REFERER version=0.61
+***************
+DATA: 20110603 120018
+REMOTE_ADDR: 59.175.12.254
+REFERER: http://met-art.co.cc/g/index.php
+LANGUAGE: zh-CNUSER_AGENT: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.1 Safari/535.1
+
+http://met-art.co.cc/g/index.php version=0.62
+***************
+DATA: 20110531 215158
+REMOTE_ADDR: 58.68.130.140
+REFERER: http://paul89114.vip567.com/myproxy/
+LANGUAGE: zh-CNUSER_AGENT: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.16 Safari/534.24
+
+http://paul89114.vip567.com/myproxy/index.php version=0.62
+***************
+DATA: 20110531 145604
+REMOTE_ADDR: 60.186.194.166
+REFERER: https://lyeer.c8.ixwebhosting.com/p/
+LANGUAGE: zh-CNUSER_AGENT: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.60 Safari/534.24
+
+http://lyeer.c8.ixwebhosting.com/p/index.php version=0.62
+***************
+DATA: 20110531 145243
+REMOTE_ADDR: 60.186.194.166
+REFERER: http://lyeer.net/p/
+LANGUAGE: zh-CNUSER_AGENT: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.60 Safari/534.24
+
+http://lyeer.net/p/index.php version=0.62
+***************

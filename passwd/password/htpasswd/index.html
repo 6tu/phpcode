@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja" id="sixapart-standard">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="description" content="JavaScript MD5 implementation. Apache htpasswd htaccess password. ">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./css/md5.css">
+
+<title>JavaScript MD5 SHA1 htpasswd</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="./htpasswd-js/md5.js"></script>
+<script type="text/javascript" src="./htpasswd-js/sha1.js"></script>
+<script type="text/javascript" src="./htpasswd-js/javacrypt.js"></script>
+<script type="text/javascript" src="./htpasswd-js/htpasswd.js"></script>
+
+
+</head>
+<body>
+
+<div id="content">
+<h2>htpasswd 密码生成器</h2>
+<div class="entry-content clearfix">
+<div class="entry-body">
+
+<form>
+用户名 : <br><input name="user" type="text" size="10" /><br>
+密&nbsp;&nbsp;&nbsp;码 : <br><input name="pwd1" type="text" size="15" />
+<p>算&nbsp;&nbsp;&nbsp;法 : <select name="alg"> 
+<option>none (Windows &amp; TPF servers)</option> 
+<option>Crypt (all Unix servers)</option> 
+<option selected="selected">MD5 (Apache servers only)</option> 
+<option>SHA-1 (Netscape-LDIF / Apache servers)</option> 
+</select></p>
+<p><input type="button" value="生成加密密码" onclick="this.form.pwd2.value=htpasswd(this.form.user.value, this.form.pwd1.value, this.form.alg.selectedIndex)" /> </p>
+<p>把下面的内容保存到 .htpasswd 文件<br />
+<input name="pwd2" type="text" size="60" /></p>
+</form>
+</div>
+</div>
+</div>
+<br><hr>
+<h2>MD5 在线加密</h2>
+<form>
+<textarea rows="6" id="input"></textarea>
+<br>
+<button type="submit" id="calculate">计算</button>
+<button type="reset" id="reset">重置</button><br><br>生成的结果<br>
+<textarea rows="6" id="result"></textarea>
+<br>
+</form>
+<script type="text/javascript" src="./md5-js/md5.js"></script>
+<script type="text/javascript" src="./md5-js/form.js"></script>
+<br>
+<p><li>该程序是用JavaScript写的，一切在浏览器中完成，没有和服务器上交互</p>
+<p><li>htpasswd是httpd功能apache服务的一个工具，是目录访问权限认证的一个方式。在.htpasswd文件中账号以 用户名/加密密码 形式存在，密码支持MD5、crypt、sha、plain明文方式保存</p>
+<p><li><a href="http://tool.oschina.net/htpasswd" >http://tool.oschina.net/htpasswd</a><br>
+<li><a href="http://www.htaccesstools.com/htpasswd-generator/" >http://www.htaccesstools.com/htpasswd-generator/</a><br>
+<li><a href="http://www.kxs.net/support/htaccess_pw.html" >http://www.kxs.net/support/htaccess_pw.html</a><br>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+HTML 行距
+
+<span style="line-height:18px;">HTML语言中文<br>本文字的行距</span><br><br><span style="line-height:40px;">HTML语言中文<br>本文字的行距</span>
+text-indent首行首字缩进
+letter-spacing字与字间距_字符间距离

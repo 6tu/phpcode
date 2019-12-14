@@ -1,0 +1,5 @@
+Huffman JavaScript Compression
+
+http://rumkin.com/tools/compression/compress_huff.php
+http://www.ioyu.com/io/javascript/huffman.asp
+http://bennettroesch.com/Tools/HuffmanEncoder/

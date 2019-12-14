@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>  Ocserv 搭建 Cisco AnyConnect VPN服务端 | 自得其乐</title>
+</head>
+<body onLoad="setupZoom();">
+<div id="wrapper">
+
+
+<hr />
+<div id="content">
+			<div class="post">
+					<h2 class="title"><a href="https://www.5752.me/2334.html">Ocserv 搭建 Cisco AnyConnect VPN服务端</a></h2>
+							<p class="post-info">六月 4, 2019 |  									<span class="addcomments"><a href="#respond"  rel="nofollow" title="添加评论">添加评论</a></span>
+							</p>
+						<div class="entry">
+			<p>系统要求<br />
+Debian 7+,Ubuntu 14.04 +,此脚本不支持CentOS！</p>
+<p>脚本版本<br />
+Ver: 1.0.2</p>
+<p>安装步骤<br />
+检查PPP/TUN环境,首先要检查VPS的TUN是否开启(OpenVZ虚拟化的服务器很可能默认关闭)。</p>
+<pre style="margin:15px 0;font:100 12px/18px monaco, andale mono, courier new;padding:10px 12px;border:#ccc 1px solid;border-left-width:4px;background-color:#fefefe;box-shadow:0 0 4px #eee;word-break:break-all;word-wrap:break-word;color:#444">cat /dev/net/tun<br># 返回的必须是：<br>cat: /dev/net/tun: File descriptor in bad state<br>如果返回内容不是指定的结果，请与VPS提供商联系开启TUN权限（一般控制面板有开关）。</pre>
+<p>执行下面的代码下载并运行脚本。</p>
+<pre style="margin:15px 0;font:100 12px/18px monaco, andale mono, courier new;padding:10px 12px;border:#ccc 1px solid;border-left-width:4px;background-color:#fefefe;box-shadow:0 0 4px #eee;word-break:break-all;word-wrap:break-word;color:#444">wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ocserv.sh <span style="color:#219">&amp;&amp; chmod +x ocserv.sh &amp;&amp; bash ocserv.sh</span></pre>
+<p>下载并运行脚本后会出现脚本操作菜单，选择并输入 1 就会开始安装。</p>
+<p>首先安装服务端，安装过程中会提示你添加第一个VPN账号（用户名和密码）以及TCP/UDP端口：</p>
+<pre style="margin:15px 0;font:100 12px/18px monaco, andale mono, courier new;padding:10px 12px;border:#ccc 1px solid;border-left-width:4px;background-color:#fefefe;box-shadow:0 0 4px #eee;word-break:break-all;word-wrap:break-word;color:#444">[信息] 开始设置账号配置...<br>请输入 要添加的VPN账号 用户名<br>(默认: admin):doubi<br> <br>    用户名 : doubi<br> <br>请输入 要添加的VPN账号 密码<br>(默认: doub.bid):doubi233<br> <br>    密码 : doubi233<br> <br>请输入VPN服务端的TCP端口<br>(默认: 443):443<br> <br>    TCP端口 : 443<br> <br>请输入VPN服务端的UDP端口<br>(默认: 443):<br> <br>    TCP端口 : 443<br> <br>[信息] 开始设置 iptables防火墙...</pre>
+<p>使用说明<br />
+进入下载脚本的目录并运行脚本：</p>
+<pre style="margin:15px 0;font:100 12px/18px monaco, andale mono, courier new;padding:10px 12px;border:#ccc 1px solid;border-left-width:4px;background-color:#fefefe;box-shadow:0 0 4px #eee;word-break:break-all;word-wrap:break-word;color:#444">./ocserv.sh</pre>
+<p>运行脚本后选择你要执行的选项即可。</p>
+<pre style="margin:15px 0;font:100 12px/18px monaco, andale mono, courier new;padding:10px 12px;border:#ccc 1px solid;border-left-width:4px;background-color:#fefefe;box-shadow:0 0 4px #eee;word-break:break-all;word-wrap:break-word;color:#444">ocserv 一键安装管理脚本 [vx.x.x]<br>-- Toyo | doub.bid/vpnzy-7 --<br> <br>0. 升级脚本<br>————————————<br>1. 安装 ocserv<br>2. 卸载 ocserv<br>————————————<br>3. 启动 ocserv<br>4. 停止 ocserv<br>5. 重启 ocserv<br>————————————<br>6. 设置 账号配置<br>7. 查看 配置信息<br>8. 修改 配置文件<br>9. 查看 日志信息<br>————————————<br> <br>当前状态: 已安装 并 已启动<br> <br>请输入数字 [0-9]:<br>其他操作<br><br>service ocserv start<br># 启动 ocserv<br>service ocserv stop<br># 停止 ocserv<br>service ocserv restart<br># 重启 ocserv<br>service ocserv status<br># 查看 ocserv 运行状态<br>service ocserv log<br># 查看 ocserv 运行日志<br>service ocserv test<br># 测试 ocserv 配置文件是否正确<br>配置文件：/etc/ocserv/ocserv.conf<br><br>账号配置文件：/etc/ocserv/ocpasswd<br><br>日志文件：/tmp/ocserv.log</pre>
+<p>配置用域名访问</p>
+<pre style="margin:15px 0;font:100 12px/18px monaco, andale mono, courier new;padding:10px 12px;border:#ccc 1px solid;border-left-width:4px;background-color:#fefefe;box-shadow:0 0 4px #eee;word-break:break-all;word-wrap:break-word;color:#444">vi /etc/ocserv/profile.xml <br><br>如下代码输入，并把域名ip填入<br><br># Client profile xml. This can be used to advertise alternative servers<br># to the client. A minimal file can be:<br># <span style="color:#555">&lt;?xml</span> <span style="color:#@cm-word">version</span><span style="color:#000">=</span><span style="color:#a11">"1.0"</span> <span style="color:#@cm-word">encoding</span><span style="color:#000">=</span><span style="color:#a11">"UTF-8"</span><span style="color:#555">?&gt;</span><br># <span style="color:#170">&lt;AnyConnectProfile</span> <span style="color:#00c">xmlns</span>=<span style="color:#a11">"http://schemas.xmlsoap.org/encoding/"</span> <span style="color:#00c">xmlns:xsi</span>=<span style="color:#a11">"http://www.w3.org/2001/XMLSchema-instance"</span> <span style="color:#00c">xsi:schemaLocation</span>=<span style="color:#a11">"http://schemas.xmlsoap.org/encoding/ AnyConnectProfile.xsd"</span><span style="color:#170">&gt;</span><br>#   <span style="color:#170">&lt;ServerList</span><span style="color:#170">&gt;</span><br>#       <span style="color:#170">&lt;HostEntry</span><span style="color:#170">&gt;</span><br>#               <span style="color:#170">&lt;HostName</span><span style="color:#170">&gt;</span>你的域名<span style="color:#170">&lt;/HostName</span><span style="color:#170">&gt;</span><br>#               <span style="color:#170">&lt;HostAddress</span><span style="color:#170">&gt;</span>你的vps的ip<span style="color:#170">&lt;/HostAddress</span><span style="color:#170">&gt;</span><br>#       <span style="color:#170">&lt;/HostEntry</span><span style="color:#170">&gt;</span><br>#   <span style="color:#170">&lt;/ServerList</span><span style="color:#170">&gt;</span><br># <span style="color:#170">&lt;/AnyConnectProfile</span><span style="color:#170">&gt;</span><br>#<br># Other fields may be used by some of the CISCO clients.<br># This file must be accessible from inside the worker's chroot. <br># Note that enabling this option is not recommended as it will allow<br># the worker processes to open arbitrary files (when isolate-workers is<br># set to true).<br>#user-profile = profile.xml<br></pre>
+<div style='float:left'><div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script></div><br /><br />												
+
+</div><!-- END entry -->
+
+
+
+</div><!--content-->
+
+			
+	<div id="footer">
+		<p>Copyright&nbsp;&copy;&nbsp;2019&nbsp;自得其乐			<br />Powered by <a href="https://5752.me/">5752.me</a> 
+			|&nbsp;Theme <a href="https://5752.me" title="designed by 5752.me">5752.me</a>
+			|&nbsp;登录 <a href="/wp-login.php" title="登录 5752.me">5752.me</a>
+		</p>
+	</div><!--footer-->
+	</body>
+</html>
+
+

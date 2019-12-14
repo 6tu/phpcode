@@ -1,0 +1,19 @@
+[[TOC(InstallationInstructions, MySqlSetup, PhpSetup, PythonSetup, AppleWebKit, svnAccess)]]
+
+= Install !WebKit =
+
+'''!WebKit is the developer version of Apple's Webbrowser Safari that is based on KHTML.'''
+
+You can get a nightly build of !WebKit from:[[BR]]
+http://nightly.webkit.org/
+
+
+Put the !WebKit into your Applications folder. (/Applications)
+
+(If you put !WebKit somewhere else than into your Applications directory (/Applications), you may have to setup the path to !WebKit in pici-servers configuration file!)
+
+---------
+
+Webkit is used for rendering webpages in pici-server.
+
+

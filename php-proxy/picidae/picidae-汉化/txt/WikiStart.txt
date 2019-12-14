@@ -1,0 +1,29 @@
+[[TOC(InstallationInstructions, PiciProxyInstallation, svnAccess, GPL)]]
+
+= Welcome to the picidae developer section =
+
+== [InstallationInstructions Install a pici-server] ==
+Install your own pici-server. [[BR]]
+[InstallationInstructions Read the installation instructions >>][[BR]]
+
+
+== [PiciProxyInstallation Turn your Webaccount into a pici-Proxy] ==
+Do you have a Webaccount?
+So you can run a pici-Proxy that points to a pici-Server
+(simple PHP-Script, no database is needed) [[BR]]
+[PiciProxyInstallation pici-proxy installation guide >>]
+
+
+== help improve picidae ==
+ * [wiki:svnAccess access the source-code repository via svn]
+ * If you found a bug, [/dev/newticket write a bugreport]
+  * [report: view open Tickes]
+  * [/dev/newticket create a new Ticket]
+
+
+
+------
+picidae is an [http://info.picidae.net/en/artproject/ art project] by [http://info.picidae.net/en/contact/who-we-are/ Christoph Wachter] and [http://info.picidae.net/en/contact/who-we-are/ Mathias Jud]. The software is released under the [wiki:GPL]. 
+For all questions feel free to contact us: [http://info.picidae.net/en/contact/ email us]. (our [wiki:PGPkey] for mail encryption)
+
+[[BR]][[BR]]

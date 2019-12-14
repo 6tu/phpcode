@@ -1,0 +1,78 @@
+
+Opera mini for S60 custom server
+
+本人贫穷一族，一直在用S60V2，这种手机启动JAVA很占内存，mini4.2自定义SERVER的那个JAVA软件，开不到十个网页就报系统内存不足，但是好象没有太多解决方法，所以，最近修改了个网页代理程序，终于能在UC上用HTTP看推，其实手机上用HTTPS网页代理还是能用的，只是HTTPS毕竟不多，它的安全程度在UC服务器上就得明文一下子，或许存在安全的威胁，在用网页代理的过程中，确实体验到了UC服务器在处理网页上的高效
+
+由此也确实佩服专业人才的编程水平，人家十分钟可以写出高效简练的程式，而我写代码是一个字一个字的凑，一个小时过去了，调试一下，没有动静，一看CPU都是百分之百的，原来是个死循环，再试一下，还不行，赶紧去问奶瓶，奶瓶不耐烦的说：这里有问题，应该如何如何；让我伤感的是哪个台湾的工程师直接跟我说：你别问了，你掏钱我给你写，我看着你这样写程序我就难过...唉，没办法啊，谁叫我又穷又笨，初中都没有毕业就下课去内蒙给人家放养
+
+
+S60V2改服务器的方法：
+
+1 下载安装 http://m.opera.com/OperaMini.sis?act=dl&tag=mini5s60_sdk2 ；(http://www.operamini.com/mobile/download/pc/)
+
+2 初始化成功后退出来，用 winhex 打开system\apps\OperaMini\OperaMini.app ，从后往前翻，找到http://mini5cn.opera-mini.net:80 ，把这个替换成自己架设的代理SERVER，相关代码在opm-server-mirror上，网址没有这个长的，后面用十六进制的零填上，比这个长的网址不清楚，我的是刚好一样长:)
+
+3 修改完毕保存一下就完毕了，再次打开mini5，进入 工具 --> 设置 --> 网络协议 --> HTTP(选这个)，用g.cn测试一下，如果正常，就能进入共FW了。
+   如果想访问国内的网站，把 网络协议 更换到 Socket，这样就走了国内的代理服务器，浏览效果会更好一些 。
+
+这是我尝试在线修改OperaMini.app的关键代码，但是好象有点问题，贴上或许有用
+
+<?php
+$str = file_get_contents('OperaMini.app');
+$hex = bin2hex ($str);
+$cnser = bin2hex('mini5cn.opera-mini.net:80');
+$myser = bin2hex('mini5.opera-mini.net');
+$hex = str_replace($cnser,$myser,$hex);
+file_put_contents($myser.'_S60V2_OperaMini.app',hex2bin($hex));
+
+function hex2bin($data){
+    //$len = strlen($data);
+    return pack('H*',$data);
+}
+?>
+
+4 需要提醒的是，不要分享他人的配置文件，否则，别人或许能利用你留在服务器上痕迹，比如COOKIE和历史记录等等。
+
+==============================================
+
+S60V2到此就完毕了，下来看看S60V3的改服方法
+
+需要安装S60 SDK，SIS打包工具  siscontents ， petran.exe
+
+用 siscontents 解压相关的SIS文件，
+
+用 petran.exe 脱去 sys\bin\operamini.exe 的壳 (petranpetran -nocompress operamini.exe)
+
+用WINHEX或者其它十六进制编辑这个EXE文件，不够长的用十六进制的零填上。(jGDS 中国服务器   wd16t 原服)
+
+
+
+古歌一下 “S60 改服 教程”或许有所得
+
+
+
+上面的代码忘记修改了，应该是
+
+$cnser = bin2hex('mini5cn.opera-mini.net:80');
+$myser = bin2hex('**************:80/opm.php');
+
+就是代理网址和“mini5cn.opera-mini.net:80”是等长的，短的用十六进制的零填补，貌似比这个长四个字节的代理地址也行。这样用PHP修改的app文件经测试也是能用的。
+
+mini5也能用mini4的服务器，
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

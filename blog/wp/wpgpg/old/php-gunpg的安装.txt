@@ -1,0 +1,39 @@
+﻿worldpress 的 GPG 加密插件
+
+
+资料来源 https://trog.qgl.org/wpgpg/
+
+这个插件的作用是，用GPG 加密worldpress 的输出内容，然后在chrome浏览器中上用定制的浏览器插件解密
+
+客户端
+
+1. 安装 gnupg ，并生成密钥对 ，下载地址 https://gnupg.org/download/index.html
+2. chrome浏览器在开发模式下导入 wpgpg Chrome extension ，https://github.com/trogau/wpgpg-extension
+
+
+
+
+服务器端 
+
+
+1. 安装 php-gunpg 扩展
+
+apt install -y libgpgme11-dev
+yum install -y gpgme-devel
+cd /opt/lampp/src/
+wget http://pecl.php.net/get/gnupg-1.4.0.tgz
+tar zxvf gnupg-1.4.0.tgz
+cd gnupg-1.4.0
+/opt/lampp/bin/phpize
+./configure --with-php-config=/opt/lampp/bin/php-config
+make
+make test
+make install
+/opt/lampp/ctlscript.sh restart apache
+
+# 这条命令别运行 /opt/lampp/bin/pecl channel-update pecl.php.net
+# /opt/lampp/bin/pecl install gnupg
+vim /opt/lampp/etc/php.ini
+extension="gnupg.so"
+
+2. 启用 wpgpg WordPress plugin ， https://github.com/trogau/wpgpg

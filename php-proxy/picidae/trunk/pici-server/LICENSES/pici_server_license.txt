@@ -1,0 +1,16 @@
+pici-server license
+--------------------
+
+pici-server was written by and is part of the art project picidae: 
+http://www.picidae.net
+
+pici-server stays under the GPL license and can be freely downloaded from the 
+internet: http://dev.picidae.net
+
+
+CREDITS
+pici-server includes and makes use of other GPL software:
+* web2png written by Paul Hammond
+* rFastTemplate
+* des.php & des.js written by Paul Tero
+* base64 encoding written by Stephen Ostermiller

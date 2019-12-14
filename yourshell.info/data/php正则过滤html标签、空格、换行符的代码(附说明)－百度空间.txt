@@ -1,0 +1,30 @@
+﻿php正则过滤html标签、空格、换行符的代码(附说明)
+
+$html=preg_replace("/\s+/","", $html);                                //过滤多余回车
+$html=preg_replace("/<[ ]+/si","<",$html);                            //过滤<__("<"号后面带空格)
+$html=preg_replace("/<\!--.*?-->/si","",$html);                       //注释
+$html=preg_replace("/<(\!.*?)>/si","",$html);                         //过滤DOCTYPE
+$html=preg_replace("/<(\/?html.*?)>/si","",$html);                    //过滤html标签
+$html=preg_replace("/<(\/?head.*?)>/si","",$html);                    //过滤head标签
+$html=preg_replace("/<(\/?meta.*?)>/si","",$html);                    //过滤meta标签
+$html=preg_replace("/<(\/?body.*?)>/si","",$html);                    //过滤body标签
+$html=preg_replace("/<(\/?link.*?)>/si","",$html);                    //过滤link标签
+$html=preg_replace("/<(\/?form.*?)>/si","",$html);                    //过滤form标签
+$html=preg_replace("/cookie/si","COOKIE",$html);                      //过滤COOKIE标签
+$html=preg_replace("/<(applet.*?)>(.*?)<(\/applet.*?)>/si","",$html); //过滤applet标签
+
+$html=preg_replace("/<(\/?applet.*?)>/si","",$html);                  //过滤applet标签
+$html=preg_replace("/<(style.*?)>(.*?)<(\/style.*?)>/si","",$html);   //过滤style标签
+$html=preg_replace("/<(\/?style.*?)>/si","",$html);                   //过滤style标签
+$html=preg_replace("/<(title.*?)>(.*?)<(\/title.*?)>/si","",$html);   //过滤title标签
+$html=preg_replace("/<(\/?title.*?)>/si","",$html);                   //过滤title标签
+$html=preg_replace("/<(object.*?)>(.*?)<(\/object.*?)>/si","",$html); //过滤object标签
+$html=preg_replace("/<(\/?objec.*?)>/si","",$html);                   //过滤object标签
+$html=preg_replace("/<(noframes.*?)>(.*?)<(\/noframes.*?)>/si","",$html); //过滤noframes标签
+$html=preg_replace("/<(\/?noframes.*?)>/si","",$html);                //过滤noframes标签
+$html=preg_replace("/<(i?frame.*?)>(.*?)<(\/i?frame.*?)>/si","",$html);//过滤frame标签
+$html=preg_replace("/<(\/?i?frame.*?)>/si","",$html);                 //过滤frame标签
+$html=preg_replace("/<(script.*?)>(.*?)<(\/script.*?)>/si","",$html); //过滤script标签
+$html=preg_replace("/<(\/?script.*?)>/si","",$html);                  //过滤script标签
+$html=preg_replace("/javascript/si","Javascript",$html);              //过滤script标签
+$html=preg_replace("/vbscript/si","Vbscript",$html);                  //过滤script标签

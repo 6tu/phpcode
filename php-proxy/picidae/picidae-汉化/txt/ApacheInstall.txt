@@ -1,0 +1,25 @@
+= Install Apache =
+
+== Installation ==
+||               || '''Debian'''                || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| Apache2   || apt-get install apache2 ||                                      ||               ||                                      ||
+
+
+== Restart Apache ==
+
+Restart apache web server every time you installed additional php packages
+{{{
+sudo  /etc/init.d/apache2 restart
+}}}
+
+
+== Important locations and directories for apache2 ==
+Browse to your web server address and you should see
+
+||                                  || '''Debian'''        || '''Suse'''                          || '''Fedora''' || ''add your Distribution here'' ||
+|| www (website) directory  || /var/www/        || /srv/www/                       ||               ||                                      ||
+|| config files                   || /etc/apache2/    || /etc/apache2/                   ||               ||                                      ||
+
+
+
+

@@ -1,0 +1,19 @@
+几个支持SSL的CGI在线代理
+翻墙利器 来说两句 六 072011在PHProxy、Glype、Zelune、Surrogafier、Happy Proxy、ASProxy、CGIProxy这些知名的网页代理程序里CGIProxy代理对网页的处理据说是最好的，以下几个WEB代理都是基于CGI的,而且都支持SSL。
+
+
+https://www.samtechs.de/cgi-bin/nph-proxy.cgi
+
+https://morphium.info/nph-proxy.cgi
+
+https://www.naxcess.net/cgi-bin/nph-proxy.cgi
+
+https://concealme.com/nph-proxy.pl
+
+这些代理浏览时没有广告，有的已经用了一两年了。
+
+下面是几个php的在线代理：
+
+https://flyproxy.com/
+
+https://concealme.com/

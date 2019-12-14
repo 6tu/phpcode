@@ -1,0 +1,29 @@
+[[TOC(InstallationInstructions, PiciServerMacOsx, PiciServerLinux)]]
+
+= pici-server Installation Guide =
+
+There are installation Instructions for the following Operating Systems.
+
+
+== Mac OSX ==
+
+[PiciServerMacOsx Mac OSX version of the pici-server >>]
+
+
+== Linux ==
+
+[PiciServerLinux Linux version of the pici-server] (beta)
+
+
+== Windows ==
+
+There is no Windows version at the moment.
+Help us developing one: [http://info.picidae.net/en/contact/ email us]. ([wiki:PGPkey]) 
+
+
+
+----------
+
+If you don't own one of these operating System, or if it does look much too complicated for you: [PiciProxyInstallation Install a pici-proxy >>]
+
+----------

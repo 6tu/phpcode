@@ -1,0 +1,42 @@
+web2pici
+==========
+
+web2pici is part of the pici-server for Linux of the picidae project.
+http://www.picidae.net
+this program is released under the gpl license.
+
+For complete installation instructions consult the webpage 
+http://dev.picidae.net/dev/wiki/PiciServerLinux
+
+
+Requirements
+============
+For running and compiling you need some libraries and tools. You can find the
+Debian package names in braces.
+
+	* g++
+	* KDE 3.x
+	* kdelibs for KDE 3.x (kdelibs4-dev)
+	* zlib (zlib1g-dev)
+	* cmake
+
+
+Compiling and installation
+==========================
+This is done with the usual three steps
+
+	1. ./configure
+	2. make
+	3. copy it into the ADMIN folder of your pici-server. 
+
+
+Test it from the commandline
+============================
+
+web2pici http://www.picidae.net test
+
+
+Changelog
+============================
+2007/01/11 web2pici 1.0 beta
+

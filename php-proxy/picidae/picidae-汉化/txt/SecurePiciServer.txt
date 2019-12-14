@@ -1,0 +1,7 @@
+= Secure pici-server =
+
+ * [ConfigureWebKit Configure Webkit]
+ * switch on Apples Firewall  (and do just allow protocols that you really need)
+ * use a pici-proxy to connect to your pici-server.
+
+'''Drop us a mail if you do find security issues concerning pici-server: [http://www.picidae.net/contact/ contact us] '''

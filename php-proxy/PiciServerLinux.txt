@@ -1,0 +1,210 @@
+[[TOC(PiciServerLinux, TroubleShootingLinux, ImproveLinuxPiciServer, MaintainLinuxPiciServer )]]
+
+= Install a pici-Server on Linux (beta) =
+
+== Setup the Basics ==
+You need to have the following programs installed on your computer to successfully run a pici-server:
+ * [ApacheInstall Apache Webserver]
+ * [PhpInstall PHP] (with included GD and mcrypt support)
+  * make sure '''safe-mode''' is disabled in php.
+ * [MySqlInstall MySQL]
+ 
+
+== Download the pici-server software ==
+Download the pici-server software. You may download one of the nightly snapshots or get subversion access:
+ * [http://dev.picidae.net/pici-server_snapshot.zip pici-server_snapshot.zip]
+ * [http://dev.picidae.net/pici-server_snapshot.tar.gz pici-server_snapshot.tar.gz]
+ * [wiki:svnAccess svnAccess]
+
+Unpack the pici-server software into your web server Directory. Please make sure that the path doesn't contain pici or picidae (see http://www.picidae.net/questions-and-answers/). Best is to have the pici-server at your web server's root.  
+
+
+
+== Set rights for the CACHE folder ==
+Allow your www-user to create files in the CACHE folder. You may change the rights  via shell:
+{{{
+chmod -R 777 Path2YourPiciServer/CACHE
+}}}
+
+
+
+----
+
+== Install the picture creating Software ==
+
+=== Binaries ===
+
+If Binaries for your System exist, you may download them and install them into the ADMIN directory of the pici-server.
+ * link here your binaries
+[[BR]]
+
+
+=== Install it from source ===
+
+install external needed libraries and tools:
+|| ''library name''           || '''Debian'''                      || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| '''g++'''                    || apt-get install g++           ||                                      ||               ||                                      ||
+|| '''KDE 3.x'''               || apt-get install kdebase       || kde3-i18n-...                    ||               ||                                      ||
+|| '''kdelibs for KDE 3.x''' || apt-get install kdelibs4-dev || kdelibs3-devel                  ||               ||                                      ||
+|| '''zlib'''                     || apt-get install zlib1g-dev    ||                                      ||               ||                                      ||
+|| '''make'''                  || apt-get install make          ||                                      ||               ||                                      ||
+|| '''cmake'''                 || apt-get install cmake        ||                                      ||               ||                                      ||
+
+
+
+Download the web2pici source code:
+ * [http://dev.picidae.net/web2pici_snapshot.zip web2pici_snapshot.zip]
+ * [http://dev.picidae.net/web2pici_snapshot.tar.gz web2pici_snapshot.tar.gz]
+ * [wiki:svnAccess svnAccess]
+
+Edit the file web2pici.cpp and uncomment the include path for your operating system on line 45.
+{{{
+/* ------------------------------------------------------------
+ * start configuration
+ * ------------------------------------------------------------ */
+
+//#include <dom/html_misc.h> //<-- use this for Suse and Mandriva
+//#include <kde/dom/html_misc.h> //<-- use this for other distributions
+
+/* ------------------------------------------------------------
+ * end configuration
+ * ------------------------------------------------------------ */
+}}}
+
+Open an Terminal, go to source folder and type the following to install:
+{{{
+./configure
+make
+}}}
+
+if it was successfully built, you have to copy the program file 'web2pici' into your ADMIN folder of the pici-server.
+{{{
+cp web2pici Path2YourPiciServerDirectory/ADMIN/web2pici
+}}}
+
+'''Troubleshooting'''
+ * !OpenSuse10.1: library libqt-mt was not found, set a link therefore [[BR]]
+{{{
+/usr/lib64/qt3/lib/libqt-mt.so -> /usr/lib/libqt-mt.so.3.3.5
+}}}
+
+If you compiled web2pici on a not yet as binary available System, please provide a static linked binary. 
+[BinaryHowto Howto create a static linked binary.]
+
+
+----
+
+== Install Fonts ==
+If you are on a server system you maybe need to install some fonts. If you are on a desktop system you can also go through this tutorial and care about foreign fonts at the end.
+||                                      || '''Debian'''                || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| ''Basic X Fonts''                 || apt-get install xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi xfonts-75dpi-transcoded xfonts-base ||                                      ||               ||                                      ||
+
+
+[LinuxFontInstallation More about font Installation >>]
+
+
+----
+
+== Setup a virtual Screen ==
+Install the virtual Frambuffer program '''Xvfb''' on your Server.
+
+|| ''library name''           || '''Debian'''             || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| '''Xvfb'''                    || apt-get install xvfb  ||                                      ||               ||                                      ||
+
+
+to open such a virtual screen type in the Shell. (Insert the path to your pici-server for the authentication file.)
+{{{
+Xvfb :10 -auth Path2pici-server/ADMIN/xvfb.conf -screen 0 1200x5050x24 &
+}}}
+
+At the Moment you need for every picture that is rendered in parallel a an own screen. (It would be nice not to need that. However, if you are running one screen only the tasks are scheduled and processed one after another. )
+I encountered the following RAM consumption.
+One Screen that is Setup needs about 30MB RAM. Every window that is opened needs about 20MB RAM.
+
+You may set up as many virtual screens as you like, each one consecutively numbered. 
+
+
+== Give your user access to the shell script ==
+For having the rights to access the Display and the window-System, you need to use the user account of the user who started the display. 
+Configure in your configuration file the user who owns the display session.
+Therefore we need to give the user who runs php sudo rights for the script. For that we don't have to store the password in plain text on the computer we give it the right to execute the python-script in sudo mode without password.
+
+The default users who run your webserver and php are named in every distribution differently:
+ * Debian: www-data
+ * Ubuntu: www-data
+ * Suse: wwwrun
+[UserGuess find out how your php-user is called >>]
+
+Open a Shell (also called Terminal) and type:
+{{{
+sudo visudo
+}}}
+(This will open the sudoers file within your standard shell-editor: "vi" in my case)
+
+In order to use the "visudo" command, you need the package "sudo".
+
+Add the following line to the visudo file. Pay attention that the path points to your the shellscript mkpicture.sh! (The path given in this example is only correct, if you installed pici-server in the main directory of your web server.) 
+Use the name of your www-user instead of "www" in the example
+{{{
+www     ALL=(ALL) NOPASSWD: Path2YourPiciServer/ADMIN/mkpicture_xvfb.sh
+}}}
+The Editor vi is not that easy to handle (here a short explanation): 
+ 1. go with the cursor to the position where you would like to insert the new line.
+ 2. press "i" 
+  * move the cursor with the arrow keys to the end of the last line and press return to insert a new line.
+  * insert then the new line.
+{{{
+www     ALL=(ALL) NOPASSWD: Path2YourPiciServer/ADMIN/mkpicture_xvfb.sh
+}}}
+ 3. press the "escape"-key to leave the insert mode.
+ 4. type the following to save the file
+{{{
+:wq
+}}}
+ 5. Hit enter and your done.
+
+
+== Create MySQL database ==
+Make sure MySQL is up and running. Install then the Database.
+There are many ways to install a MySQL database. Here is a quick description via terminal:
+{{{
+mysql -u root -p
+}}}
+insert then your MySQL password you used in the installation. in the MySQL console type then:
+{{{
+create database picidae;
+exit;
+}}}
+
+
+== Setup the configuration file ==
+Copy the configuration-file 'ADMIN/sample.config.php' to 'ADMIN/config.php' and  setup the correct paths in the configuration file.
+
+
+
+== Create the database tables ==
+To setup the database structure for pici-server you should invoke the file ADMIN/setup.php in your web browser and follow the installation instructions.[[BR]]
+( http://localhost/ADMIN/setup.php if pici-server resides in the main directory of your web server ) 
+
+The setup script will also check whether you correctly configured pici-server and will warn you if something is wrong.
+If you receive an error message, fix the problem and reinvoke the setup-scrip until you receive the final success message.
+
+ 
+== pici-server successfully installed ==
+Now you can try to access your pici-server, it should be up and running.
+
+
+== Important first steps ==
+You have to accept cookies for the first time manually. Therefore you need to connect to your Xvfb display via vnc and to click the small exception window in the middle of the display.[[BR]]
+[VncXvfbDisplayAccess How to access the Xvfb display via vnc >>] 
+
+------------------
+
+[TroubleShootingLinux If you do have problems check the troubleshooting page >>][[BR]]
+[ImproveLinuxPiciServer Help us improving Linux pici-server >>][[BR]]
+[MaintainLinuxPiciServer Optimize and maintain your pici-server >>][[BR]]
+
+
+
+----
+----

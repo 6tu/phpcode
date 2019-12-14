@@ -1,0 +1,246 @@
+ad , AN , AND , Andorra , 安道尔
+ae , AR , ARE , United Arab Emirates , 阿拉伯联合酋长国
+af , AF , AFG , Afghanistan , 阿富汗
+ag , AT , ATG , Antigua and Barbuda
+ai , AI , AIA , Anguilla
+al , AL , ALB , Albania , 阿尔巴尼亚
+am , AR , ARM , Armenia , 亚美尼亚共和国
+an , AN , ANT , Netherlands Antilles
+ao , AG , AGO , Angola , 安哥拉
+aq , AT , ATA , Antarctica
+ar , AR , ARG , Argentina , 阿根廷
+as , AS , ASM , American Samoa , 美属萨摩亚
+at , AU , AUT , Austria , 奥地利
+au , AU , AUS , Australia , 澳大利亚
+aw , AB , ABW , Aruba
+az , AZ , AZE , Azerbaijan , 阿塞拜疆共和国
+ba , BI , BIH , Bosnia and Herzegovina , 波斯尼亚和黑塞哥维那
+bb , BR , BRB , Barbados , 巴巴多斯
+bd , BG , BGD , Bangladesh , 孟加拉国
+be , BE , BEL , Belgium , 比利时
+bf , BF , BFA , Burkina Faso , 布基纳法索
+bg , BG , BGR , Bulgaria , 保加利亚
+bh , BH , BHR , Bahrain , 巴林
+bi , BD , BDI , Burundi , 布隆迪
+bj , BE , BEN , Benin , 贝宁
+bm , BM , BMU , Bermuda
+bn , BR , BRN , Brunei Darussalam , 文莱
+bo , BO , BOL , Bolivia , 玻利维亚
+br , BR , BRA , Brazil , 巴西
+bs , BH , BHS , Bahamas , 巴哈马
+bt , BT , BTN , Bhutan , 不丹
+bv , BV , BVT , Bouvet Island
+bw , BW , BWA , Botswana , 博茨瓦纳
+by , BL , BLR , Belarus , 白俄罗斯
+bz , BL , BLZ , Belize
+ca , CA , CAN , Canada , 加拿大
+cc , CC , CCK , Cocos (Keeling) Islands
+cf , CA , CAF , Central African Republic , 中非
+cg , CO , COG , Congo , 刚果（布）
+ch , CH , CHE , Switzerland , 瑞士
+ck , CO , COK , Cook Islands , 库克群岛
+cl , CH , CHL , Chile , 智利
+cm , CM , CMR , Cameroon , 喀麦隆
+cn , CH , CHN , China , 中国
+co , CO , COL , Colombia , 哥伦比亚
+cr , CR , CRI , Costa Rica
+cs , SC , SCG , Serbia and Montenegro , 塞尔维亚和黑山共和国
+cu , CU , CUB , Cuba , 古巴共和国
+cv , CP , CPV , Cape Verde , 佛得角
+cx , CX , CXR , Christmas Island
+cy , CY , CYP , Cyprus , 塞浦路斯
+cz , CZ , CZE , Czech Republic , 捷克
+de , DE , DEU , Germany , 德国
+dj , DJ , DJI , Djibouti , 吉布提
+dk , DN , DNK , Denmark , 丹麦
+dm , DM , DMA , Dominica , 多米尼克
+do , DO , DOM , Dominican Republic , 多米尼克
+dz , DZ , DZA , Algeria , 阿尔及利亚
+ec , EC , ECU , Ecuador , 厄瓜多尔
+ee , ES , EST , Estonia , 爱沙尼亚
+eg , EG , EGY , Egypt , 埃及
+eh , ES , ESH , Western Sahara
+er , ER , ERI , Eritrea , 厄立特里亚
+es , ES , ESP , Spain , 西班牙
+et , ET , ETH , Ethiopia , 埃塞俄比亚
+fi , FI , FIN , Finland , 芬兰
+fj , FJ , FJI , Fiji , 斐济
+fk , FL , FLK , Falkland Islands (Malvinas)
+fm , FS , FSM , Micronesia , 密克罗尼西亚联邦
+fo , FR , FRO , Faroe Islands
+fr , FR , FRA , France , 法国
+ci , CI , CIV , Cote D' ivoire
+ga , GA , GAB , Gabon , 加蓬
+gb , GB , GBR , United Kingdom
+gd , GR , GRD , Grenada , 格林纳达
+ge , GE , GEO , Georgia , 格鲁吉亚
+gf , GU , GUF , French Guiana
+gh , GH , GHA , Ghana , 加纳
+gi , GI , GIB , Gibraltar
+gl , GR , GRL , Greenland
+gm , GM , GMB , Gambia , 冈比亚
+gn , GI , GIN , Guinea , 几内亚
+gp , GL , GLP , Guadeloupe
+gq , GN , GNQ , Equatorial Guinea , 赤道几内亚
+gr , GR , GRC , Greece , 希腊
+gs , SG , SGS , South Georgia and the South Sandwich Islands , 格鲁吉亚
+gt , GT , GTM , Guatemala
+gu , GU , GUM , Guam
+gw , GN , GNB , Guinea-Bissau
+gy , GU , GUY , Guyana , 圭亚那
+hk , HK , HKG , Hong Kong , 香港
+hm , HM , HMD , Heard Island and Mcdonald Islands
+hn , HN , HND , Honduras
+hr , HR , HRV , Croatia (Hrvatska) , 克罗地亚
+ht , HT , HTI , Haiti , 海地
+hu , HU , HUN , Hungary , 匈牙利
+id , ID , IDN , Indonesia , 印度尼西亚
+ie , IR , IRL , Ireland , 爱尔兰
+il , IS , ISR , Israel , 以色列
+in , IN , IND , India , 印度
+io , IO , IOT , British Indian Ocean Territory , 印度
+iq , IR , IRQ , Iraq , 伊拉克
+ir , IR , IRN , Iran, Islamic Republic of , 伊朗
+is , IS , ISL , Iceland , 冰岛
+it , IT , ITA , Italy , 意大利
+jm , JA , JAM , Jamaica , 牙买加
+jo , JO , JOR , Jordan , 约旦
+jp , JP , JPN , Japan , 日本
+ke , KE , KEN , Kenya , 肯尼亚
+kg , KG , KGZ , Kyrgyzstan
+kh , KH , KHM , Cambodia , 柬埔寨
+ki , KI , KIR , Kiribati
+km , CO , COM , Comoros , 科摩罗
+kn , KN , KNA , Saint Kitts and Nevis
+kp , PR , PRK , Korea, Democratic People’s Republic of (North) , 朝鲜
+kr , KO , KOR , Korea, Republic of (South) , 韩国
+kw , KW , KWT , Kuwait , 科威特
+ky , CY , CYM , Cayman Islands
+kz , KA , KAZ , Kazakhstan , 哈萨克斯坦
+la , LA , LAO , Lao People’s Democratic Republic , 老挝
+lb , LB , LBN , Lebanon , 黎巴嫩
+lc , LC , LCA , Saint Lucia
+li , LI , LIE , Liechtenstein , 列支敦士登
+lk , LK , LKA , Sri Lanka
+lr , LB , LBR , Liberia , 利比里亚
+ls , LS , LSO , Lesotho , 莱索托
+lt , LT , LTU , Lithuania , 立陶宛
+lu , LU , LUX , Luxembourg , 卢森堡
+lv , LV , LVA , Latvia , 拉脱维亚
+ly , LB , LBY , Libyan Arab Jamahiriya , 利比亚
+ma , MA , MAR , Morocco , 摩洛哥
+mc , MC , MCO , Monaco , 摩纳哥
+md , MD , MDA , Moldova , 摩尔多瓦
+mg , MD , MDG , Madagascar , 马达加斯加
+mh , MH , MHL , Marshall Islands
+mk , MK , MKD , Macedonia, the Former Yugoslav Republic of , 马其顿
+ml , ML , MLI , Mali , 马里
+mm , MM , MMR , Myanmar , 缅甸
+mn , MN , MNG , Mongolia , 蒙古
+mo , MO , MOZ , Mozambique , 莫桑比克
+mp , MN , MNP , Northern Mariana Islands
+mq , MT , MTQ , Martinique
+mr , MR , MRT , Mauritania , 毛里塔尼亚
+ms , MS , MSR , Montserrat
+mt , ML , MLT , Malta , 马耳他
+mu , MU , MUS , Mauritius , 毛里求斯
+mv , MD , MDV , Maldives , 马尔代夫
+mw , MW , MWI , Malawi
+mx , ME , MEX , Mexico , 墨西哥
+my , MY , MYS , Malaysia , 马来西亚
+mz , MO , MOZ , Mozambique , 莫桑比克
+na , NA , NAM , Namibia , 纳米比亚
+nc , NC , NCL , New Caledonia
+ne , NE , NER , Niger , 尼日尔
+nf , NF , NFK , Norfolk Island
+ng , NG , NGA , Nigeria , 尼日利亚
+ni , NI , NIC , Nicaragua
+nl , NL , NLD , Netherlands
+no , NO , NOR , Norway , 挪威
+np , NP , NPL , Nepal , 尼泊尔
+nr , NR , NRU , Nauru , 瑙鲁
+nt , NT , NTZ , Neutral Zone
+nu , NI , NIU , Niue
+nz , NZ , NZL , New Zealand , 新西兰
+om , OM , OMN , Oman , 阿曼
+pa , PA , PAN , Panama
+pe , PE , PER , Peru , 秘鲁
+pf , PY , PYF , French Polynesia
+pg , PN , PNG , Papua New Guinea , 巴布亚新几内亚
+ph , PH , PHL , Philippines , 菲律宾
+pk , PA , PAK , Pakistan , 巴基斯坦
+pl , PO , POL , Poland , 波兰
+pm , SP , SPM , Saint Pierre and Miquelon
+pn , PC , PCN , Pitcairn
+pr , PR , PRI , Puerto Rico
+pt , PR , PRT , Portugal , 葡萄牙
+pw , PL , PLW , Palau
+py , PR , PRY , Paraguay
+qa , QA , QAT , Qatar , 卡塔尔
+re , RE , REU , Reunion
+ro , RO , ROU , Romania , 罗马尼亚
+ru , RU , RUS , Russian Federation , 俄罗斯联邦
+rw , RW , RWA , Rwanda , 卢旺达
+sa , SA , SAU , Saudi Arabia , 沙特阿拉伯
+sb , SL , SLB , Solomon Islands
+sc , SY , SYC , Seychelles , 塞舌尔
+sd , SD , SDN , Sudan , 苏丹
+se , SW , SWE , Sweden , 瑞典
+sg , SG , SGP , Singapore , 新加坡
+sh , SH , SHN , Saint Helena
+si , SV , SVN , Slovenia , 斯洛文尼亚
+sj , SJ , SJM , Svalbard and Jan Mayen Islands
+sk , SV , SVK , Slovakia , 斯洛伐克
+sl , SL , SLE , Sierra Leone , 塞拉利昂
+sm , SM , SMR , San Marino
+sn , SE , SEN , Senegal , 塞内加尔
+so , SO , SOM , Somalia
+sr , SU , SUR , Suriname , 苏里南
+st , ST , STP , Sao Tome and Principe
+sv , SL , SLV , El Salvador
+sy , SY , SYC , Seychelles , 塞舌尔
+sz , SW , SWZ , Swaziland
+tc , TC , TCA , Turks and Caicos Islands
+td , TC , TCD , Chad , 乍得
+tf , AT , ATF , French Southern Territories
+tg , TG , TGO , Togo , 多哥
+th , TH , THA , Thailand , 泰国
+tj , TJ , TJK , Tajikistan , 塔吉克斯坦
+tk , TK , TKL , Tokelau
+tm , TK , TKM , Turkmenistan , 土库曼斯坦
+tn , TU , TUN , Tunisia , 突尼斯
+to , TO , TON , Tonga , 汤加
+tl , TL , TLS , Timor-Leste , 东帝汶
+tr , TU , TUR , Turkey , 土耳其
+tt , TT , TTO , Trinidad and Tobago , 特立尼达和多巴哥
+tv , TU , TUV , Tuvalu
+tw , TW , TWN , Taiwan , 台湾
+tz , TZ , TZA , Tanzania, United Republic of , 坦桑尼亚
+ua , UK , UKR , Ukraine , 乌克兰
+ug , UG , UGA , Uganda , 乌干达
+uk , GB , GBR , United Kingdom , 联合王国
+us , US , USA , United States , 美国 
+uy , UR , URY , Uruguay , 乌拉圭
+uz , UZ , UZB , Uzbekistan , 乌兹别克斯坦
+va , VA , VAT , Vatican City State
+vc , VC , VCT , Saint Vincent and the Grenadines
+ve , VE , VEN , Venezuela , 委内瑞拉
+vg , VG , VGB , Virgin Islands, British
+vi , VI , VIR , Virgin Islands, U.S.
+vn , VN , VNM , Viet Nam
+vu , VU , VUT , Vanuatu , 瓦努阿图
+wf , WL , WLF , Wallis and Futuna Islands
+ws , WS , WSM , Samoa , 美属萨摩亚
+ye , YE , YEM , Yemen , 也门
+yt , MY , MYT , Mayotte
+yu , YU , YUG , Yugoslavia
+za , ZA , ZAF , South Africa , 南非
+zm , ZM , ZMB , Zambia , 赞比亚
+cd , CD , COD , Congo, Democratic Republic of the , 刚果（布）
+zw , ZW , ZWE , Zimbabwe , 津巴布韦
+ap , ,  , , Asia-Pacific , 亚洲国家列表
+rs , SR , SRB , Serbia , 塞尔维亚和黑山共和国
+ax , AX , ALA , Aland Islands
+eu , ,  , , Europe
+ps , PS , PSE , Palestinian Territory, Occupied
+me , ME , MNE , Montenegro

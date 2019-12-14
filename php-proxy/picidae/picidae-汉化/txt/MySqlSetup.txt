@@ -1,0 +1,16 @@
+[[TOC(InstallationInstructions, MySqlSetup, PhpSetup, PythonSetup, AppleWebKit, svnAccess)]]
+
+= Setup MySQL =
+Download MySQL community server from the MySQL-Site http://dev.mysql.com/downloads/mysql/5.0.html#macosx-dmg (choose the package format according to your processor)
+
+ * Install both installation packages
+ * Then double-click the MySQL.prefPane icon and start your MySQL server
+ * To give your installation a custom password, use your Terminal and type:
+{{{
+/usr/local/mysql/bin/mysqladmin -u root password new_password_here
+}}}
+
+
+--------
+'''further information'''
+Good Installation-Instructions you'll find on the following Page http://www.entropy.ch/software/MacOSx/mysql/

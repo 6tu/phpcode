@@ -1,0 +1,61 @@
+= Configure KHTML and Konqueror on your server =
+
+== Startup Konqueror ==
+First you need to set up your pici-server as described >>
+And make a vnc connection to your server for that you see and control the virtual display >>
+
+To startup konqueror type in the following into a terminal (use the Terminal number you )
+{{{
+export DISPLAY=:10.0
+konqueror
+}}}
+
+Now should see a konqueror window on your vnc display, with a menu bar from that you can control and configure konqueror.
+
+== Edit properties ==
+To open konquerors properties edit window, go the
+Settings > Configure Konqueror ...
+
+In the configuration window click on "Web Behavior"
+ * disable: "Enable completion of forms"
+ * Animations: Disabled
+
+Click the Apply button and go then to the point "Java & JavaScript"
+ * disable or enable Java as you like (it won't be interactive so you may better disable it)
+ * Click on the !JavaScript  Tab
+  * enable: Enable !JavaScript globally
+  * Open new windows: Deny
+  * Resize window: Ignore
+  * Move window: Ignore
+  * Focus window: Ignore
+
+Click the Apply button and go to the "Cookies" Section
+ * Policy Tab:
+  * enable: Enable cookies
+  * enable: Only accept cookies from originating server
+  * enable: Automatically accept session cookies
+  * Default Policy: Accept all cookies
+* Management Tab:
+  * Click on "Delete All" to delete existing cookies.
+
+Click the Apply button and go to the "Crypto" Section
+ * SSL Tab:
+  * disable: Warn on entering SSL mode
+  * disable: Warn on leaving SSL mode
+  * disable: Warn on sending unencrypted data
+
+Click the OK button to leave the window
+
+== Maintainance tasks ==
+ * Delete Cookies: Settings > Configure Konqueror ... > Cookies > Management > Delete All
+ * Clear History: Settings > Configure Konqueror ... > History Sidebar > Clear History
+ * Clear Cache: Settings > Configure Konqueror ... > Cache > Clear Cache
+
+== Install plugins ==
+=== Install Flash plugin ===
+
+
+
+
+----
+----

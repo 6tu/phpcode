@@ -1,0 +1,43 @@
+﻿
+baowenshou的空间 >博文
+登录
+php 正则提取html 标签
+2009-04-07 22:24
+<?php
+@title:Label_Content 函数
+@author:特蓝克斯
+@功能:提取$Label参数标签之间的内容，利用 正则 preg_match 提取 标签的内容
+@Note:提取规则中间不允许有回车符。
+例如：
+正确
+<a href=#>超链接</a>
+错误
+<a href=#>
+超链接
+</a>
+$lstr="
+<HTML>
+<HEAD>
+<TITLE> 特蓝克斯 </TITLE>
+</HEAD>
+<BODY>
+<a href='#'>超链接标记</a>
+<asen>自定义的标签</asen>
+</BODY>
+</HTML>
+";
+function Label_Content($Label,$Content){
+preg_match("/(\<".$Label.".*?\>)(.*?)(\<\/".$Label."\>)/i",$Content,$matches);
+return $matches;
+}
+echo ("<pre>");
+echo ("<textarea cols='100' rows='25'>");
+print_r (Label_Content("title",$lstr));
+print_r (Label_Content("a",$lstr));
+print_r (Label_Content("asen",$lstr));
+echo ("<body>标签之间有'回车符'所以无法提取相应的标签中的值：");
+print_r (Label_Content("body",$lstr));
+echo ("即返回数据为空");
+echo ("</textarea>");
+echo "</pre>";
+?>

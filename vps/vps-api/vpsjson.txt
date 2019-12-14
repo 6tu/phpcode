@@ -1,0 +1,17 @@
+请求头
+Accept: application/json, text/javascript, */*; q=0.01
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+Connection: keep-alive
+Cookie: _ga=GA1.2.466137595.1540431379; _gid=GA1.2.580375060.1540431379; G_ENABLED_IDPS=google; WHMCSQnFy6YcDKurd=5bfc3092233f21988b041c3a9c68aa83
+Host: manage.hostdare.com
+Referer: https://manage.hostdare.com/clientarea.php?action=productdetails&id=9875&give=index.html
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36
+X-Requested-With: XMLHttpRequest
+
+
+https://manage.hostdare.com/clientarea.php?action=productdetails&id=9875&api=json&act=vpsmanage&stats=1&svs=
+https://manage.hostdare.com/clientarea.php?action=productdetails&id=9875&api=json&act=vpsmanage&random=0.2601143314985199
+https://manage.hostdare.com/clientarea.php?action=productdetails&id=9875&api=json&act=bandwidth&svs=6913&show=undefined
+
+

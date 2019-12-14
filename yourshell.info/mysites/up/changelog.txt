@@ -1,0 +1,437 @@
+#  Web.Developer Server Suite
+#
+#  Professional Edition
+#  http://www.devside.net
+#  admin@devside.net
+#
+#  Community Edition
+#  http://sourceforge.net/projects/webdeveloper
+#  devside_net@users.sourceforge.net
+
+
+v2.00 -- Released November 10, 2007
+
+Version Updates...
+	Apache 2.2.6 over 2.2.4
+	MySQL 5.0.45 over 5.0.37
+	PHP 5.2.5 over 5.2.1
+	OpenSSL 0.9.8g over 0.9.8e
+
+	mod_security 2.1.3 over 2.1.0 [with core ruleset]
+
+	phpMyAdmin 2.11.2 over 2.10.0.2
+
+	Drupal 5.3.0 over 5.1.0
+	WordPress 2.3.1 over 2.1.2
+	Joomla 1.0.13 over 1.0.12
+	MediaWiki 1.11.0 over 1.9.3
+	
+Perl Modules included...
+	DBI 1.59
+	DBD::MySQL 4.005
+
+Changes...
+	* Major Apache configuration changes [see below] *
+	\www\webroot no longer exists --> \www\vhosts\localhost is now the default Apache DocumentRoot
+	php.ini and my.ini moved from %WINDIR% to \www\php5 [PHPIniDir] and \www\mysql5 [intrinsic search path]
+
+	Virtual Hosting:
+		1) Added \www\vhosts directory. Use this as the directory base of your Virtual Hosts.
+		2) Uncommented 'Include conf/extra/httpd-vhosts.conf' under httpd.conf. Use this as the configuration base of your Virtual Hosts.
+		3) Added two example VHs: host1.tld and host2.tld under conf\extra\httpd-vhosts.conf and their respectful directories under \www\vhosts
+
+	httpd Configuration Structure and Function:
+		1) Modified configuration structure
+			Moved files within conf\Suite-extra to conf\extra
+			Renamed Suite specific configurations files to suite-*.conf
+			Added conf\extra\other directory containing other sample configuration files
+
+		2) Modified configuration function
+			Updated configuration to reflect change of \www\webroot to \www\vhosts\localhost
+			.htaccess files are now enabled by default [AllowOverride <level> still needs to be set for specific directories -- defaults to 'Limit']
+			All *.conf files under conf\extra\vhosts\localhost are automatically loaded via localhost VH blocks for VH:80 [httpd-vhosts.conf] and VH:443 [httpd-ssl.conf]
+			components.conf has been removed and it's role has been integrated under httpd.conf
+			conf\extra\suite-custom.conf has been created for any custom changes that are not appropriate to httpd.conf
+
+		3) Other
+			Removed all instances of *.conf.default files as users where confusing them with the *.conf files
+			Global 'AllowOverride' has been relaxed from 'None' to 'Limit'
+			Global 'DefaultType text/plain' changed to 'text/html'
+			Other minor changes
+
+		4) PHP is now enabled for all vhosts [suite-php5.conf]
+
+		5) Separate cgi-bin is now enabled for all vhosts that have a 'cgi-bin' directory --> \www\vhosts\*\cgi-bin
+
+	php.ini:
+		Enabled 'extension=php_curl.dll'
+		Updated SMTP string from 'localhost' to 127.0.0.1 as apparently PHP will only take an IP or a FQDN here [win32 specific]
+		'display_errors = On'
+
+	other:
+		\www\docs\ created and populated with Suite Guide, Apache2 Manual, mod_security2 guides; \www\WDC\suite-guide no longer exists
+		webdeveloper.php renamed to docs.php; redirect location updated
+		\www\WDC changed to \www\suite-data
+
+Added...
+	AWStats v6.7 log analyzer
+	ZendDebugger.dll 5.2.10 to \www\php5\ext and appropriate changes to php.ini, commented out by default
+	\www\docs now contains Suite Guide, Apache2 Manual, mod_security2 guides
+
+Removed...
+	analog: replaced with AWStats; looks like analog might have been abandoned
+	mod_aspdotnet: if interested, use official msi to install
+	mod_fastcgi: not enough interest right now, problems with Apache v2.2.6
+	mod_perl: problems with Apache v2.2.6
+
+Fixes...
+	Moved out PHP FilesMatch security check from within the 'Location' directive, as this is not a valid scope.
+	Updated expired example/test SSL certificates [new certs expire on 6/23/2010]
+
+Known Problems...
+	Windows Vista Users: Make sure to run the "Web Developer Controller" application as Administrator, either by selecting "Run as administrator" from the context menu or ticking "Run this program as administrator" in the compatibility tab of the properties of WDController.exe
+
+	If your system has an Oracle DB installed, Apache will return:
+		[error] Can't load Perl file: /www/Apache22/conf/Suite-extra/perl_extra.pl for server localhost:80, exiting...
+	Edit C:\www\Apache22\conf\extra\mod_perl.conf to comment out line:
+		PerlRequire "/www/Apache22/conf/extra/perl_extra.pl"
+
+Notes...
+	Directory permissions are set for Apache's default DocumentRoot [\www\vhosts\localhost] outside of the 'localhost' VH block due to...
+		1) the fact that we are dealing with two 'localhost' VHs -- VH:80 [http] and VH:443 [https]
+		2) and that this allows for user to comment out the inclusion of httpd-vhosts.conf [not recommended]
+
+	Global 'AllowOverride' has been relaxed to 'Limit' [allows 'order allow/deny' within .htaccess] do to the fact that the other method of restricting access from directly within a VH block can present a problem when dealing with hosts that have both http and https
+
+	URL '/private' is shared between all vhosts
+
+
+v1.95 -- Released March 29, 2007
+
+Important Notes:
+	The default Apache [v2.2] Service has been renamed to "Apache2.2", from "Apache2"
+	Drupal is now installed from http://localhost/drupal/install.php
+
+Version Updates...
+	Apache 2.2.4 over 2.2.3
+	PHP 5.2.1 over 5.2.0
+	MySQL 5.0.37 over 5.0.27
+	OpenSSL 0.9.8e over 0.9.8d
+
+	mod_security 2.1.0 over 2.0.4 [with core ruleset]
+	mod_perl 2.0.3 over 2.0.2
+
+	phpMyAdmin 2.10.0.2 over 2.9.2
+	
+	Drupal 5.1.0 over 5.0
+	MediaWiki 1.9.3 over 1.9.0
+	WordPress 2.1.2 over 2.0.7
+
+Changes...
+	Enabled short tags under php.ini
+	Added 'IndexIgnore .htaccess' to httpd.conf
+	Module rewrite_module is now loaded by default
+	All webapps have been moved to \www\webapps, and configuration files to Suite-extra\webapps
+
+Added...
+	mod_fastcgi v2.4.2 [SNAP-0404142202, 14-Apr-2004]
+		Configuration file: Suite-extra\mod_fastcgi.conf
+		Default folder: \www\fcgi-bin\
+
+Removed...
+	Tomcat/mod_jk, PHP4, mod_aspdotnet have been removed. Will be packaged as component addons from separate downloads.
+
+Fixes...
+	Removed all log entries from httpd.conf and placed everything under mod_defalte_logio.conf. The original structure of the configuration had the effect of logging everything twice.
+	Updated installer to double-quote 'include' path under php.ini
+	Removed obsolete Dynamic DNS sub-section from Controller
+
+Manual/Instructions...
+	Updated Manual with minor corrections.
+
+Known Problems...
+	The MySQL database comes with all web framework applications' user/db pre-created, due to a problem Inno Setup is having with running a batch script that calls mysql.exe.
+
+
+v1.94 -- Released January 19, 2007
+
+Version Updates...
+	phpMyAdmin 2.9.2 over 2.9.1
+
+	Drupal 5.0 over 4.7.4
+	Joomla 1.0.12 over 1.0.11
+	WordPress 2.0.7 over 2.0.5
+	MediaWiki 1.9.0 over 1.8.2
+	phpBB2 from 2.0.22 over 2.0.21
+
+Fixes...
+	phpMyAdmin, config.inc.php
+		1) removed 'PmaAbsoluteUri' line, otherwise this would result in an 'unable to find server' error on some functions
+		2) removed "$cfg['PmaNoRelation_DisableWarning'] = TRUE;" line, since the relation features have been implemented under our setup for some time
+
+	MySQL seemed to have a 'Any' user left over with access to 'test' db. Removed user.
+
+	WDController had a few issues that were resolved, such as a bad link to httpd-ssl.conf
+
+Manual/Instructions...
+		Updated Manual with minor corrections.
+
+		Updated PHP4Downgrade.txt with 2 minor corrections...
+			1) location of mod_php configuration file(s)
+			2) the edit of system variable 'webdev', over path
+
+
+v1.93 -- Released December 16, 2006
+
+Changes...
+	Added Joomla 1.0.11
+		URL http://localhost/joomla, local bound
+
+	All Web-Framework components are no longer installed by default, but rather have installation scripts pre-configured for our setup. No additional modules are present.
+
+	Created directory \www\WDC that will store configuration and data for Suite features
+
+	Moved and renamed directory \www\webroot\webdeveloper to \www\WDC\wd-guide, added wd-guide.conf to components.conf
+
+	Added webdeveloper.php to webroot that redirects to URL http://localhost/webdeveloper/
+
+	php.ini
+		magic_quotes_gpc = On
+
+Fixes...
+	Controller, corrected menu item and link to httpd-ssl.conf
+
+WebDeveloper Controller..
+	Moved and renamed \www\log.txt to \www\WDC\controller.log
+
+Manual...
+	A few updates and modifications
+
+
+v1.92 -- Released December 12, 2006
+
+Changes
+	Added Drupal 4.7.4
+		URL http://localhost/drupal, local bound
+		Clean URLs enabled via htaccess and path module
+		Control Panel module added and enabled
+		Applied patch for session problem
+
+	Added WordPress 2.0.5
+		URL http://localhost/wordpress, local bound
+		Enabled Permalink with .htaccess and /%postname%/
+
+	Added MediaWiki 1.8.2 [not installed -- see 'known problems']
+		URL http://localhost/mediawiki, local bound
+
+	Added phpBB2 2.0.21
+		URL http://localhost/phpbb2, local bound
+
+	Renamed \www\webroot\sampleapp to aspsample, with changes to mod_aspdotnet_example.conf
+
+	mod_security2
+		Switched ruleset from gotroot.com to mod_security's core ruleset v2.0-1.2
+		Switched mod_security2 to 'DetectionOnly' mode.
+
+	httpd.conf
+		PHP Loadmodule security check switched from '\www\webroot' to URL '/'
+
+
+	phpMyAdmin Control User pmauser/pmapass switched to pma_user/pma_db_wdp
+
+Manual...
+	A few corrections and modifications
+
+WebDeveloper Controller...
+	Cleaned up parts of code
+	Fixed a few minor problems
+	Added components.conf to menu
+
+Known Problems...
+	MediaWiki is not installed under this version of the Suite due to a fixable packaging issue [should be fixed in upcomming version]
+	Some of the files, specifically under the drupal, wordpress, and phpbb2 directories, are of Unix style newline format -- open files with Wordpad, not Notepad [should be fixed in upcomming version]
+
+
+v1.91 -- Released November 26, 2006
+
+Controller
+	Dynamic DNS, public IP field is now greyed out permanantly as to not confuse user for IP input
+	Set include of mod_ssl into loaded 'Suite' modules list
+
+Installer
+	Set missing php4 directory
+	Installation drive for the Suite will now be the drive that setup is run from
+	Set solid compression on for smaller package size
+	Set icon for setup executable
+	Minor correction to the path values set under ini files, from '<drive:>\path' to '<drive:>/path'
+	System Path is now cleaned of any excess %webdev% entries that might have accumulated on numerous installs [installs from v1.18 and lower might still want to clean up <drive:>\www\<components> tokens from Path]
+
+
+v1.90 -- Released November 25, 2006
+
+Version Updates...
+	PHP 5.2.0 over 5.1.5
+	MySQL 5.0.27 over 5.0.24
+	Tomcat 5.5.20 over 5.5.17
+	OpenSSL 0.9.8d over 0.9.8b
+
+	mod_security 2.0.4 over 1.9.4
+	mod_jk 1.2.19 over 1.2.18
+
+	phpMyAdmin 2.9.1 over 2.8.2.4
+
+	gotrules.com ruleset (for mod_security2) Apache2 20061022-01 over 20060815-01
+
+New...
+	Web-Developer Controller
+	Dynamic DNS client [dynside.net], integrated into Web-Developer Controller
+	Included MySQL v4.1.21
+
+Fixes...
+	Added aspnet_regiis.exe [-ir, -u] commands under mod_aspdotnet register/unregister scripts to install and uninstall ASP.NET [99% of the time this is not needed under Windows 2000 or Windows XP, but is required under Windows 2003 Server if IIS is not installed -- else an error will be returned: Unable to load DLL aspnet_isapi.dll]
+	Removed mod_fcgid [I do not think anyone was using this module, and I have had problems with it]
+	Updated depreciated directives under workers.properties
+
+Changes...
+	PHP
+		Added to php.ini...
+			include_path = ".;C:/www/webroot/;C:/www/php5/includes/"
+
+	MySQL
+		1)Server is now, by default, bound to IP address 127.0.0.1 [loopback]
+		2)User 'root' is now set with password "rootwdp"
+		3)phpMyAdmin control user 'pma' [name] has been changed to 'pmauser'
+
+	Apache will now, by default...
+		1)List indexes of webroot URLs
+		2)Enable htaccess functionality [user will still need to set AllowOverride... under httpd.conf for specific directories]
+		3)Enable Apache Manual functionality
+
+	mod_security
+		1)Inclusion of mod_unique_id under httpd.conf
+		2)mod_security configuration file 'mod_security2.conf' now contains both module configuration data and ruleset load data.
+		3)Rulesets windows-rules, proxy, and badip are not yet provided for mod_security v2
+
+	httpd.conf
+		Component Include lines have been moved from conf\httpd.conf and into conf\Suite-extra\components.conf
+
+	PATH
+		System path is now only appended with environmental variable %webdev%, and %webdev% now contains the Suite path string
+	
+
+Manual...
+	Web-Developer User Guide improved, sectioned, and included with distribution at...
+		http://localhost/webdeveloper/ [\www\webroot\webdeveloper]
+
+Known Problems...
+	mod_security audit and debug logs are of Unix style lewline format '/n', verses Windows style newline format '/n/r'. Notepad does not display convert; only Wordpad will.
+
+
+v1.18 -- Released August 30, 2006
+
+Version Updates...
+	Apache 2.2.3 over 2.2.2
+	PHP 5.1.5 over 5.2-dev
+	MySQL 5.0.24 over 5.0.22
+
+	mod_aspdotnet 2.2.2004-July2006 over 2.2.2003-June2006
+	mod_perl 2.0.3-dev 2006-08-18 over 2.0.3-dev 2006-06-02
+	mod_jk 1.2.18 over 1.2.15
+	mod_fcgid 1.10 over 1.09
+
+	phpMyAdmin 2.8.2.4 over 2.8.1
+
+	gotrules.com ruleset (for mod_security) Apache2/Windows 20060815-01/20060731-01 over 20060605-01/20060325-01
+
+	Compress::Zlib 1.42 over 1.41
+	DBD::mysql 3.0006_1 over 3.0004_1
+	DBI 1.52 over 1.50
+	Devel::Symdump 2.0602 over 2.0601
+	HTML::Parser 3.55 over 3.54
+	Digest::SHA1 2.11 new
+	Net::SSLeay 1.30 new
+	Crypt::SSLeay 0.51 new [does not seem to work]
+
+
+New...
+	Added PHP 4.4.4 to Suite, with mod_php4.conf, and PHP4Downgrade.txt
+
+	Compiled and added PHP apache2handlers php5apache2_2.dll and php4apache2_2.dll to Suite
+
+	Added Perl modules Net::SSLeay v1.30 and Crypt::SSLeay v0.51 [Crypt::SSLeay does not seem to work]
+
+	Added Perl module Digest::SHA1 v2.11 -- not really needed [added to pass 'nmake test' steps of net::mysql and dbd::mysqlPP]
+
+
+Fixes...
+	Edited phpMyAdmin's config.inc.php -- previously, phpMyAdmin would not use this file as expected, due to syntax issue
+
+	mod_security/phpmyadmin problems [changes to conf\modsec_rules\exclude.conf, for url '/phpmyadmin/']...
+		1) Added directive 'SecFilterScanPOST Off' to allow table updates; for POST data greater than 1024 bytes [error msg 'Multipart: part header line over xxxx bytes']
+		2) Excluded 2 'Generic SQL sigs' rules -- previously, these rules hindered functionality of phpMyAdmin [rule.conf -- #300015, #300016]
+
+	Edited mod_php5.conf...
+		1) replaced '<Location />' with '<Directory "/www/webroot">' block to prevent mod_php from executing cgi php-scripts and leaking into dirs outside of webroot
+		2) example PHPIniDir directive should be outside '<Location>' and '<Directory>' blocks
+		3) example PHPIniDir directive should point to a path of a dir, and not to a file path of php.ini
+
+	Added a few test rules to mod_deflate_logio.conf -- that somehow never made it in from the older Suite config
+
+	Added 'AddType text/html .php .php4 .php5 .pl .cgi' to cgi-bin.conf -- to make sure browser does not treat the output of a CGI *.pl or *.php request as content-type 'text/plain' or as a download file
+	Note: script generated 'content-type' header will override this value [which is good]
+	
+
+Changes...
+	Minor comment changes to httpd.conf
+
+	httpd.conf, new security check -- if no php_module is loaded, Apache should return 'permissions denied' on *.php(4,5) requests under \www\webroot
+
+	Updated mod_aspdotnet.conf...
+		1) updated comments and added new directives
+		2) moved out 'sampleapp' example into mod_aspdotnet_example.conf
+
+	Removed perl functionality from mod_fcgid.conf -- never worked [this module might only be good for PHP]
+
+	Minor updates to Tomcat's workers.properties file...
+		1) updated 'java_home' to v1.5.0_07 over v1.5.0_06 [not important as env vars override this]
+		2) added worker 'jkstatus' [but have NOT added status URI to mod_jk configs]
+
+	Changed cgi functionality -- updated/changed cgi-bin.conf, mod_fcgid.conf, phpmyadmin.conf...
+		1) inclusion of mod_cgi and mod_php can now co-exist [if both are included, mod_cgi will serve perl scripts but will return 'permissions denied' on *.php(4,5) requests]
+		2) inclusion of mod_cgi and phpMyAdmin can now co-exist [if mod_php is not included, Apache will return 'permissions denied' on /phpmyadmin requests]
+		3) inclusion of mod_fcgid can now co-exist with mod_php and phpMyAdmin [if mod_php is included, Apache will return 'permissions denied' on /fcgid-bin requests]
+
+	Updated config files to take into account both mod_php5 and mod_php4
+	
+	httpd.conf, now includes, by default, config files cgi-bin.conf and analog.conf...
+	By default config: all php-mod will execute under webroot, no php-cgi will execute under cgi-bin, all perl-cgi will execute under cgi-bin 
+
+	Updated modsec.conf...
+		1) removed line 'SecServerResponseToken Off' as this directive is depreciated under mod_security v1.9
+		2) changed 'SecFilterDefaultAction' action to HTTP status code '406' - Not Acceptable, from '500' - 'Internal Server Error'
+
+	Added to cgi-bin.conf line 'ScriptLog logs/cgi.log'
+
+	Reverted back to php script file type of '.php' under cgi-bin, from '.cgi'
+
+	Revised mod_aspdotnet.conf note on using .NET Runtime v2.0 -- some have reported success
+
+
+Manual...
+	Modified Sections...
+		1) PREREQUISITES -- REQUIREMENTS FOR cgi-bin (mod_cgi) and fcgid-bin (mod_fcgid)
+		Note: cgi-bin.conf and mod_fcgid.conf inclusion is now default
+
+		2) PREREQUISITES -- REQUIREMENTS FOR Analog (Logfile Analyzer) online form-interface functionality
+		Note: cgi-bin.conf inclusion is now default
+
+		3) Important Notes -- Package
+		Note: added note about similar dlls, that link against different versions of libs, that are present under PHP/MySQL (libmysql.dll), and OpenSSL/Apache/PHP(libeay32.dll, ssleay32.dll); and how PATH order might have effect
+
+	Other non-significant updates and edits
+
+
+Known Problems...
+	Under IE, http://localhost/stats/anlgform.html, which will redirect to http://localhost/cgi-bin/anlgform.pl, will treat output of this perl script as a download file 'anlgform.pl'
+	Note: this does not happen under Firefox, or any other browser, nor was this a problem with Analog v5 -- probably just IE brain damage, xml related (new to analog v6)
+	Have put a workaround emplace with 'OUTPUT HTML', over default XHTML, under \www\analog\analog.cfg

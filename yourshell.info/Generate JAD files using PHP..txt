@@ -1,0 +1,46 @@
+Generate JAD files using PHP.
+Submitted by wfrantz on Mon, 09/29/2003 - 16:12 I finally figured out how to generate JAD files using PHP. The problem was the transfer encoding. I created a WML form that submitted data to a PHP file. The PHP script would generate the JAD data, put the correct MIME type in the header and respond to the post. The problem was that the WML form used method="POST". That caused the data to come in using chunked encoding. The Apache server decided that the response should be chunked as well. My Sanyo 4900 interpreted that as a corrupt JAD file.
+
+Technically, the Sanyo shouldn't have a problem with it. Chunked encoding is part of the HTTP 1.1 protocol that the Sanyo claims to support. However, it's clear that JAD files are only recognized if they are not chunked.
+
+The solution was to change the form to use method="GET". That prevents Apache from responding with chunked data and a PHP script handles the "GET" data just fine. The final result looks something like the code below. Notice how I'm using this technique to allow users to customize their application just before they download it. Their preferences are stored as properties in the JAD file. It's then an easy matter for the JAR to read those properties at runtime. This file is called "minisendnotejad.php".
+
+[code:1:82796b6654]
+<?php
+$callback = strip_tags($_GET['callback']);
+if (strlen($callback) > 0) {
+header("Content-type: text/vnd.sun.j2me.app-descriptor");
+?>
+MIDlet-1: MiniSendNote, , MiniSendNote
+MIDlet-Info-URL: http://www.apgap.com
+MIDlet-Jar-Size: 6907
+MIDlet-Name: MiniSendNote
+MIDlet-Vendor: William Frantz
+MIDlet-Version: 1.1
+MIDlet-Jar-URL: http://www.apgap.com/MiniSendNote.jar
+MiniSendNote.callback: <?php echo $callback;?>
+
+<?
+} else {
+header("Content-type: text/vnd.wap.wml");
+echo"<?xml version='1.0'?>"
+?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">
+<wml>
+<card id="HOME" title="MiniSendNote">
+<do type="accept" label="Submit">
+<go href="http://www.apgap.com/minisendnotejad.php" method="get">
+<postfield name="callback" value="$(callback)"/>
+<postfield name="to" value="$(to)"/>
+</go>
+</do>
+<p>
+To download MiniSendNote, submit your phone
+number: <input type="number" name="callback" value=""/>
+</p>
+</card>
+</wml>
+<?
+}
+?>
+

@@ -1,0 +1,1 @@
+[19-Feb-2012 03:24:45] PHP Warning:  file_put_contents() expects parameter 3 to be long, string given in /home/walk/public_html/xy.php on line 5

@@ -1,0 +1,214 @@
+压缩输出 bo_start('ob_gzhandler');   or bo_start('ob_gzip');  ob_end_flush();
+
+
+function ob_gzip($content){      
+if(!headers_sent() && extension_loaded("zlib") &&  strstr($_SERVER["HTTP_ACCEPT_ENCODING"],"gzip"))   
+{       
+$content = gzencode($content,9);    // 9 是最大压缩级别，0是最小不压缩      
+header("Content-Encoding: gzip");    
+header("Vary: Accept-Encoding");    
+//header("Content-Length: ".strlen($content));    
+}    
+return $content; 
+} 
+
+
+if ( $CONFIG['gzip_return'] && isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strpos($_SERVER['HTTP_ACCEPT_ENCODING'],'gzip') !== false && extension_loaded('zlib') && ! ini_get('zlib.output_compression') ) {
+
+         // Send compressed (using level 3 compression - can be adjusted
+         // to give smaller/larger files but will take longer/shorter time!)
+         header('Content-Encoding: gzip');
+         echo gzencode($document, 3);
+
+      } else {
+
+         // Send uncompressed
+         echo $document;
+
+      }
+
+   }
+
+
+gzcompress、gzencode、gzdeflate压缩比比较 
+
+PHP的自带的函数中，有三个压缩相关的函数：gzcompress、gzencode、gzdeflate，下面我们通过一段程序，来比较一下这三个函数的压缩比。
+代码：
+$string ="8aeeeeeeeeeeeeeeeeeeeeee eeeeeeeeeeeeeeeeer8aaaaa aaaaaaaaaaaaaaaaaadasd45 6as
+d456asd456asd456asd456as d456asd456asd456asd456as d456asd456asd456fasdf456 45645645645645
+645645645645645645645645 645645645645645645645645 645645645645645645645645 6a56fs4s4s4s4s
+4s4s4s4s4s4s4s4s4s4dsdga 133333333333333333333w8e tw7q9999999999999999999a 23s1dfffffffff
+fffffffffffffffa456sssss sssssssdv2sddddddddddddd ddddddf";
+echo "字符串长度：";
+echo strlen($xx);
+echo "<br/>gzcompress压缩后长度 ：";
+echo strlen(gzcompress($string,9));
+echo "<br/>gzencode压缩后长度：";
+echo strlen(gzencode($string,9));
+echo "<br/>gzdeflate压缩后长度：";
+echo strlen(gzdeflate($string,9));
+运行结果是：
+字符串长度：388
+gzcompress压缩后长度 ：80
+gzencode压缩后长度 ：92
+gzdeflate压缩后长度 ：74
+由此可见，这三个函数按照压缩效果进行排序：gzdeflate、gzcompress、gzencode，gzdeflate压缩效果最好，gzcompress次之，gzencode最差。
+分析：
+查了下手册，gzcompress、gzencode、gzdeflate这三个函数，分别采用的是zlib、gzip、DEFLATE方式压缩格式。通过上面的运行结果，不知道是否可以这么认为，DEFLATE、zlib、gzip的压缩效果递减。
+
+
+
+
+
+
+wordpress全面开启gzip提速(包含css,js) 
+
+发布于：2010 年 07 月 30 日|作者：Coco bauer
+
+本文也就重点谈谈如何开启GZIP压缩网页从而给Wordpress提速。
+
+GZIP可以大幅度地压缩CSS、JS之类的文本型文件，压缩率达60％－90％，挺可观的。那如何手动开启Wordpress2.7+的GZIP功能呢？
+
+1.开启GZIP功能。
+在根目录下的index.php找到define('WP_USE_THEMES', true);在其后插入如下代码： 
+
+if(ereg('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])){
+if(substr($_SERVER['REQUEST_URI'],0,10)!='/wp-content/uploads/')
+
+//排除不需要Gzip压缩的目录，图片一般不推荐启用Gzip压缩
+ob_start('ob_gzhandler');
+}
+
+2.在.htaccess里面加上
+
+RewriteCond %{HTTP:User-Agent}!MSIE\ [5-6]
+RewriteRule (.*.css$|.*.js$) gzip.php?$1 [L]
+
+如果你那可怜的主机不支持.htaccess可写，很遗憾，你就不用往下看了。
+
+3.压缩CSS和JS文件。你可以复制以下代码保存为gzip.php，之后上传至根目录即可。让所有的CSS和JS文件访问就以相对根目录的路径以GET变量传递到了gzip.php，交给gzip.php来全权处理了。
+
+<?php
+define('ABSPATH', dirname(__FILE__) . '/');
+$cache = true; //Gzip压缩开关
+$cachedir = 'wp-cache/'; // 存放gz文件的目录，确保可写
+
+
+$gzip = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip');
+$deflate = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate');
+$encoding = $gzip ? 'gzip' : ($deflate ? 'deflate' : 'none');
+if(!isset($_SERVER['QUERY_STRING']))exit();
+$key = array_shift(explode('?', $_SERVER['QUERY_STRING']));
+$key = str_replace('../', ",$key);
+$filename=ABSPATH.$key;
+$symbol='^';
+$rel_path=str_replace(ABSPATH,", dirname($filename));
+$namespace = str_replace('/', $symbol, $rel_path);
+$cache_filename = ABSPATH . $cachedir . $namespace . $symbol . basename($filename) . '.gz'; // 生成gz文件路径
+$type = "Content-type: text/html"; // 默认的类型信息
+$ext = array_pop(explode('.', $filename)); // 根据后缀判断文件类型信息
+switch ($ext){
+case 'css':$type = "Content-type: text/css";
+     break;
+case 'js':$type = "Content-type: text/javascript";
+     break;
+default:exit();
+     }
+if($cache){
+if(file_exists($cache_filename)){ // 假如存在gz文件
+$mtime = filemtime($cache_filename);
+$gmt_mtime = gmdate('D, d MY H:i:s', $mtime) . ' GMT';
+if((isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && array_shift(explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE'])) == $gmt_mtime)){ // 浏览器cache中的文件修改日期是否一致，将返回304
+header ("HTTP/1.1 304 Not Modified");
+header("Expires: ");
+header("Cache-Control: ");
+header("Pragma: ");
+header($type);
+header("Tips: Cache Not Modified (Gzip)");
+header ('Content-Length: 0');
+}else{
+$content = file_get_contents($cache_filename); //读取gz文件输出
+header("Last-Modified:" . $gmt_mtime);
+header("Expires: ");
+header("Cache-Control: ");
+header("Pragma: ");
+header($type);
+header("Tips: Normal Respond (Gzip)");
+header("Content-Encoding: gzip");
+echo $content;
+}
+}else if(file_exists($filename)){ // 没有对应的gz文件
+$mtime = mktime();
+$gmt_mtime = gmdate('D, d MY H:i:s', $mtime) . ' GMT';
+$content = file_get_contents($filename); //读取文件
+$content = gzencode($content, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE); //压缩文件内容
+header("Last-Modified:" . $gmt_mtime);
+header("Expires: ");
+header("Cache-Control: ");
+header("Pragma: ");
+header($type);
+header("Tips: Build Gzip File (Gzip)");
+header ("Content-Encoding: " . $encoding);
+header ('Content - Length: ' . strlen($content));
+echo $content;
+if ($fp = fopen($cache_filename, 'w')){ // 写入gz文件，供下次使用
+fwrite($fp, $content);
+fclose($fp);
+}
+}else{
+header("HTTP/1.0 404 Not Found");
+}
+}else{ // 处理不使用Gzip模式下的输出。原理基本同上
+if(file_exists($filename)){
+$mtime = filemtime($filename);
+$gmt_mtime = gmdate('D, d MY H:i:s', $mtime) . ' GMT';
+if((isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && array_shift(explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE'])) == $gmt_mtime)){
+header ("HTTP/1.1 304 Not Modified");
+header("Expires: ");
+header("Cache-Control: ");
+header("Pragma: ");
+header($type);
+header("Tips: Cache Not Modified");
+header ('Content - Length: 0');
+}else{
+header("Last-Modified:" . $gmt_mtime);
+header("Expires: ");
+header("Cache-Control: ");
+header("Pragma: ");
+header($type);
+header("Tips: Normal Respond");
+$content = readfile($filename);
+echo $content;
+}
+}else{
+header("HTTP/1.0 404 Not Found");
+}
+}
+?>
+
+搞定，再去http://www.whatsmyip.org/mod_gzip_test/检测一下你的网站是否已经开启了GZIP，虽然把CSS和JS文件压缩了72％，但并没有很明显地提速，因为本来就已经够快的了，
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

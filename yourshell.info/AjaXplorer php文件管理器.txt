@@ -1,0 +1,9 @@
+http://www.uini.net
+
+AjaXplorer php文件管理器(极佳)
+
+官方网站：http://ajaxplorer.info   / http://sourceforge.net/projects/ajaxplorer
+演示地址：
+下载地址：http://sourceforge.net/projects/ajaxplorer
+文章来源：http://www.OSphp.com.cn
+程序介绍：php文件管理器

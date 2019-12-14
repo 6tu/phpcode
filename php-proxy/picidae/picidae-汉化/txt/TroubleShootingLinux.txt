@@ -1,0 +1,74 @@
+[[TOC(PiciServerLinux, TroubleShootingLinux, ImproveLinuxPiciServer, MaintainLinuxPiciServer )]]
+
+= Linux pici-server Trouble Shooting =
+
+If the pici-server is not working at all please check the following things:
+ * Is your apache web server running?
+ * is your mysql server running?
+ * is PHP activated?
+
+-----
+=== pici-server only generates pictures with :-( ===
+
+If the pici-server start page of the pici-server appears but the webpage pictures are not working, please check the following things:
+ * Are all paths to the librarys setup correctly:
+  * Path to your pici-server-location (in file ADMIN/config.php)
+ * Are the [DataBaseTables database tables] inserted into your mysql?
+ * Check whether you are able to generate an image: [[BR]]Open a Terminal and change into your ADMIN folder. Execute there the following command:
+{{{
+export DISPLAY=:10.0
+./web2pici http://www.picidae.net test
+}}}
+ You should now find a Screenshot of the picidae website called test.png in your ADMIN folder.
+ * Did you gave the visudo rights to create the picture to the user under which PHP runs? [[BR]][UserGuess Find out which user runs your PHP >>]
+ * You need to accept Cookies manually. Therefore you need to connect via vnc to your display. [VncXvfbDisplayAccess How to >>]
+
+As every URL remains in the cache (by default for 2 hours), it is much easier to test when you set the caching time to zero in ADMIN/config.php (row 118: $timelimit_cache = 0). The cache is only deleted, when you invoke the pici-server start page.
+
+-------
+=== Error: Cannot connect to X server ===
+If you get this error when trying to test web2pici manually check the follwing things:
+
+
+Check whether your virtual Screen 'Xvfb' is running. To check whether Xvfb is running type the following command into your shell:
+{{{
+ps -A
+}}}
+
+This displays you a list of all running processes. The list may be long but you should be able to find an entry for Xvfb in the list. 
+If you don't find an entry for Xvfb, it means your virtual screen is not running. To start it, type the following into your shell:
+{{{
+Xvfb :10 -auth Path2pici-server/ADMIN/xvfb.conf -screen 0 1200x5050x24 &
+}}}
+
+If the virtual Screen is running make it accessible for your shell, by setting the DISPLAY variable:
+{{{
+export DISPLAY=:10.0
+}}}
+
+You have to export the DISPLAY variable (export DISPLAY=:10.0) for testing reasons every time you log in via a new shell to your web server.
+
+Change your shell directory to the ADMIN folder of your pici-server and test web2pici with the following command:
+{{{
+./web2pici http://www.picidae.net test
+}}}
+
+This should now create an image test.png in your ADMIN folder. (Make sure the ADMIN directory is writable for your user, for that it can create the test.png image.)
+
+All these commands should be run from the same user. It should further be the same user your pici-server uses to create the pictures.
+To see what's going on on your virtual screen connect to it via vnc: [VncXvfbDisplayAccess How to >>]
+
+-------
+If you still do have a problem and you don't know how to solve it, drop me a mail with an exact description of your problem. [[BR]]
+[http://www.picidae.net/contact/ email us]
+
+
+-------
+If you solved a problem not listed here, please add it to this wiki-page to help others  or drop me an email: [http://www.picidae.net/contact/ email us]
+
+
+-----
+If you discovered a bug, you may file it to the [../newticket buglist].
+
+----
+----

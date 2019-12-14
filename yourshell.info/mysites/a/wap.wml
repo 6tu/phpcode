@@ -1,0 +1,27 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC " -//WAPFORUM//DTD WML 1.1//EN" 
+"http://www.wapforum.org/DTD/wml_1.1.xml"> 
+<wml> 
+<card title="归属地查询"> 
+<p> <br/> 
+<b> 归属地查询: </b> <br/> 
+<input name="name" format="*m" emptyok="true"/> <br/> 
+</p> 
+<p align="center"> 
+<do type="accept" label="提交"> 
+<go href="index2.php" method="POST"> 
+<postfield name="m" value="$(name)"/> 
+<postfield name="a" value="search"/> 
+<postfield name="mobile" value="mobile"/> 
+</go> 
+</do> 
+</p> 
+
+</card> 
+</wml> mobile"/> 
+</go> 
+</do> 
+</p> 
+
+</card> 
+</wml> 

@@ -1,0 +1,133 @@
+
+                     PHPProxy README.
+
+
+1. Why proxy in PHP?
+
+  There is HTTP server in PostScript, so why not?
+  Also fun and now you can abuse your hosting service provider or
+  workaround restrictive company's proxy at work.
+
+
+2. Installation.
+
+  Prerequisites:
+
+  On server side you need PHP that can do network functions and Perl
+  compatible regex (PCRE). Python client daemon require Python 2 with
+  threads.
+
+  On client side you can use provided standalone MS Windows binary -
+  phpproxy.py.exe, it is 'freezed' Python client daemon.
+  Or use ActiveState's Python http://activestate.com/
+
+
+  Configuration:
+
+  Take a look at HTTP request flow to understand how to create valid
+  configuration.
+  Here it is:
+
+   |  1  Your browser
+   |  2  PHPProxy client module (phpproxy.py)
+   | [3] Optional proxy (on firewall, APS, OOPS, Squid, MS ISA, etc.)
+   |  4  Webserver + PHPProxy server module (phpproxy.php)
+   | [5] Optional parent proxy
+  \|/ 6  Target webserver
+
+  Step by step:
+
+  Browser (1) send request to PHPProxy (2). phpproxy.py (2)
+  incapsulate this HTTP request into another HTTP request to
+  phpproxy.php (4) as form parameter and send this request directly or
+  using optional proxy [3]. phpproxy.php (4) extracts real HTTP request
+  parameters and sends the request to target webserver (6) directly
+  or through optional parent proxy [5].
+
+  Edit phpproxy.py and phpproxy.php. Comments are given inside and
+  content should be self explanatory. Edit phpproxy.py.conf if you are
+  using standalone client executable phpproxy.py.exe. Put phpproxy.php
+  on webserver. Launch client daemon. Enter new proxy location in your
+  browser. Enjoy!
+
+  PHPProxy can be also used w/o client daemon - just point your browser
+  to www.yourserver/phpproxy.php - you'll be presented with a form where
+  you can enter single URL for download. Download button takes you to
+  download directly and by using POST HTTP method it hides true URL string
+  from intermediate proxy. Get a link button generates HEX encoded link
+  which can be downloaded with right-click. The purpose of this link is
+  to obfuscate URL and present dummy text/html HTTP Content-Type to
+  intermediate proxy so that you can download any type of file you want to.
+  Summary: quick and convinient way to download something when you're
+  behind restrictive proxy which filters content by URL string or content
+  type.
+
+  For tunneling via Microsoft ISA proxy servers that use NTLM athentication
+  I highly recommend NTLM Authorization Proxy Server
+  http://apserver.sourceforge.net/
+  Tested with PHPProxy. Just configure PHPProxy to use APS as proxy [3]
+  (see diagram above) and you'll be able to browse anything you want.
+  PHPProxy will hide the real content identity, APS will tunnel PHPProxy
+  requests via MS ISA.
+
+
+3. Notes, bugs, and limitations.
+
+  Client side Python proxy use standard components only. But doesn't
+  support proxy authentication.	phpproxy.php URL must be HTTP, HTTPS
+  is not supported.
+
+  When in "direct" mode (see explanation above and phpproxy.php for
+  details) the only protocol supported is HTTP. When using parent
+  proxy, PHPProxy doesn't care about protocol - it only see HTTP
+  requests and responses. So if you want FTP too, consider using
+  parent proxy.
+
+  PHP must support Perl compaible regex functions. It should be in
+  default install. Should be trivial to rewrite w/o regex.
+
+  Client module use application/x-www-form-urlencoded, not
+  multipart/form-data to encapsulate request, I'm not sure but it
+  may cause problems.
+
+  CONNECT method (for SSL proxying) is not easy and will impose many
+  limitations on deployment scenarios. Most likely will not be ever
+  implemented.
+
+
+4. Author.
+
+  Arkadi.Shishlov at gmail.com
+  Contact me in case you found bug(s), have patches, ideas, etc.
+
+
+5. License.
+
+  GNU General Public License (GPL).
+
+
+6. ChangeLog.
+
+  * 28 Mar 2005. Version 0.6.
+    - Major bugfixes to POST method and Keep-Alives handling - read:
+      much better and faster.
+    - Single URL download form.
+    - Perl client daemon desupported.
+
+  * 23 Feb 2002. Version 0.5.
+    - Updated to use latest Net::Daemon prefork mode.
+
+  * 22 Feb 2002. Version 0.4.
+    - Persistent connections support removed (cannot implement
+      in simple way).
+    - Miscellaneous bugfixes.
+
+  * 19 Feb 2002. Version 0.3.
+    - Client module in Python.
+    - Python client module standalone executables.
+
+  * 05 Mar 2001. Version 0.2.
+    - Client module prefork mode on UNIX (patch against Net::Daemon).
+
+  * 19 Feb 2001. Version 0.1.
+    - Initial release.

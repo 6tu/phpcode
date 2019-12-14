@@ -1,0 +1,60 @@
+== PGP / GPG key ==
+
+We do have a PGP/GPG key to be able to receive encrypted mails!
+
+This is our public GPG-key:
+[http://dev.picidae.net/dev/attachment/wiki/PGPkey/6F6D11F19904C129B3E20032F0A7AFBE1F25853C.gpgkey?format=raw Download the GPG/PGP Key]
+
+{{{
+ -----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.7 (Darwin)
+
+mQGiBEaECg0RBAC3S1mjeS76FWkpki1XR2TFBA5SMkk8alT2/7rh9EDeh12Ybf3E
+diW9KqfduW+b7r5rM1jHgsdzRKGOt43gC/kGSm3K3t6Q6eC9n8sipIt5LBzVyjv6
+jg35UH7WKfbdFFR61oBjSe2Gl5Q/oRRC2ohhdyD7hSaN70dncMQNgYd3DwCghMBd
+0Yb3jk2VfhJf4si1yP8zockD/Rfh7KS2ksobx6vvZihm9I/uqrH1M7iOia0e8ngU
+eixkhzr/Mxn/vHgmL80ECL+zeAemFTxXgX5GqMVbVy2dHlXrUI83t401ey8Exfko
+a4gP2+T/DLpI4gBDe6CHe9676UwuJ+AM+RhM00kdu3/Qr3nwCawD59tE2gy/p802
+DkQHBACMYaRlIZ6mVPodAdUk6wkXAyVjeMGns/0CAaccgEZtRocpRqlDKDyuGQmc
+qVR1NoK14Ik/QY8MmMroiLQMpzhiIICLMRAUbT9n9HmwcGLJBxGx1l/kWtAfjVKw
+bO9gut9zoWgL79n1yJ60b9ikxJwZi4nAI/uU9N2bbpZF6J1/rrQvcGljaWRhZSAo
+d3d3LnBpY2lkYWUubmV0KSA8Y29udGFjdEBwaWNpZGFlLm5ldD6IYAQTEQIAIAUC
+RoQKDQIbAwYLCQgHAwIEFQIIAwQWAgMBAh4BAheAAAoJEPCnr74fJYU8pTgAnAjD
+kIYaDcbe8EgG/sqeqlv2WO8BAJ9Jo+GIChjUr323ksYffn2pdDz3sLkEDQRGhAoN
+EBAAuFQFgkQSyx8AOvHlh7V7ljpMju1Ztr5xJUxfkhuKCkyJ+d3ewB3LKUDQCzJR
+NtploVsx/lUHF8hQFM/svX9ImKu/A+yygndO8CRZhWftoJo6lImIzHuuy584m1e1
+UvnQ8UfCnT4/agT/TCvUmR48s+0Ntzt+i9ajLQiEYgsNzQntLQ/AMOTNBUH/zF67
+dtlWX/OyYSIw/2pmf2p1YJxm78YVMm5I9WwrVGHpHB+CDs1w9GTYlZqhWiD3Jpkf
+JFkQmCgJZj0Q6xfYgzibcilw6BqtKeMWhvFOXG56iOxTvMiEUt/0G3xlf3LBq1Mj
+toMjjx0wtAEBBKbMuq9Nl6lYkuGriKOGxNUlp8MkONCGgUkohAtSkY/CVv6QG4sd
+sDtfY2FWNoaZlYaPLDTWtSaTxDLdQUv2HhnTkkVvH6yBs+QtbzCO0Qog+1n4rZDp
+rkRFwrJwmS4Bfk+8sN8o1njwtYznw63N1A2JppfLqubTGkuv9Y1TfMLObmHcBq/V
+bUqx9f6Vin0uU7b+euasyGVAj6B8Fiz4/IH2KoDv3tdxF2rEApN1bVrknFpaoJtO
+BHWpKMxClPjb4kai5ghEyhc8TkSvzMy5fMvOyytSfirXe2Rj1/8p+Kf5aJr3Fwj9
+6TtTmiU2vkj1vMWBZLvSsru/8pW/J9Csuo2vPn2sJVeH8X8AAwUP/RZn+IEt7bAc
+krMeIhznV/dRusDKN1+xNxsjUEozmPQO6CldPGbDrD4qCbLHRusf0waL7EhxcwMb
+gQR03j8MLWTZZ0OhdfJQt2qJE/WtH7aByBQZNyb7PA+nmzoVdsDfWgT+UO+FPv+v
+SGoceVYlKRHLGAKjpVVxAR12NVv4dBW6m6pfh9RJ7pgLniKt9vm1zqeaXixZa2k2
+fiE6GXJCnYnCVDL9QB1rbc+ckM1BMTFPMJTkhE4FzLd1kj5WDmHUEkc86m/xqndu
+NkVfAW9sIwWnIaeav0fDOuqZoQRPh0vLrKwrbSXCVyKD1vEMqPTyfxLe2ZojU91n
+9sCkjXLOYy+WOuPQgFYrJqAW/H/h6KtUNgCk44RxS3DegEBZdT/wiriL1QP71hiW
+w/DVEZfrO3690Vx5alZXD5/LjB11RPMnC4HqzhIWRz1FZYVtV3Y293pttrHe/oLy
+J7kzjePogXt69QpsKI5eXrdQ6Xpo0yV91zdo/qeBdVv4RH2KCLfBwnyAlrYPGLrD
+xdVMIeCL0IivhfN9gt0pFMX0EP2dxLaPGnirDUH2IEAcPcpLhb1TGFZ5YsiXndAJ
+8fZt1do3RqJ9VhTxgcRI2WDfrAazMEoYaCZagV5wm+aUE925tFBHG5YWI5PI7gBX
+MzLJYm38I+EmVDdRoFs8ZwTBSMMFyh4niEkEGBECAAkFAkaECg0CGwwACgkQ8Kev
+vh8lhTw/WQCeP1ufa6Ji3PIjavfjnfEmTEcLrsgAnjVNJ3fkvCUCMlrZTKB4kkmt
+4VZ0
+=wDP1
+-----END PGP PUBLIC KEY BLOCK-----
+}}}
+
+
+
+Check wikipedia if you would like to learn about GPG/PGP and if you are looking for GPG software: [[BR]]
+http://en.wikipedia.org/wiki/GNU_Privacy_Guard
+
+
+
+
+

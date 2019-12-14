@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+ lang="en" dir="ltr">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>
+    feedencryption    [Oliver's External Hacker Brain]
+  </title>
+
+  <meta name="generator" content="DokuWiki Release 2009-12-25c &quot;Lemming&quot;" />
+<meta name="robots" content="index,follow" />
+<meta name="date" content="2008-07-27T10:05:33+0200" />
+<meta name="keywords" content="feedencryption" />
+<link rel="search" type="application/opensearchdescription+xml" href="/lib/exe/opensearch.php" title="Oliver's External Hacker Brain" />
+<link rel="start" href="/" />
+<link rel="contents" href="/feedencryption?do=index" title="Index" />
+<link rel="alternate" type="application/rss+xml" title="Recent Changes" href="/feed.php" />
+<link rel="alternate" type="application/rss+xml" title="Current Namespace" href="/feed.php?mode=list&amp;ns=" />
+<link rel="alternate" type="text/html" title="Plain HTML" href="/_export/xhtml/feedencryption" />
+<link rel="alternate" type="text/plain" title="Wiki Markup" href="/_export/raw/feedencryption" />
+<link rel="canonical" href="http://code.kuederle.com/feedencryption" />
+<link rel="stylesheet" media="all" type="text/css" href="/lib/exe/css.php?s=all&amp;t=default&amp;tseed=1275808497" />
+<link rel="stylesheet" media="screen" type="text/css" href="/lib/exe/css.php?t=default&amp;tseed=1275808497" />
+<link rel="stylesheet" media="print" type="text/css" href="/lib/exe/css.php?s=print&amp;t=default&amp;tseed=1275808497" />
+<script type="text/javascript" charset="utf-8" ><!--//--><![CDATA[//><!--
+var NS='';var JSINFO = {"id":"feedencryption","namespace":""};
+//--><!]]></script>
+<script type="text/javascript" charset="utf-8" src="/lib/exe/js.php?tseed=1275808497" ></script>
+
+  <link rel="shortcut icon" href="/lib/tpl/default/images/favicon.ico" />
+
+  </head>
+
+<body>
+<div class="dokuwiki">
+  
+  <div class="stylehead">
+
+    <div class="header">
+      <div class="pagename">
+        [[<a href="/feedencryption?do=backlink"  title="Backlinks">feedencryption</a>]]
+      </div>
+      <div class="logo">
+        <a href="/"  name="dokuwiki__top" id="dokuwiki__top" accesskey="h" title="[H]">Oliver's External Hacker Brain</a>      </div>
+
+      <div class="clearer"></div>
+    </div>
+
+    
+    <div class="bar" id="bar__top">
+      <div class="bar-left" id="bar__topleft">
+        <form class="button btn_source" method="post" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="edit" /><input type="hidden" name="rev" value="" /><input type="submit" value="Show pagesource" class="button" accesskey="v" title="Show pagesource [V]" /></div></form>        <form class="button btn_revs" method="get" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="revisions" /><input type="submit" value="Old revisions" class="button" accesskey="o" title="Old revisions [O]" /></div></form>      </div>
+
+      <div class="bar-right" id="bar__topright">
+        <form class="button btn_recent" method="get" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="recent" /><input type="submit" value="Recent changes" class="button" accesskey="r" title="Recent changes [R]" /></div></form>        <form action="/" accept-charset="utf-8" class="search" id="dw__search"><div class="no"><input type="hidden" name="do" value="search" /><input type="text" id="qsearch__in" accesskey="f" name="id" class="edit" title="[F]" /><input type="submit" value="Search" class="button" title="Search" /><div id="qsearch__out" class="ajax_qsearch JSpopup"></div></div></form>&nbsp;
+      </div>
+
+      <div class="clearer"></div>
+    </div>
+
+        <div class="breadcrumbs">
+      <span class="bchead">Trace:</span> <span class="bcsep">&raquo;</span> <a href="/huffman"  class="breadcrumbs" title="huffman">huffman</a> <span class="bcsep">&raquo;</span> <a href="/home"  class="breadcrumbs" title="home">home</a> <span class="bcsep">&raquo;</span> <a href="/mobilewordpresstheme"  class="breadcrumbs" title="mobilewordpresstheme">mobilewordpresstheme</a> <span class="bcsep">&raquo;</span> <span class="curid"><a href="/feedencryption"  class="breadcrumbs" title="feedencryption">feedencryption</a></span>          </div>
+    
+    
+  </div>
+  
+  
+  <div class="page">
+    <!-- wikipage start -->
+    <!-- TOC START -->
+<div class="toc">
+<div class="tocheader toctoggle" id="toc__header">Table of Contents</div>
+<div id="toc__inside">
+
+<ul class="toc">
+<li class="level1"><div class="li"><span class="li"><a href="#rss_feed_encryption" class="toc">RSS Feed Encryption</a></span></div>
+<ul class="toc">
+<li class="level2"><div class="li"><span class="li"><a href="#download_source_code" class="toc">Download Source Code</a></span></div></li>
+<li class="level2"><div class="li"><span class="li"><a href="#requirements" class="toc">Requirements</a></span></div></li>
+<li class="level2"><div class="li"><span class="li"><a href="#installation_and_usage" class="toc">Installation and Usage</a></span></div>
+<ul class="toc">
+<li class="level3"><div class="li"><span class="li"><a href="#server_encryption" class="toc">Server Encryption</a></span></div></li>
+<li class="level3"><div class="li"><span class="li"><a href="#browser_decryption" class="toc">Browser Decryption</a></span></div></li>
+</ul>
+</li>
+<li class="level2"><div class="li"><span class="li"><a href="#notes" class="toc">Notes</a></span></div></li></ul>
+</li></ul>
+</div>
+</div>
+<!-- TOC END -->
+
+
+
+<h1><a name="rss_feed_encryption" id="rss_feed_encryption">RSS Feed Encryption</a></h1>
+<div class="level1">
+
+<p>
+
+I&#039;m providing source code to encrypt your <acronym title="Rich Site Summary">RSS</acronym> feed (or any other content created on your server) and decrypt it in your browser. This is to enable you to put sensitive data into your feed without making it public.
+</p>
+
+</div>
+
+<h2><a name="download_source_code" id="download_source_code">Download Source Code</a></h2>
+<div class="level2">
+
+<p>
+
+<a href="/_media/feedencryption.zip" class="media mediafile mf_zip" title="feedencryption.zip">feedencryption.zip (4 KB)</a>
+</p>
+
+</div>
+
+<h2><a name="requirements" id="requirements">Requirements</a></h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> Web server with <acronym title="Hypertext Preprocessor">PHP</acronym> installed</div>
+</li>
+<li class="level1"><div class="li"> <acronym title="Hypertext Preprocessor">PHP</acronym> programming knowledge</div>
+</li>
+<li class="level1"><div class="li"> Knowledge on the format of <acronym title="Rich Site Summary">RSS</acronym> feeds (if you want to encrypt a feed)</div>
+</li>
+<li class="level1"><div class="li"> <a href="https://addons.mozilla.org/de/firefox/addon/748" class="urlextern" title="https://addons.mozilla.org/de/firefox/addon/748"  rel="nofollow">Greasemonkey</a> (for decryption in Firefox)</div>
+</li>
+</ul>
+
+</div>
+
+<h2><a name="installation_and_usage" id="installation_and_usage">Installation and Usage</a></h2>
+<div class="level2">
+
+</div>
+
+<h3><a name="server_encryption" id="server_encryption">Server Encryption</a></h3>
+<div class="level3">
+<ol>
+<li class="level1"><div class="li"> Upload <code>encryption.php</code> to your server</div>
+</li>
+<li class="level1"><div class="li"> Create your <acronym title="Hypertext Preprocessor">PHP</acronym> script which will output your <acronym title="Rich Site Summary">RSS</acronym> feed</div>
+</li>
+<li class="level1"><div class="li"> Add <code>include(¡°encryption.php¡±)</code> to your feed creation script</div>
+</li>
+<li class="level1"><div class="li"> Encrypt any sensitive data with <code>enrypt($text,$key)</code> where <code>$key</code> is your encryption key (some string). Remember this key.</div>
+</li>
+</ol>
+
+</div>
+
+<h3><a name="browser_decryption" id="browser_decryption">Browser Decryption</a></h3>
+<div class="level3">
+
+<p>
+
+Note: This currently only works with Firefox and Google Reader. If you can support more feed readers by modifying <code>decrypt.user.js</code>, please <a href="http://www.kuederle.com/Contact" class="urlextern" title="http://www.kuederle.com/Contact"  rel="nofollow">send me a message</a>.
+
+</p>
+<ol>
+<li class="level1"><div class="li"> Edit <code>decrypt.user.js</code>, set <code>encryptionKey</code> to your password (must be the same as the one on the server)</div>
+</li>
+<li class="level1"><div class="li"> Drag <code>decrypt.user.js</code> into Firefox and install with Greasemonkey</div>
+</li>
+<li class="level1"><div class="li"> Open Google Reader, subscribe to your feed</div>
+</li>
+</ol>
+
+</div>
+
+<h2><a name="notes" id="notes">Notes</a></h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> I&#039;m using <a href="http://en.wikipedia.org/wiki/XXTEA" class="urlextern" title="http://en.wikipedia.org/wiki/XXTEA"  rel="nofollow">XXTEA (Corrected Block Tiny Encryption Algorithm)</a> using source code from <a href="http://www.coolcode.cn/show-128-1.html" class="urlextern" title="http://www.coolcode.cn/show-128-1.html"  rel="nofollow">here</a>. The authors provide no guarantee that their implementation is correct and so don&#039;t I. Use this source code at your own risk.</div>
+</li>
+<li class="level1"><div class="li"> Any characters will come out in Google Reader the way you encrypted them. If you used tags, they will not go through Google Reader&#039;s filter. On one hand, you can import content into Google Reader that it would normally remove from your feed (like JavaScript, for example). On the other hand, you can easily mess up Google Reader if you&#039;re using the wrong markup.</div>
+</li>
+</ul>
+
+</div>
+
+    <!-- wikipage stop -->
+  </div>
+
+  <div class="clearer">&nbsp;</div>
+
+  
+  <div class="stylefoot">
+
+    <div class="meta">
+      <div class="user">
+              </div>
+      <div class="doc">
+        feedencryption.txt &middot; Last modified: 2008/07/27 10:05 by admin      </div>
+    </div>
+
+   
+    <div class="bar" id="bar__bottom">
+      <div class="bar-left" id="bar__bottomleft">
+        <form class="button btn_source" method="post" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="edit" /><input type="hidden" name="rev" value="" /><input type="submit" value="Show pagesource" class="button" accesskey="v" title="Show pagesource [V]" /></div></form>        <form class="button btn_revs" method="get" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="revisions" /><input type="submit" value="Old revisions" class="button" accesskey="o" title="Old revisions [O]" /></div></form>              </div>
+      <div class="bar-right" id="bar__bottomright">
+                                        <form class="button btn_login" method="get" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="login" /><input type="hidden" name="sectok" value="305a9cf46699b3b6bd4f13ca82d9e6c2" /><input type="submit" value="Login" class="button" title="Login" /></div></form>        <form class="button btn_index" method="get" action="/feedencryption"><div class="no"><input type="hidden" name="do" value="index" /><input type="submit" value="Index" class="button" accesskey="x" title="Index [X]" /></div></form>        <a class="nolink" href="#dokuwiki__top"><input type="button" class="button" value="Back to top" onclick="window.scrollTo(0, 0)" title="Back to top" /></a>&nbsp;
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+  </div>
+
+  <div class="license">Except where otherwise noted, content on this wiki is licensed under the following license:<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" rel="license" class="urlextern">CC Attribution-Noncommercial-Share Alike 3.0 Unported</a></div>
+</div>
+
+<div class="footerinc">
+
+  <a  href="/feed.php" title="Recent changes RSS feed"><img src="/lib/tpl/default/images/button-rss.png" width="80" height="15" alt="Recent changes RSS feed" /></a>
+
+        <a  href="http://creativecommons.org/licenses/by-nc-sa/3.0/" rel="license" title="CC Attribution-Noncommercial-Share Alike 3.0 Unported"><img src="/lib/images/license/button/cc-by-nc-sa.png" width="80" height="15" alt="" /></a>
+  
+  <a  href="http://www.dokuwiki.org/donate" title="Donate"><img src="/lib/tpl/default/images/button-donate.gif" alt="Donate" width="80" height="15" /></a>
+
+  <a  href="http://www.php.net" title="Powered by PHP"><img src="/lib/tpl/default/images/button-php.gif" width="80" height="15" alt="Powered by PHP" /></a>
+
+  <a  href="http://validator.w3.org/check/referer" title="Valid XHTML 1.0"><img src="/lib/tpl/default/images/button-xhtml.png" width="80" height="15" alt="Valid XHTML 1.0" /></a>
+
+  <a  href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3" title="Valid CSS"><img src="/lib/tpl/default/images/button-css.png" width="80" height="15" alt="Valid CSS" /></a>
+
+  <a  href="http://dokuwiki.org/" title="Driven by DokuWiki"><img src="/lib/tpl/default/images/button-dw.png" width="80" height="15" alt="Driven by DokuWiki" /></a>
+
+
+
+</div>
+
+<div class="no"><img src="/lib/exe/indexer.php?id=feedencryption&amp;1307479356" width="1" height="1" alt=""  /></div>
+</body>
+</html>

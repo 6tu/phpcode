@@ -1,0 +1,41 @@
+php读取jar信息自动生成jad文件时间:2010-05-20 14:42:51来源:网络 作者:未知 点击:159次 
+上传jar手机游戏客户端时，因为有些手机如三星的某些机型只能安装jad文件，所以在后台上传需弄一个根据JAR文件自动生成JAD的功能。一般在JAR的文件包内，会有一个游戏信息文件，一般会在META-INF/MANIFEST.MF里，我们只需要读
+上传jar手机游戏客户端时，因为有些手机如三星的某些机型只能安装jad文件，所以在后台上传需弄一个根据JAR文件自动生成JAD的功能。一般在JAR的文件包内，会有一个游戏信息文件，一般会在META-INF/MANIFEST.MF里，我们只需要读取到这个文件的内容，然后增加一些其它信息，生成JAD文件里就行了。这里需要用到PHP的zip扩展来读取JAR文件内容。
+
+一、安装php zip扩展
+wget http://pecl.php.net/get/zip-1.10.2.tgz
+tar zxvf zip-1.10.2.tgz
+cd zip-1.10.2
+/opt/php528fpm/bin/phpize
+./configure --with-php-config=/opt/php528fpm/bin/php-config
+make
+make install
+
+cp /opt/php528fpm/lib/php/extensions/no-debug-non-zts-20060613/zip.so /opt/php528fpm/ext/
+vi /opt/php528fpm/lib/php.ini
+extension=zip.so //增加zip.so扩展
+/opt/php528fpm/sbin/php-fpm restart //重启PHP
+
+二、读取JAR里的文件内容生成JAD
+
+view plaincopy to clipboardprint?
+<SPAN style="COLOR: #000088">$jar_file</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #0000ff">"test.jar"</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+<SPAN style="COLOR: #000088">$jar_content</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #990000">zip_open</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$jar_file</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+<SPAN style="COLOR: #b1b100">if</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #339933">!</SPAN><SPAN style="COLOR: #990000">emptyempty</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$jar_content</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #009900">{</SPAN>   
+    <SPAN style="COLOR: #000088">$jar_size</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #990000">filesize</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$jar_file</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+    <SPAN style="COLOR: #b1b100">while</SPAN> <SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip_entry</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #990000">zip_read</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #009900">)</SPAN> <SPAN style="COLOR: #009900">{</SPAN>   
+        <SPAN style="COLOR: #b1b100">if</SPAN> <SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #990000">zip_entry_name</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip_entry</SPAN><SPAN style="COLOR: #009900">)</SPAN> <SPAN style="COLOR: #339933">==</SPAN> <SPAN style="COLOR: #0000ff">"META-INF/"</SPAN><SPAN style="COLOR: #009900">)</SPAN> <SPAN style="COLOR: #009900">{</SPAN>   
+            <SPAN style="COLOR: #b1b100">if</SPAN> <SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #990000">zip_entry_open</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip</SPAN><SPAN style="COLOR: #339933">,</SPAN> <SPAN style="COLOR: #000088">$zip_entry</SPAN><SPAN style="COLOR: #339933">,</SPAN> <SPAN style="COLOR: #0000ff">"r"</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #009900">)</SPAN> <SPAN style="COLOR: #009900">{</SPAN>                                       
+                <SPAN style="COLOR: #000088">$jad_content</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #0000ff">"MIDlet-Jar-Size: <SPAN style="COLOR: #006699; FONT-WEIGHT: bold">$jar_size</SPAN><SPAN style="COLOR: #000099; FONT-WEIGHT: bold"> </SPAN>   
+                    MIDlet-Jar-URL: <SPAN style="COLOR: #006699; FONT-WEIGHT: bold">$jar_file</SPAN><SPAN style="COLOR: #000099; FONT-WEIGHT: bold"> </SPAN><SPAN style="COLOR: #000099; FONT-WEIGHT: bold"> </SPAN>"</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+                <SPAN style="COLOR: #000088">$jad_content</SPAN> <SPAN style="COLOR: #339933">.=</SPAN> <SPAN style="COLOR: #990000">zip_entry_read</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip_entry</SPAN><SPAN style="COLOR: #339933">,</SPAN> <SPAN style="COLOR: #990000">zip_entry_filesize</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip_entry</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>    
+                <SPAN style="COLOR: #000088">$jad_file</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #990000">str_replace</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #0000ff">'jar'</SPAN><SPAN style="COLOR: #339933">,</SPAN><SPAN style="COLOR: #0000ff">'jad'</SPAN><SPAN style="COLOR: #339933">,</SPAN><SPAN style="COLOR: #000088">$jar_file</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+                <SPAN style="COLOR: #000088">$handle</SPAN> <SPAN style="COLOR: #339933">=</SPAN> <SPAN style="COLOR: #990000">fopen</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$jad_file</SPAN><SPAN style="COLOR: #339933">,</SPAN> <SPAN style="COLOR: #0000ff">"w"</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+                <SPAN style="COLOR: #990000">fwrite</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$handle</SPAN><SPAN style="COLOR: #339933">,</SPAN> <SPAN style="COLOR: #000088">$jad_content</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+                <SPAN style="COLOR: #990000">zip_entry_close</SPAN><SPAN style="COLOR: #009900">(</SPAN><SPAN style="COLOR: #000088">$zip_entry</SPAN><SPAN style="COLOR: #009900">)</SPAN><SPAN style="COLOR: #339933">;</SPAN>   
+            <SPAN style="COLOR: #009900">}</SPAN>   
+        <SPAN style="COLOR: #009900">}</SPAN>   
+    <SPAN style="COLOR: #009900">}</SPAN>   
+<SPAN style="COLOR: #009900">}</SPAN> 
+ 
+本篇文章来源于：开发学院 http://edu.codepub.com   原文链接：http://edu.codepub.com/2010/0520/22832.php

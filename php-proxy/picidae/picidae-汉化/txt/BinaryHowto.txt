@@ -1,0 +1,17 @@
+== How to create a statically linked web2pici binary ==
+
+To create a binary that is usable for others, it has to be statically linked. 
+
+Install therefore the statifier software: http://statifier.sourceforge.net/
+
+Then you may execute in your Terminal:
+{{{
+./configure
+make clean
+make
+statifier web2pici web2piciStatic
+bzip2 web2piciStatic
+}}}
+
+----
+----

@@ -1,0 +1,14 @@
+[[TOC(PiciServerLinux, TroubleShootingLinux, ImproveLinuxPiciServer, MaintainLinuxPiciServer )]]
+
+= Optimize and Maintain Linux pici Server =
+ * [LinuxFontInstallation Install as many Fonts as possible on your System for that also sites in other font Systems can be read >>]
+  * invoke this Site with your pici-server to check which Languages are working: http://dev.picidae.net/dev/wiki/LanguageSite
+ * [KonquerorConfig Configure & Maintain KHTML (Konqueror) >>]
+  * Install plugins.
+  * Clean the cookies from time to time.
+
+
+
+
+----
+----

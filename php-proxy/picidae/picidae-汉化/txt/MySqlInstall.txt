@@ -1,0 +1,25 @@
+= Install MySQL on your Linux system =
+
+== Installation ==
+
+||                           || '''Debian'''                || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| MySQL                   || apt-get install mysql-server mysql-client ||                                      ||               ||                                      ||
+
+
+== Set a mysql password ==
+{{{
+mysqladmin -u root password NEWPASSWORD
+}}}
+
+== Create your first Database ==
+{{{
+mysql -u root -p
+}}}
+insert then your MySQL password you used in the installation. in the MySQL console type then:
+{{{
+create database picidae;
+exit;
+}}}
+
+
+

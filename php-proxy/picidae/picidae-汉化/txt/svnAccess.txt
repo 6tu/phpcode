@@ -1,0 +1,32 @@
+[[TOC(InstallationInstructions, PiciProxyInstallation, svnAccess)]]
+
+= picidae svn access =
+
+The picidae source code repository can be checked out with svn (subversion).
+Leave the username and the password empty for anonymous read access.
+
+pici-proxy
+ `svn --username '' checkout http://svn.picidae.net/trunk/pici-proxy pici-proxy`
+
+pici-server
+ `svn --username '' checkout http://svn.picidae.net/trunk/pici-server pici-server`
+
+
+web2pici
+ `svn --username '' checkout http://svn.picidae.net/trunk/web2pici web2pici`
+
+----
+
+The svn (Subversion) software can be freely downloaded from http://subversion.tigris.org/project_packages.html
+
+
+
+----
+
+The described svn access is read only.
+Active developers will be given committer access. 
+Send us your patches and you'll receive a user-account.
+
+
+----
+----

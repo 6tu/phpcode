@@ -1,0 +1,374 @@
+
+<!-- saved from url=(0047)http://dev.picidae.net/dev/wiki/PiciServerLinux -->
+<html class="translated-ltr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>PiciServerLinux - picidae 开发者部分</title>
+<link rel="start" href="./dev/wiki" />
+<link rel="search" href="./dev/search" />
+<link rel="help" href="./dev/wiki/TracGuide" />
+<link rel="stylesheet" href="./dev/trac.css" type="text/css" />
+<link rel="stylesheet" href="./dev/wiki.css" type="text/css" />
+<link rel="icon" href="./dev/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="./dev/favicon.ico" type="image/x-icon" />
+<link rel="alternate" href="./dev/PiciServerLinux?format=txt" title="Plain Text" type="text/x-trac-wiki" />
+
+<style type="text/css">@import url( './dev/style.css' );
+</style>
+ <script type="text/javascript" src="./dev/trac.js"></script>
+ <script type="text/javascript" src="./dev/atimg.js"></script>
+</head>
+
+
+<body>
+
+<div id="rap">
+<div id="dev_content">
+
+	<div id="content_header">
+		<div class="abstand">&nbsp;</div>
+		<!-- tab navigation -->
+		<table class="head_navigation" cellspacing="0" cellpadding="0">
+		<tbody><tr>
+		<td valign="top" class="first">
+		<a href="http://info.picidae.net/"><b><font><font>pici信息</font></font></b><br>
+		<small><font><font>背景和艺术项目</font></font></small></a>
+		</td>
+		<td valign="top" class="second">
+		<!--<a href="http://net.picidae.net/">-->
+		<a href="http://net.picidae.net/">
+		<b><font><font>pici-network </font></font></b><br>
+		<small><font><font>讨论和社区论坛</font></font></small></a>
+		</td>
+		<td valign="top" class="third selected">
+		<a href="http://dev.picidae.net/"><b><font><font>pici开发</font></font></b><br>
+		<small><font><font>编程和调试pici服务器</font></font><br><font><font>
+		开源软件</font></font></small></a>
+		</td>
+		</tr>
+		</tbody></table>	
+	</div>
+
+
+<div id="dev_content_top"></div>
+<div id="dev_content_main">
+<div id="dev_inside_content">
+
+
+<div id="banner">
+
+<!--<div id="header"><a id="logo" href="http://www.picidae.net/"><img src="./dev/chrome/site/head_picidae.png" alt="picidae" /></a><hr /></div>-->
+
+<form id="search" action="http://dev.picidae.net/dev/search" method="get">
+ <div>
+  <label for="proj-search"><font><font>搜索：</font></font></label>
+  <input type="text" id="proj-search" name="q" size="10" accesskey="f" value="">
+  <font><font><input type="submit" value="搜索"></font></font>
+  <input type="hidden" name="wiki" value="on">
+  <input type="hidden" name="changeset" value="on">
+  <input type="hidden" name="ticket" value="on">
+ </div>
+</form>
+
+
+
+
+
+<div id="metanav" class="nav"><ul><li class="first"><a href="http://dev.picidae.net/dev/login"><font><font>登录</font></font></a></li><li class="last"><a href="http://dev.picidae.net/dev/settings"><font><font>设置</font></font></a></li></ul></div>
+</div>
+
+<div id="mainnav" class="nav"><ul><li class="active first"><a accesskey="1" href="http://dev.picidae.net/dev/wiki"><font><font>维基</font></font></a></li><li><a accesskey="2" href="http://dev.picidae.net/dev/timeline"><font><font>时间线</font></font></a></li><li><a accesskey="3" href="http://dev.picidae.net/dev/roadmap"><font><font>路线图</font></font></a></li><li><a href="http://dev.picidae.net/dev/browser"><font><font>浏览源</font></font></a></li><li><a href="http://dev.picidae.net/dev/report"><font><font>查看票证</font></font></a></li><li><a accesskey="7" href="http://dev.picidae.net/dev/newticket"><font><font>新票</font></font></a></li><li class="last"><a accesskey="4" href="http://dev.picidae.net/dev/search"><font><font>搜索</font></font></a></li></ul></div>
+<div id="main">
+
+
+
+
+<div id="ctxtnav" class="nav">
+ <h2><font><font>维基导航</font></font></h2>
+ <ul>
+   <li><a href="http://dev.picidae.net/dev/wiki"><font><font>首页</font></font></a></li>
+   <li><a href="http://dev.picidae.net/dev/wiki/TitleIndex"><font><font>标题索引</font></font></a></li>
+   <li><a href="http://dev.picidae.net/dev/wiki/RecentChanges"><font><font>按日期索引</font></font></a></li>
+   <li class="last"><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux?action=diff&amp;version=36"><font><font>最后一次变更</font></font></a></li>
+ </ul>
+ <hr>
+</div>
+
+<div id="content" class="wiki">
+
+ 
+  
+  
+   
+   <div class="wikipage">
+    <div id="searchable"><p>
+</p><div class="wiki-toc">
+<h4><font><font>目录</font></font></h4>
+<ol><li class="active"><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Installapici-ServeronLinuxbeta"><font><font>在Linux上安装pici-Server（测试版）</font></font></a><ol><li class="active"><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#SetuptheBasics"><font><font>设置基本</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Downloadthepici-serversoftware"><font><font>下载pici-server软件</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#SetrightsfortheCACHEfolder"><font><font>设置CACHE文件夹的权限</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#InstallthepicturecreatingSoftware"><font><font>安装图片创建软件</font></font></a><ol><li class="active"><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Binaries"><font><font>二进制</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Installitfromsource"><font><font>从源安装它</font></font></a></li></ol></li><li class="active"><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#InstallFonts"><font><font>安装字体</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#SetupavirtualScreen"><font><font>设置虚拟屏幕</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Giveyouruseraccesstotheshellscript"><font><font>让您的用户访问shell脚本</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#CreateMySQLdatabase"><font><font>创建MySQL数据库</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Setuptheconfigurationfile"><font><font>设置配置文件</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Createthedatabasetables"><font><font>创建数据库表</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#pici-serversuccessfullyinstalled"><font><font>pici-server成功安装</font></font></a></li><li class="active">
+<a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Importantfirststeps"><font><font>重要的第一步</font></font></a></li></ol></li></ol><ol><li><a href="http://dev.picidae.net/dev/wiki/TroubleShootingLinux#Linuxpici-serverTroubleShooting"><font><font>Linux pici-server故障排除</font></font></a><ol><li><ol><li><a href="http://dev.picidae.net/dev/wiki/TroubleShootingLinux#pici-serveronlygeneratespictureswith:-"><font><font>pici服务器只生成图片:-(</font></font></a></li><li>
+<a href="http://dev.picidae.net/dev/wiki/TroubleShootingLinux#Error:CannotconnecttoXserver"><font><font>错误：无法连接到X服务器</font></font></a></li></ol></li></ol></li></ol><ol><li><a href="http://dev.picidae.net/dev/wiki/ImproveLinuxPiciServer#Helpimprovingpici-ServeronLinux"><font><font>帮助改进在Linux上的pici-Server</font></font></a><ol><li><a href="http://dev.picidae.net/dev/wiki/ImproveLinuxPiciServer#SolvetheBiggestproblems"><font><font>解决最大的问题</font></font></a></li><li>
+<a href="http://dev.picidae.net/dev/wiki/ImproveLinuxPiciServer#Improvepici-Server"><font><font>改进pici服务器</font></font></a></li></ol></li></ol><ol><li><a href="http://dev.picidae.net/dev/wiki/MaintainLinuxPiciServer#OptimizeandMaintainLinuxpiciServer"><font><font>优化和维护Linux pici服务器</font></font></a></li></ol></div>
+
+<p></p>
+<h1 id="Installapici-ServeronLinuxbeta"><font><font>在Linux上安装pici-Server（测试版）</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Installapici-ServeronLinuxbeta" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h1>
+<h2 id="SetuptheBasics"><font><font>设置基础</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#SetuptheBasics" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+您需要在计算机上安装以下程序才能成功运行pici服务器：
+</font></font></p>
+<ul><li><a class="wiki" href="http://dev.picidae.net/dev/wiki/ApacheInstall"><font><font>Apache Webserver</font></font></a>
+</li><li><a class="wiki" href="http://dev.picidae.net/dev/wiki/PhpInstall"><font><font>PHP</font></font></a><font><font>（包括GD和mcrypt支持）
+</font></font><ul><li><font><font>确保</font><font>在php中禁用</font></font><strong><font><font>安全模式</font></font></strong><font><font>。
+</font></font></li></ul></li><li><a class="wiki" href="http://dev.picidae.net/dev/wiki/MySqlInstall"><font><font>MySQL</font></font></a>
+</li></ul><p>
+ 
+</p>
+<h2 id="Downloadthepici-serversoftware"><font><font>下载pici-server软件</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Downloadthepici-serversoftware" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+下载pici-server软件。</font><font>您可以下载其中一个每夜快照或获取subversion访问：
+</font></font></p>
+<ul><li><a class="ext-link" href="http://dev.picidae.net/pici-server_snapshot.zip"><span class="icon"><font><font>pici-server_snapshot.zip</font></font></span></a>
+</li><li><a class="ext-link" href="http://dev.picidae.net/pici-server_snapshot.tar.gz"><span class="icon"><font><font>pici-server_snapshot.tar.gz</font></font></span></a>
+</li><li><a class="wiki" href="http://dev.picidae.net/dev/wiki/svnAccess"><font><font>svnAccess</font></font></a>
+</li></ul><p><font><font>
+将pici服务器软件解压缩到您的Web服务器目录中。</font><font>请确保路径不包含</font></font><a href="http://www.picidae.net/questions-and-answers/"><font><font>皮皮</font></font></a><font><font>或</font><a href="http://www.picidae.net/questions-and-answers/"><font>id科</font></a><font>（见</font><a href="http://www.picidae.net/questions-and-answers/"><font>http://www.picidae.net/questions-and-answers/</font></a><font>）。</font><font>最好的办法是将pici服务器放在你的web服务器的根目录下。  
+</font></font></p>
+<h2 id="SetrightsfortheCACHEfolder"><font><font>为缓存文件夹设置权限</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#SetrightsfortheCACHEfolder" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+允许您的www用户在CACHE文件夹中创建文件。</font><font>您可以通过shell更改权限：
+</font></font></p>
+<pre class="wiki"><font><font>chmod -R 777 Path2YourPiciServer / CACHE
+</font></font></pre><hr>
+<h2 id="InstallthepicturecreatingSoftware"><font><font>安装图片创建软件</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#InstallthepicturecreatingSoftware" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<h3 id="Binaries"><font><font>二进制</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Binaries" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h3>
+<p><font><font>
+如果您的系统的二进制存在，您可以下载它们并将其安装到pici服务器的ADMIN目录中。
+</font></font></p>
+<ul><li><font><font>链接这里你的二进制文件
+</font></font></li></ul><p>
+<br>
+</p>
+<h3 id="Installitfromsource"><font><font>从源安装</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Installitfromsource" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h3>
+<p><font><font>
+安装外部需要的库和工具：
+</font></font></p>
+<table class="wiki">
+<tbody><tr><td> <i><font><font>库名称</font></font></i>           </td><td> <strong><font><font>Debian</font></font></strong>                      </td><td> <strong><font><font>使用yast2</font></font></strong>              </td><td> <strong><font><font>Fedora</font></font></strong> </td><td> <i><font><font>请在此处添加您的分发</font></font></i> 
+</td></tr><tr><td> <strong><font><font>g ++</font></font></strong>                    </td><td><font><font> apt-get install g ++           </font></font></td><td>                                      </td><td>               </td><td>                                      
+</td></tr><tr><td> <strong><font><font>KDE 3.x</font></font></strong>               </td><td><font><font> apt-get install kdebase       </font></font></td><td><font><font> kde3-i18n -...                    </font></font></td><td>               </td><td>                                      
+</td></tr><tr><td> <strong><font><font>kdelibs for KDE 3.x</font></font></strong> </td><td><font><font> apt-get install kdelibs4-dev </font></font></td><td><font><font> kdelibs3-devel                  </font></font></td><td>               </td><td>                                      
+</td></tr><tr><td> <strong><font><font>zlib</font></font></strong>                     </td><td><font><font> apt-get install zlib1g-dev    </font></font></td><td>                                      </td><td>               </td><td>                                      
+</td></tr><tr><td> <strong><font><font>使</font></font></strong>                  </td><td><font><font> apt-get install make          </font></font></td><td>                                      </td><td>               </td><td>                                      
+</td></tr><tr><td> <strong><font><font>cmake</font></font></strong>                 </td><td><font><font> apt-get install cmake        </font></font></td><td>                                      </td><td>               </td><td>                                      
+</td></tr></tbody></table>
+<p><font><font>
+下载web2pici源代码：
+</font></font></p>
+<ul><li><a class="ext-link" href="http://dev.picidae.net/web2pici_snapshot.zip"><span class="icon"><font><font>web2pici_snapshot.zip</font></font></span></a>
+</li><li><a class="ext-link" href="http://dev.picidae.net/web2pici_snapshot.tar.gz"><span class="icon"><font><font>web2pici_snapshot.tar.gz</font></font></span></a>
+</li><li><a class="wiki" href="http://dev.picidae.net/dev/wiki/svnAccess"><font><font>svnAccess</font></font></a>
+</li></ul><p><font><font>
+编辑文件web2pici.cpp，并取消注释操作系统的第45行的包含路径。
+</font></font></p>
+<pre class="wiki"><font><font>/ * ------------------------------------------------ ------------</font></font><font></font><font><font>
+ *启动配置</font></font><font></font><font><font>
+ * ------------------------------------------------- ----------- * /</font></font><font></font>
+<font></font><font><font>
+//＃include &lt;dom / html_misc.h&gt; // &lt; -  use this for Suse and Mandriva</font></font><font></font><font><font>
+//＃include &lt;kde / dom / html_misc.h&gt; // &lt; -  use this for other distribution</font></font><font></font>
+<font></font><font><font>
+/ * ------------------------------------------------ ------------</font></font><font></font><font><font>
+ *结束配置</font></font><font></font><font><font>
+ * ------------------------------------------------- ----------- * /</font></font><font></font>
+</pre><p><font><font>
+打开终端，转到源文件夹，然后键入以下内容进行安装：
+</font></font></p>
+<pre class="wiki"><font><font>。/配置</font></font><font></font><font><font>
+使</font></font><font></font>
+</pre><p><font><font>
+如果成功构建，您必须将程序文件“web2pici”复制到pici服务器的ADMIN文件夹中。
+</font></font></p>
+<pre class="wiki"><font><font>cp web2pici Path2YourPiciServerDirectory / ADMIN / web2pici
+</font></font></pre><p>
+<strong><font><font>故障排除</font></font></strong>
+</p>
+<ul><li><font><font>OpenSuse10.1：库libqt-mt没有找到，因此设置一个链接 </font></font><br>
+<pre class="wiki"><font><font>/usr/lib64/qt3/lib/libqt-mt.so  - &gt; /usr/lib/libqt-mt.so.3.3.5
+</font></font></pre></li></ul><p><font><font>
+如果你编译web2pici在一个尚未作为二进制可用系统，请提供一个静态链接二进制。 
+</font></font><a class="wiki" href="http://dev.picidae.net/dev/wiki/BinaryHowto"><font><font>如何创建一个静态链接二进制。</font></font></a>
+</p>
+<hr>
+<h2 id="InstallFonts"><font><font>安装字体</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#InstallFonts" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+如果你在服务器系统上，你可能需要安装一些字体。</font><font>如果你是在桌面系统上，你也可以通过这个教程，关心外国字体在结束。
+</font></font></p>
+<table class="wiki">
+<tbody><tr><td>                                      </td><td> <strong><font><font>Debian</font></font></strong>                </td><td> <strong><font><font>使用yast2</font></font></strong>              </td><td> <strong><font><font>Fedora</font></font></strong> </td><td> <i><font><font>请在此处添加您的分发</font></font></i> 
+</td></tr><tr><td> <i><font><font>基本X字体</font></font></i>                 </td><td><font><font> apt-get install xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi xfonts-75dpi-transcoded xfonts-base </font></font></td><td>                                      </td><td>               </td><td>                                      
+</td></tr></tbody></table>
+<p>
+<a class="wiki" href="http://dev.picidae.net/dev/wiki/LinuxFontInstallation"><font><font>更多关于字体安装&gt;&gt;</font></font></a>
+</p>
+<hr>
+<h2 id="SetupavirtualScreen"><font><font>设置一个虚拟屏幕</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#SetupavirtualScreen" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>在服务器上</font><font>
+安装虚拟Frambuffer程序</font></font><strong><font><font>Xvfb</font></font></strong><font><font>。
+</font></font></p>
+<table class="wiki">
+<tbody><tr><td> <i><font><font>库名称</font></font></i>           </td><td> <strong><font><font>Debian</font></font></strong>             </td><td> <strong><font><font>使用yast2</font></font></strong>              </td><td> <strong><font><font>Fedora</font></font></strong> </td><td> <i><font><font>请在此处添加您的分发</font></font></i> 
+</td></tr><tr><td> <strong><font><font>Xvfb</font></font></strong>                    </td><td><font><font> apt-get install xvfb  </font></font></td><td>                                      </td><td>               </td><td>                                      
+</td></tr></tbody></table>
+<p><font><font>
+在Shell中打开这种虚拟屏幕类型。</font><font>（将验证文件的路径插入到pici服务器。）
+</font></font></p>
+<pre class="wiki"><font><font>Xvfb：10 -auth Path2pici-server / ADMIN / xvfb.conf -screen 0 1200x5050x24＆
+</font></font></pre><p><font><font>
+在时刻，你需要并行呈现的每张照片都是一个自己的屏幕。</font><font>（这将是很好的不需要，但是，如果你正在运行一个屏幕只有任务被调度和处理一个接一个。）我遇到以下RAM消耗。</font><font>一个屏幕是安装需要大约30MB RAM。</font><font>每个打开的窗口需要大约20MB的RAM。
+</font></font></p>
+<p><font><font>
+您可以根据需要设置任意数量的虚拟屏幕，每个虚拟屏幕连续编号。 
+</font></font></p>
+<h2 id="Giveyouruseraccesstotheshellscript"><font><font>让您的用户访问shell脚本</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Giveyouruseraccesstotheshellscript" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+为了有权访问显示和窗口系统，您需要使用启动显示的用户的用户帐户。</font><font>在配置文件中配置拥有显示会话的用户。</font><font>因此，我们需要给运行php sudo权限的用户提供脚本。</font><font>为此，我们不必在计算机上以纯文本形式存储密码，我们赋予它在sudo模式下无密码地执行python脚本的权利。
+</font></font></p>
+<p><font><font>
+运行Web服务器和php的默认用户在每个发布中的命名方式不同：
+</font></font></p>
+<ul><li><font><font>Debian：www-data
+</font></font></li><li><font><font>Ubuntu：www-data
+</font></font></li><li><font><font>Suse：wwwrun
+</font></font></li></ul><p>
+<a class="wiki" href="http://dev.picidae.net/dev/wiki/UserGuess"><font><font>找出你的php用户如何调用&gt;&gt;</font></font></a>
+</p>
+
+<p>
+在服务器上运行以下php脚本，可以看到当前 PHP 用户的名称
+</p>
+<pre class="wiki">&lt;?php
+
+$uname = shell_exec ('whoami');
+echo ("用户名是: &lt;b&gt;$uname &lt;/b&gt;");
+
+?&gt;
+</pre><p>
+重要的是要知道你的PHP用户的名字，因为你必须给它sudo权限在visudo文件中生成图片。
+</p>
+
+<p><font><font>
+打开Shell（也称为终端）并键入：
+</font></font></p>
+<pre class="wiki"><font><font>sudo visudo
+</font></font></pre><p><font><font>
+（这将打开你的标准shell编辑器中的sudoers文件：“vi”在我的case）
+</font></font></p>
+<p><font><font>
+为了使用“visudo”命令，你需要包“sudo”。
+</font></font></p>
+<p><font><font>
+将以下行添加到visudo文件。</font><font>注意路径指向你的shellscript mkpicture.sh！</font><font>（在此示例中给出的路径只是正确的，如果您在Web服务器的主目录中安装了pici-server）。在示例中使用www-user的名称，而不是“www”
+</font></font></p>
+<pre class="wiki"><font><font>www ALL =（ALL）NOPASSWD：Path2YourPiciServer / ADMIN / mkpicture_xvfb.sh
+</font></font></pre><p><font><font>
+编辑器vi不是那么容易处理（这里简短的解释）： 
+</font></font></p>
+<ol><li><font><font>用光标移动到要插入新行的位置。
+</font></font></li><li><font><font>按“i” 
+</font></font><ul><li><font><font>使用箭头键将光标移动到最后一行的末尾，然后按回车插入新行。
+</font></font></li><li><font><font>然后插入新行。
+</font></font><pre class="wiki"><font><font>www ALL =（ALL）NOPASSWD：Path2YourPiciServer / ADMIN / mkpicture_xvfb.sh
+</font></font></pre></li></ul></li><li><font><font>按“退出”键退出插入模式。
+</font></font></li><li><font><font>键入以下内容以保存文件
+</font></font><pre class="wiki"><font><font>：wq
+</font></font></pre></li><li><font><font>点击进入和你的完成。
+</font></font></li></ol><h2 id="CreateMySQLdatabase"><font><font>创建MySQL数据库</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#CreateMySQLdatabase" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+确保MySQL已启动并正在运行。</font><font>然后安装数据库。</font><font>有很多方法来安装MySQL数据库。</font><font>以下是通过终端的快速描述：
+</font></font></p>
+<pre class="wiki"><font><font>mysql -u root -p
+</font></font></pre><p><font><font>
+然后插入您在安装中使用的MySQL密码。</font><font>在MySQL控制台类型中：
+</font></font></p>
+<pre class="wiki"><font><font>创建数据库picidae;</font></font><font></font><font><font>
+出口;</font></font><font></font>
+</pre><h2 id="Setuptheconfigurationfile"><font><font>设置配置文件</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Setuptheconfigurationfile" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+将配置文件“ADMIN / sample.config.php”复制到“ADMIN / config.php”，并在配置文件中设置正确的路径。
+</font></font></p>
+<h2 id="Createthedatabasetables"><font><font>创建数据库表</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Createthedatabasetables" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font class="">
+要设置pici-server的数据库结构，您应该在Web浏览器中调用文件ADMIN / setup.php并按照安装说明进行操作。</font></font><br><font><font>
+（</font><font>如果pici-server位于Web服务器的主目录中，</font></font><a class="ext-link" href="http://localhost/ADMIN/setup.php"><span class="icon"><font><font>则为http：//localhost/ADMIN/setup.php</font></font></span></a><font><font>） 
+</font></font></p>
+<p><font><font>
+安装脚本还将检查您是否正确配置了pici-server，并会在出现错误时发出警告。</font><font>如果收到错误消息，请解决问题并重新调用设置脚本，直到收到最终成功消息。
+</font></font></p>
+<p>
+ 
+</p>
+<h2 id="pici-serversuccessfullyinstalled"><font><font>pici-server成功安装</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#pici-serversuccessfullyinstalled" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+现在你可以尝试访问你的pici服务器，它应该是启动和运行。
+</font></font></p>
+<h2 id="Importantfirststeps"><font><font>重要的第一步</font></font><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux#Importantfirststeps" class="anchor" title="链接到此部分"><font><font>¶</font></font></a></h2>
+<p><font><font>
+您必须首次手动接受Cookie。</font><font>因此，您需要通过vnc连接到您的Xvfb显示，并单击显示中间的小异常窗口。</font></font><br>
+<a class="wiki" href="http://dev.picidae.net/dev/wiki/VncXvfbDisplayAccess"><font><font>如何通过vnc &gt;&gt;访问Xvfb显示</font></font></a> 
+</p>
+<hr>
+<p>
+<a class="wiki" href="http://dev.picidae.net/dev/wiki/TroubleShootingLinux"><font><font>如果你有问题，请检查故障排除页&gt;&gt; </font></font></a><br>
+<a class="wiki" href="http://dev.picidae.net/dev/wiki/ImproveLinuxPiciServer"><font><font>帮助我们改进Linux pici服务器&gt;&gt; </font></font></a><br>
+<a class="wiki" href="http://dev.picidae.net/dev/wiki/MaintainLinuxPiciServer"><font><font>优化和维护您的pici服务器&gt;&gt;</font></font></a><br>
+</p>
+<hr>
+<hr>
+</div>
+   </div>
+   
+  
+   <div class="buttons">
+     <form method="get" action="http://dev.picidae.net/dev/wiki/PiciServerLinux"><div>
+      <input type="hidden" name="action" value="edit">
+      <font><font><input type="submit" value="编辑这个页面" accesskey="e"></font></font>
+     </div></form>
+      <form method="get" action="http://dev.picidae.net/dev/attachment/wiki/PiciServerLinux"><div>
+       <input type="hidden" name="action" value="new">
+       <font><font><input type="submit" value="附加文件"></font></font>
+      </div></form>
+   </div>
+  
+  <script type="text/javascript">
+   addHeadingLinks(document.getElementById("searchable"), "Link to this section");
+  </script>
+ 
+ 
+</div>
+
+<script type="text/javascript">searchHighlight()</script>
+
+<div id="altlinks"><h3><font><font>下载其他格式：</font></font></h3><ul><li class="first last"><a href="http://dev.picidae.net/dev/wiki/PiciServerLinux?format=txt"><font><font>纯文本</font></font></a></li></ul></div>
+</div>
+
+
+</div>
+</div>
+<div id="dev_content_bottom"></div>
+</div>
+</div><div id="goog-gt-tt" class="goog-tooltip skiptranslate" dir="ltr" style="visibility: hidden; left: 390px; top: 3277px; display: block;"><div style="padding: 8px;"><div><div class="logo"><img src="./PiciServerLinux - picidae开发者部分_files/translate_24dp.png" width="20" height="20" alt="Google 翻译"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">原文</h1></div><div class="middle" style="padding: 8px;"><div class="original-text">To setup the database structure for pici-server you should invoke the file ADMIN/setup.php in your web browser and follow the installation instructions.</div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">提供更好的翻译建议</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none; opacity: 0;"></div></div>
+
+
+ 
+
+
+<div class="goog-te-spinner-pos"><div class="goog-te-spinner-animation"><svg xmlns="http://www.w3.org/2000/svg" class="goog-te-spinner" width="96px" height="96px" viewBox="0 0 66 66"><circle class="goog-te-spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></div></div></body></html>

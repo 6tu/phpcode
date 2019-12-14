@@ -1,0 +1,39 @@
+= pici-proxy Installation Guide =
+
+Do you have a web account? 
+So you can run a pici-Proxy!
+It just needs PHP to run.
+
+== Installation is very easy ==
+Download the php-script (they are all the same. if you are a Windows user, the zip file will most probably be the easiest download for you.)
+ * [http://dev.picidae.net/pici-proxy_snapshot.zip pici-proxy_snapshot.zip]
+ * [http://dev.picidae.net/pici-proxy_snapshot.tar.gz pici-proxy_snapshot.tar.gz]
+ * [wiki:svnAccess svnAccess]
+
+Unzip your download and upload it to your web account. 
+That's all! Type the URL into your web browser and watch it working. 
+
+== How to change the pici-server  ==
+By default the script points to the [http://pici.picidae.net pici.picidae.net] pici-server. 
+To change that, open the file index.php and change the URL of the pici-server on the following line:
+
+
+{{{
+$pici_server = "pici.picidae.net";  // set here the URL of the pici-server
+ 	                                    // to use
+}}}
+
+
+There is no central database for existing pici-servers, as they could be censored to easely. 
+If you would like to get the address of another pici-server [http://info.picidae.net/en/contact/ write us a mail]. (our [wiki:PGPkey] for mail encryption)
+
+== Let the world know ==
+To let the world know about your pici-proxy, make a link from your homepage. 
+[http://info.picidae.net/en/join_picidae/banner-tags/ On this site you find many tags and banners for your link.]
+
+Please pay attention not to use the word "pici" or "picidae" when linking to a pici-server or pici-proxy. If a censorship authority places "picidae" onto the index, your link  will remain undiscovereable.
+
+We are always curios to hear about new pici-installations!
+Drop us a mail to inform us about your pici-proxy: [http://info.picidae.net/en/contact/ email us]. (our [wiki:PGPkey] for mail encryption)
+
+

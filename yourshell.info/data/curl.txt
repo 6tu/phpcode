@@ -1,0 +1,32 @@
+CURL处理返回page not found页面问题 
+用curl抓取页面时，一般根据curl_exec的返回内容判断是否抓取成功了。但我发现，访问有些站点本来是返回404错误，但页面有内容时，curl把page not found的内容也抓回来了。如果以curl_exec的结果判断是否正确抓取就被误导了。如下面的代码：$url = 'http://www.cq.xinhuanet.com/house/2008-11/24/content_1499****26.htm-';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_ENCODING, “gzip, deflate”);
+curl_setopt($ch, CURLOPT_USERAGENT, “Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; CIBA; InfoPath.1; .NET CLR 2.0.50727)”);
+curl_setopt($ch, CURLOPT_MAXREDIRS, 5);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); //自动跟踪location
+curl_setopt($ch, CURLOPT_TIMEOUT, 10); //Timeout
+curl_setopt($ch, CURLOPT_HEADER, 1);
+//curl_setopt($ch, CURLOPT_NOBODY, 0);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+$contents = curl_exec($ch);
+curl_close($ch);
+
+if (false == $contents || empty($contents)) {
+echo $contents;
+} else {
+echo “抓取页面失败！”;
+}
+
+查了下手册，发现curl里还有个curl_getinfo函数。应该判断http状态：
+$contents = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+if ($http_code >= 400) { //400 - 600都是服务器错误
+echo “访问失败！”;
+exit;
+} else {
+echo $contents;
+}
+curl_close($ch);

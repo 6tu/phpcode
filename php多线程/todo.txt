@@ -1,0 +1,131 @@
+<?php
+/**
+ * http://blog.csdn.net/skillcoding/article/details/6778015
+ * https://github.com/aria2/aria2/releases/tag/release-1.31.0
+ * 1.得到直连https://github.com/xiuluo/baidu
+ * 2.得到大小http://www.3lian.com/edu/2013/07-12/80472.html
+ * 3.获取代理，并分配代理http://www.proxy360.cn/default.aspx
+ * 4.IP地址生成https://github.com/xiayulei/generateIP
+ * 5.伪装IPhttp://www.jincon.com/archives/12/
+ * 6.大于2M进行分块请求CURLOPT_RANGE
+ * 7.按次序合成catf1.rarf2.rar>f.rar
+ */
+$url = 'http://ys138.win/tools/xampp.tar.gz';
+$thread = 6;
+$proxy = 0;
+
+$proxy_url = 'http://www.proxy360.cn/default.aspx';
+curlget($proxy = 0, $proxy_url, $thread = 1);
+
+// 包含 header 时使用
+# $out1 = explode("\r\n\r\n",$out,2);
+# $out = $out1[1];
+$out2 = explode('<div class="LittleBlockHead" >', $out, 2);
+$out = $out2[0];
+$out3 = explode('<div class="proxylistitem" name="list_proxy_ip">', $out, 2);
+$out = $out3[1];
+$out = str_replace('<input', 'br+huiche<input', $out);
+$out = strip_tags($out);
+# $out = strip_tags($out,'<span>');
+$out = str_replace("&nbsp;", "", $out);
+$out = str_replace('更多的免费PROXY地址.....', ' ', $out);
+$out = str_replace(array("\r\n", "\n", "\t"), "", $out);
+$out = preg_replace('/ +/', ' ', $out);
+$out = str_replace("br+huiche", "<br>\r\n", $out);
+# echo $out1[0] . "\r\n\r\n<pre>\r\n" . $out . "\r\n";
+
+$ipx = explode("<br>\r\n", $out);
+$n = count($ipx);
+$proxy = '';
+for($i = 0; $i < $n; $i++){
+    $ip = explode(" ", $ipx[$i]);
+    if(array_key_exists('2', $ip)) $proxy .= $ip[1] . ':' . $ip[2] . "\r\n";
+    }
+# echo $proxy;
+file_put_contents('./proxy.log',$proxy);
+
+
+function curlget($proxy=1, $url, $thread = 6){
+    function_exists('curl_init') || die('CURLLibraryNotLoaded');
+
+    // 判断URL是否存在,取得文件的大小
+    // 单位为字节(B),8b=1B,1024B=1KB,1024KB=1M,1048576B=1M
+    /**
+    $header_array = get_headers($url, true);
+    if(preg_match('/200/', $array[0])){
+        $size = $header_array['Content-Length'];
+    }else{
+        die('文件不存在');
+    }
+    */
+	
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,10);
+	curl_setopt($ch, CURLOPT_TIMEOUT,$timeout);
+    curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    if($http_code == 200){
+        $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+        $type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+    }else{
+        die('文件不存在')}
+    curl_close($ch);
+	
+    // 获取文件名
+    $fileinfo = pathinfo($filename);
+    $filename = $fileinfo['basename'];
+	
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
+	$timeout = 500;
+	if($proxy == 1){
+	    $str = file_get_contents('./proxy.log');
+	    $host = explode("\r\n",$str);
+		$user = '';
+	    # $proxy = array($host => '192.168.1.8:8080', $user => 'username:password',);	
+    }else{
+		$host = '';
+		$user = '';
+	}
+    # echo $size;
+	# $size = 8430186;
+    if($size / 1048576 <= 1) $thread = 1;
+    $byt = ceil($size / $thread);
+    $range = array();
+    for($i = 0;$i < $thread-1;$i++){
+        $r2 = ($i + 1) * $byt-1;
+        $range[$i] = $i * $byt . '-' . $r2;
+    }
+    $i = $thread-1;
+    $range[$i] = $i * $byt . '-' . $size;
+    # print_r($range);
+	
+	//从这里开始生成 PHP 文件
+	if($thread == 1) $i = 1;
+	# for($i = 0; $i < $thread ; $i++){}
+    // 生成随机IP地址
+    require'IP.class.php';
+    # IP::update();
+	# $province_ip = $ip_address=IP::generate('安徽');
+    $x_ip = $ip_address = IP :: generate();
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headerArr);
+    curl_setopt($ch, CURLOPT_REFERER, "http://www.163.com/");
+    curl_setopt($ch, CURLOPT_RANGE, $range[$i]);
+    curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,10);	
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+    curl_setopt($ch, CURLOPT_PROXY, $host[$i]);
+    curl_setopt($ch, CURLOPT_PROXYUSERPWD, $user);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_NOBODY, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    file_put_contents('./file/' . $i . '_' . $filename, $result);
+}

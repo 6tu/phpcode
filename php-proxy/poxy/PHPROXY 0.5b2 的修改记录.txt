@@ -1,0 +1,689 @@
+PHPROXY 0.5b2 的修改记录
+
+# 添加 encrypt_page 选项
+'encrypt_page' => array('encrypted HTML', 'encrypted HTML'),
+
+# 默认代理网站
+$autopage = '0'; # 启用为 1
+$autourl = 'http://127.0.0.1/p/index.php?mylink=';
+
+# 制作一个书签页
+if(isset($_GET['mylink'])){
+    $mylink = 'link';
+    echo die($mylink);
+}
+
+# 定义一个常量 SESS_PREF，它用作密码
+session_start();
+
+if(empty($_SESSION['sesspref'])){
+     $sesspref = randstr();
+     $_SESSION['sesspref'] = $sesspref;
+    }
+else $sesspref = $_SESSION['sesspref'];
+define('SKEY', $sesspref);
+
+# 浏览器语言
+if(!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"])){
+    $lang = 'en';
+    }else{
+    preg_match('/^([a-z\-]+)/i', @$_SERVER["HTTP_ACCEPT_LANGUAGE"], $matches);
+    $lang = strtolower($matches[1]);
+    }
+
+发送浏览器语言
+* // FUNCTION DECLARATIONS
+
+* $_request_headers .= 'Host: ' . $_url_parts['host'] . $_url_parts['port_ext'] . "\r\n";
+     $_request_headers .= 'ACCEPT_LANGUAGE: ' . $lang . "\r\n";
+
+====================================================
+* // FIGURE OUT WHAT TO DO (POST URL-form submit, GET form request, regular request, basic auth, cookie manager, show URL-form)
+
+# 默认代理网站
+$autopage = '';
+$autourl = 'http://127.0.0.1/p/index.php?mylink=';
+if (!isset($_POST[$_config['url_var_name']]) && !isset($_GET[$_config['url_var_name']]) && $autopage == '1')
+    {
+    header('Location: ' . $_script_url . '?' . $_config['url_var_name'] . '=' . encode_url($autourl) . '&' . $_config['flags_var_name'] . '=2e9');
+    exit(0);
+    }
+
+# 提交的数据经过编码
+if (isset($_POST[$_config['url_var_name']]) && !isset($_GET[$_config['url_var_name']]))
+    {
+    if(strstr($_POST[$_config['url_var_name']],'.')){
+        $eurl = encode_url(base64_decode($_POST[$_config['url_var_name']]));
+        }
+else{
+        $eurl = encode_url($_POST[$_config['url_var_name']]);
+        }
+    header('Location: ' . $_script_url . '?' . $_config['url_var_name'] . '=' . $eurl . '&' . $_config['flags_var_name'] . '=' . base_convert($_iflags, 2, 16));
+    exit(0);
+    }
+
+====================================================
+移除CSS文件中的注释
+if ($_content_type == 'text/css')
+{
+    $_response_body = proxify_css($_response_body);
+    $_response_body = preg_replace("/(\/\*)(.*?)(\*\/)/si", "", $_response_body);
+    }
+====================================================
+
+更改COOKIES编码
+
+$domain = enc($domain);
+* if (count($_COOKIE) >= 15 && time()-$expires_time <= 0)
+--------------------------------------
+* $cookie_id      = explode(';', rawurldecode($cookie_id));
+* $cookie_content = explode(';', rawurldecode($cookie_content));
+
+if(isset($cookie_id[3])){
+$cookie_id[3] = dec($cookie_id[3],$key='');
+$cookie_id[3] = str_replace('.', '_', $cookie_id[3]);
+}
+====================================================
+* // SET FLAGS
+
+# 自定义HTML编码
+if(isset($_GET['iso']) && !empty($_GET['iso']))
+    {
+    //$iso = htmlspecialchars(addslashes(trim(ltrim(strtolower($_GET['iso'])))));
+    $iso = trim(ltrim(strtolower($_GET['iso'])));
+    }
+
+修改 encode_url(),
+    function encode_url($url)
+    {
+        global $iso;
+        $url = enc($url,$key='8');
+        if(isset($iso)) $url = $url . "&iso=$iso";
+        return $url;
+        }
+    function decode_url($url)
+    {
+        global $iso;
+        if(isset($iso)) {
+		    $url = str_replace(array('&amp;','&#38;'),'&',$url); 
+            $url = explode("&iso=",$url);
+            $url = $url[0];
+        }
+        $url = dec($url,$key='8'); 
+        return $url;
+        }
+
+最后在 编码转换中
+
+if (isset($iso) && !empty($iso)) $charset = $iso; 
+=======================================
+
+
+提取charset
+
+* case 'meta':
+
+$meta_charset = '';
+foreach($attrs as $keys => $values){
+$keys = strtolower($keys);
+$values = strtolower($values);
+if (strstr($keys,'charset')) $meta_charset = $values;
+if (strstr($values,'charset')){
+$values = str_replace(' ','',$values);
+$meta_charset = substr($values,strpos($values,'charset='));
+}
+}
+$fp = fopen('charset.log','a+'); fwrite($fp,$meta_charset); fclose($fp);
+
+完善URL的BUG
+
+* $delim = strpos($value, '"') && !strpos($value, "'") ? "'" : '"';
+
+$_value = strtolower($value);
+if(strstr($_value,'<br') or strstr($_value,'<b') or strstr($_value,'<p') or strstr($_value,'<u') or strstr($_value,'<font') or strstr($_value,'<clockquote')){
+    $new_tag .= ' ' . $name . ($value !== false ? '=' . $delim . $value : '');
+    }else{
+    $new_tag .= ' ' . $name . ($value !== false ? '=' . $delim . $value . $delim : '');
+    }
+
+
+
+在微型表单支持JS编码网址
+
+if ($_flags['include_form'] && !isset($_GET['nf']))
+    {
+    $enc_url_var = 'document.form.' . $GLOBALS['_config']['url_var_name'] . '.value';
+    $_url_form = '<div style="margin:0;text-align:center;border-bottom:1px #725554;color:#000000;background-color:#99CC66;font-size:12px;font-weight:bold;font-family:Bitstream Vera Sans,arial,sans-serif;padding:0px;">'
+     . '<script type="text/javascript" src="js/encode.js"></script>'   
+     . '<form name="form" method="post" action="' . $_script_url . '" onsubmit="' . $enc_url_var . '=window.btoa(' . $enc_url_var . ');">'
+     . ' <label for="____' . $_config['url_var_name'] . '"><a href="' . $_url . '">address</a>:</label> <input id="____' . $_config['url_var_name'] . '" type="text" size="80" name="' . $_config['url_var_name'] . '" value="' . $_url . '" />'
+     . ' <input type="submit" name="go" value="go" />'
+     . ' [<a href="' . $_script_url . '?' . $_config['url_var_name'] . '=' . encode_url($_url_parts['prev_dir']) . ' ">updir</a>, <a href="' . $_script_base . '">homepage</a>]'
+     . '<br /><hr />';
+        
+    foreach ($_flags as $flag_name => $flag_value)
+        {
+        if(!$_frozen_flags[$flag_name]){
+            $_url_form .= '<label><input type="checkbox" name="' . $_config['flags_var_name'] . '[' . $flag_name . ']"' . ($flag_value ? ' checked="checked"' : '') . ' /> ' . $_labels[$flag_name][0] . '</label> ';
+            }
+        }   
+    $_url_form .= '</form></div>';
+    $_response_body = preg_replace('#\<\s*body(.*?)\>#si', "$0\n$_url_form" , $_response_body, 1);
+    }
+
+
+# 非加密时被指定了编码
+if ($_content_type == 'text/html' && !$_flags['encrypt_page'] && isset($iso) && !empty($iso)){
+    header("Content-type: text/html;charset=utf-8");
+    $_response_body = @iconv($iso, 'UTF-8//IGNORE//TRANSLIT', $_response_body);
+    }
+
+# 加密 HTML
+if ($_content_type == 'text/html' && $_flags['encrypt_page']){
+
+    # 判断 charset
+    if (isset($iso) && !empty($iso)) $charset = $iso; 
+    elseif($_response_body == @iconv('UTF-8', 'UTF-8//IGNORE//TRANSLIT', $_response_body)) $charset = 'utf-8';
+    elseif(!empty($meta_charset)){
+        $charset = $meta_charset;
+        if(strstr($charset, 'gb2312')) $charset = 'GBK';
+        if(strstr($charset, 'iso-8859-1') && $lang == 'zh-cn') $charset = 'GBK';
+        if(strstr($charset, 'utf-8')) $charset = 'ANSI';
+        }else{
+        $charset = 'ANSI';
+        }
+    
+    # 转为 UTF-8 
+    if($charset !== 'utf-8' && $charset !== 'ANSI'){
+        // if(extension_loaded('mbstring')) $_response_body = mb_convert_encoding($_response_body, 'UTF-8', $charset);
+        // elseif(extension_loaded('iconv')) $_response_body = iconv($charset, 'UTF-8//IGNORE//TRANSLIT', $_response_body);
+        $_response_body = iconv($charset, 'UTF-8//IGNORE//TRANSLIT', $_response_body);
+        }
+    
+    # HTML 实体之后，加密 HTML
+    if($charset !== 'ANSI'){
+        
+        //$_response_body = utf2html($_response_body);
+        
+        $key = rand(1, 20);
+        $_response_body = addJsSlashes(xxtea_encrypt($_response_body, $key), $flag = true);
+        $_response_body = '<script type="text/javascript" src="./js/dec.js"></script><script type="text/javascript">' . 
+                          'var data="' . $_response_body . '";var dec = XXTEA;'.
+                          'str = dec.decrypt(data, "' . $key . '").toUTF16();document.write(str);</script>';
+        header("Content-type: text/html;charset=utf-8"); # 很有必要指出文件编码方式
+        }
+    }
+================================================
+最后一个是压缩输出的更改
+
+注释到原来的压缩方式代码
+// COMPRESS OUTPUT IF INSTRUCTED
+
+if ($_config['compress_output'] && $_system['gzip'] && isset($_SERVER['HTTP_ACCEPT_ENCODING']) && !$_flags['encrypt_page']){
+        header('Content-Encoding: deflate');
+        $_response_body = gzdeflate($_response_body, 9);
+    }
+
+* echo $_response_body;
+
+================================================
+修改了 function show_report($data) ，不再需要 style.css 和 index.inc.php文件
+
+
+function show_report($data)
+{
+    // include $data['which'] . '.inc.php';
+    global $_config , $_script_base , $_url_parts , $_content_length , $_url , $_flags , $_labels , $_frozen_flags , $_version ;
+
+    echo '<?xml version="1.0" encoding="utf-8"?>';
+    print <<<HEAD
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head><title>PHProxy</title>
+<style type="text/css">
+body, input
+{
+    font-family: "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+    color: #44352C;
+}
+
+a
+{
+    color: #;
+    text-decoration:none;
+    border-bottom: 1px blue dashed;
+}
+
+a:hover 
+{
+    color: #0080FF;
+}
+
+#container
+{
+    border: 2px #97CCA8 solid;
+    -moz-border-radius: 8px;
+    margin: auto;
+    padding: 5px;
+    width: 713px;
+}
+
+#title
+{
+    color: #99CC66;
+    margin: 0;
+}
+
+ul#navigation, ul#form
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul#navigation
+{
+    float: right;
+}
+
+ul#form
+{
+    clear: both;
+}
+
+ul#navigation li
+{
+    float: left;
+    margin: 0;
+    padding: 5px 0;
+    border-top: 2px #99CC66 solid;
+}
+
+ul#navigation li a
+{
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #99CC66;
+    padding: 5px 15px;
+    margin-left: 1px;
+    text-decoration: none;
+    border-bottom: 0 #ffffff solid;
+}
+
+ul#navigation li  a:hover
+{
+    color: #44352C;
+}
+
+ul#form li
+{
+    width: 700px;
+}
+
+#footer
+{
+    color: #9B9C83;
+    font-size: small;
+    text-align: right;
+}
+
+#address_bar
+{
+    border-top: 2px #BFAA9B solid;
+    border-bottom: 3px #44352C solid;
+    background-color: #99CC66;
+    text-align: center;
+    padding: 5px 0;
+    color: #ffffff;
+}
+
+#go
+{
+    background-color: #ffffff;
+    font-weight: bold;
+    color: #AA8E79;
+    border: 0 #ffffff solid;
+    padding: 2px 5px;
+}
+
+#address_box
+{
+    width: 500px;
+}
+
+.option
+{
+    padding: 2px 0;
+    background-color: #EEEBEA;
+}
+
+.option label
+{
+    border-bottom: 2px #ffffff solid;
+}
+
+form
+{
+    margin: 0;
+}
+
+#error, #auth
+{
+    background-color: #AA8E79;//#BF6464;
+    border-top: 1px solid #44352C;
+    border-bottom: 1px solid #44352C;
+    width: 700px;
+    clear: both;
+}
+
+#auth
+{
+    background-color: #94C261;
+}
+
+#error p, #auth p, #auth form
+{
+    margin: 5px;
+}
+</style>
+<script type="text/javascript" src="./js/encode.js"></script><script language="javascript" >
+  function autojs(){
+HEAD;
+    $body = 'document.form.' . $_config['url_var_name'] . '.value=window.btoa(document.form.' . $_config['url_var_name'] . '.value); ' .
+            'document.form.submit();}</script></head><body onload="document.getElementById(' . "'address_box'" . ').focus()">' .
+            '<div id="container"><h1 id="title">PHProxy</h1><ul id="navigation"><li><a href="' . $_script_base . '">URL Form</a></li>' .
+            '<li><a href="javascript:alert(' . "'cookie managment has not been implemented yet'" . ')">Manage Cookies</a></li></ul>';
+    echo $body;
+    
+    switch ($data['category'])
+    {
+    case 'auth':
+        
+        $body = '<div id="auth"><p><b>Enter your username and password for "' . htmlspecialchars($data['realm']) . '" on ' . $_url_parts['host'] . '</b>' .
+               '<form method="post" action=""><input type="hidden" name="' . $_config['basic_auth_var_name'] . '" value="' . base64_encode($data['realm']) . '" />' .
+               '<label>Username <input type="text" name="username" value="" /></label> <label>Password <input type="password" name="password" value="" /></label>' .
+               '<input type="submit" value="Login" /></form></p></div>';
+        echo $body;
+        break;
+    case 'error':
+        echo '<div id="error"><p>';
+        
+        switch ($data['group'])
+        {
+        case 'url':
+            echo '<b>URL Error (' . $data['error'] . ')</b>: ';
+            switch ($data['type'])
+            {
+            case 'internal':
+                $message = 'Failed to connect to the specified host. '
+                         . 'Possible problems are that the server was not found, the connection timed out, or the connection refused by the host. '
+                         . 'Try connecting again and check if the address is correct.';
+                break;
+            case 'external':
+                switch ($data['error'])
+                {
+                case 1:
+                    $message = 'The URL you\'re attempting to access is blacklisted by this server. Please select another URL.';
+                    break;
+                case 2:
+                    $message = 'The URL you entered is malformed. Please check whether you entered the correct URL or not.';
+                    break;
+                    }
+                break;
+                }
+            break;
+        case 'resource':
+                echo '<b>Resource Error:</b> ';
+                switch ($data['type'])
+                {
+                case 'file_size':
+                    $message = 'The file your are attempting to download is too large.<br />'
+                             . 'Maxiumum permissible file size is <b>' . number_format($_config['max_file_size'] / 1048576, 2) . ' MB</b><br />'
+                             . 'Requested file size is <b>' . number_format($_content_length / 1048576, 2) . ' MB</b>';
+                    break;
+                case 'hotlinking':
+                    $message = 'It appears that you are trying to access a resource through this proxy from a remote Website.<br />'
+                             . 'For security reasons, please use the form below to do so.';
+                    break;
+                    }
+                break;
+                }
+            
+            echo 'An error has occured while trying to browse through the proxy. <br />' . $message . '</p></div>';
+            break;
+            }
+        
+        $form = '<form name="form" method="post" action="' . $_SERVER['PHP_SELF'] . '"  onsubmit="autojs();" ><ul id="form">' .
+                '<li id="address_bar"><label>Web Address <input id="address_box" type="text" name="' . $_config['url_var_name'] .'" value="';
+        isset($_url) ? $form .= htmlspecialchars($_url) : $form .= '';
+        $form .= '" onfocus="this.select()" /></label> <input id="go" type="submit" value="Go" /></li>';      
+        echo $form;
+
+        foreach ($_flags as $flag_name => $flag_value)
+        {
+        if (!$_frozen_flags[$flag_name])
+        {
+        echo '<li class="option"><label><input type="checkbox" name="' . $_config['flags_var_name'] . '[' . $flag_name . ']"' . ($flag_value ? ' checked="checked"' : '') . ' />' . $_labels[$flag_name][1] . '</label></li>' . "\n";
+        }
+    }    
+
+    $footer = '</ul></form><div id="footer"><a href="http://whitefyre.com/poxy/">PHProxy</a>' . $_version . '</div></div></body></html>';
+    echo $footer;
+    exit(0);
+    }
+
+
+
+
+
+
+
+
+=================================================
+所需要的函数
+=================================================
+# UTF8转成HTML实体
+
+function utf2html($str){  
+    $ret = "";
+    $max = strlen($str);
+    $last = 0;
+    for ($i = 0;$i < $max;$i++){
+        $c = $str{$i};
+        $c1 = ord($c);
+        if ($c1 >> 5 == 6){
+            $ret .= substr($str, $last, $i - $last);
+            $c1 &= 31;  # remove the 3 bit two bytes prefix
+            $c2 = ord($str{++$i});
+            $c2 &= 63;
+            $c2 |= (($c1 & 3) << 6);
+            $c1 >>= 2;
+            $ret .= "&#" . ($c1 * 0x100 + $c2) . ";";
+            $last = $i + 1;
+            }
+        elseif ($c1 >> 4 == 14){
+            $ret .= substr($str, $last, $i - $last);
+            $c2 = ord($str{++$i});
+            $c3 = ord($str{++$i});
+            $c1 &= 15;
+            $c2 &= 63;
+            $c3 &= 63;
+            $c3 |= (($c2 & 3) << 6);
+            $c2 >>= 2;
+            $c2 |= (($c1 & 15) << 4);
+            $c1 >>= 4;
+            $ret .= '&#' . (($c1 * 0x10000) + ($c2 * 0x100) + $c3) . ';';
+            $last = $i + 1;
+            }
+        }
+    $str = $ret . substr($str, $last, $i);
+    return $str;
+    }
+# JSencode 格式化字符串
+function addJsSlashes($str, $flag) {
+    if ($flag) {
+        $str = addcslashes($str, "\0..\006\010..\012\014..\037\042\047\134\177..\377");
+    }else {
+        $str = addcslashes($str, "\0..\006\010..\012\014..\037\042\047\134");
+    }
+    return str_replace(array(chr(7), chr(11)), array('\007', '\013'), $str);
+}
+
+# 产生随机字符串
+function randstr($len=16){
+    $char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+    if(empty($char)) die('Errors: initialise character is NULL');
+    if($len > strlen($char)){
+        $n = floor($len/strlen($char));
+        for($i = 1; $i < $n; $i++){
+            $char .= $char;
+            }
+        }
+    $array = str_split($char,1); 
+    $new_array = shuffle($array);
+    $char = join($array);
+    $char = str_split($char,$len); 
+    return $char[0];
+    }
+
+
+function enc($str)
+    {
+    $key=SKEY;
+    $encstr = base64_encode(xxtea_encrypt($str,$key));
+    return $encstr;
+    }
+
+function dec($encstr)
+    {
+    $key=SKEY;
+    $str = xxtea_decrypt(base64_decode($encstr),$key);
+    return $str;
+    }
+
+# xxtea 加密解密函数
+if (!extension_loaded('xxtea')) {
+    function long2str($v, $w) {
+        $len = count($v);
+        $n = ($len - 1) << 2;
+        if ($w) {
+            $m = $v[$len - 1];
+            if (($m < $n - 3) || ($m > $n)) return false;
+            $n = $m;
+        }
+        $s = array();
+        for ($i = 0; $i < $len; $i++) {
+            $s[$i] = pack("V", $v[$i]);
+        }
+        if ($w) {
+            return substr(join('', $s), 0, $n);
+        }
+        else {
+            return join('', $s);
+        }
+    }
+ 
+    function str2long($s, $w) {
+        $v = unpack("V*", $s. str_repeat("\0", (4 - strlen($s) % 4) & 3));
+        $v = array_values($v);
+        if ($w) {
+            $v[count($v)] = strlen($s);
+        }
+        return $v;
+    }
+
+    function int32($n) {
+        while ($n >= 2147483648) $n -= 4294967296;
+        while ($n <= -2147483649) $n += 4294967296; 
+        return (int)$n;
+    }
+
+    function xxtea_encrypt($str, $key) {
+        if ($str == "") {
+            return "";
+        }
+        $v = str2long($str, true);
+        $k = str2long($key, false);
+        if (count($k) < 4) {
+            for ($i = count($k); $i < 4; $i++) {
+                $k[$i] = 0;
+            }
+        }
+        $n = count($v) - 1;
+
+        $z = $v[$n];
+        $y = $v[0];
+        $delta = 0x9E3779B9;
+        $q = floor(6 + 52 / ($n + 1));
+        $sum = 0;
+        while (0 < $q--) {
+            $sum = int32($sum + $delta);
+            $e = $sum >> 2 & 3;
+            for ($p = 0; $p < $n; $p++) {
+                $y = $v[$p + 1];
+                $mx = int32((($z >> 5 & 0x07ffffff) ^ $y << 2) + (($y >> 3 & 0x1fffffff) ^ $z << 4)) ^ int32(($sum ^ $y) + ($k[$p & 3 ^ $e] ^ $z));
+                $z = $v[$p] = int32($v[$p] + $mx);
+            }
+            $y = $v[0];
+            $mx = int32((($z >> 5 & 0x07ffffff) ^ $y << 2) + (($y >> 3 & 0x1fffffff) ^ $z << 4)) ^ int32(($sum ^ $y) + ($k[$p & 3 ^ $e] ^ $z));
+            $z = $v[$n] = int32($v[$n] + $mx);
+        }
+        return long2str($v, false);
+    }
+
+    function xxtea_decrypt($str, $key) {
+        if ($str == "") {
+            return "";
+        }
+        $v = str2long($str, false);
+        $k = str2long($key, false);
+        if (count($k) < 4) {
+            for ($i = count($k); $i < 4; $i++) {
+                $k[$i] = 0;
+            }
+        }
+        $n = count($v) - 1;
+
+        $z = $v[$n];
+        $y = $v[0];
+        $delta = 0x9E3779B9;
+        $q = floor(6 + 52 / ($n + 1));
+        $sum = int32($q * $delta);
+        while ($sum != 0) {
+            $e = $sum >> 2 & 3;
+            for ($p = $n; $p > 0; $p--) {
+                $z = $v[$p - 1];
+                $mx = int32((($z >> 5 & 0x07ffffff) ^ $y << 2) + (($y >> 3 & 0x1fffffff) ^ $z << 4)) ^ int32(($sum ^ $y) + ($k[$p & 3 ^ $e] ^ $z));
+                $y = $v[$p] = int32($v[$p] - $mx);
+            }
+            $z = $v[$n];
+            $mx = int32((($z >> 5 & 0x07ffffff) ^ $y << 2) + (($y >> 3 & 0x1fffffff) ^ $z << 4)) ^ int32(($sum ^ $y) + ($k[$p & 3 ^ $e] ^ $z));
+            $y = $v[0] = int32($v[0] - $mx);
+            $sum = int32($sum - $delta);
+        }
+        return long2str($v, true);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+﻿MIDlet-Jar-Size: 142821
+MIDlet-Jar-URL: Mini.jar
+Manifest-Version: 1.0
+MIDlet-Vendor: Opera Software ASA
+MIDlet-Version: 4.2
+MIDlet-Data-Size: 25600
+MIDlet-Name: Mini 实验室版
+MIDlet-Info-URL: http://walk.cmded.net/mo/
+MIDlet-1: Mini 实验室版, /i.png, Browser
+MicroEdition-Configuration: CLDC-1.0
+MIDlet-Icon: /i.png
+MIDlet-Description: Opera Mini
+MicroEdition-Profile: MIDP-2.0
+Nokia-Update: Mini.jad

@@ -1,0 +1,13 @@
+== Configure !WebKit ==
+
+As pici-server uses !WebKit to render the web pages. Configuring !WebKit is a useful step to secure pici-server.
+
+To configure !WebKit you have to open the program with the user that is used . and than to press the menu Safari > Preferences ... (!WebKit calls itself Safari in the menu bar)
+ * General Tab
+  * uncheck the checkbox: Open "safe" files after downloading[[BR]] (there shouldn't anything be downloaded from pici-server. but we never know...)
+  * choose a special download-folder for the downloads. (you'll have a better overview then)
+ * Security Tab:
+  * uncheck checkbox: Enable Java
+  * check checkbox: Block pop-up windows
+
+

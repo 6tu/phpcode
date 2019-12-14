@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>
+            Shadowsocks / SS 试用账号
+        </title>
+        <style type="text/css">
+pre{border:dashed 1px green; background-color:#C1CDCD;color:#000000; font-size:15px}
+        </style>
+    </head>
+    
+ 
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<title>strongSwan IKEv2服务器配置 &#8211; 伊索笔记</title>
+<script>
+window._deel = {name: '伊索笔记',url: 'https://www.yisuo.asia/wp-content/themes/yusi1.0', ajaxpager: '', commenton: 1, roll: [0,0]}
+</script>
+<link rel='dns-prefetch' href='//libs.baidu.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='stylesheet' id='wpstatistics-css-css'  href='https://www.yisuo.asia/wp-content/plugins/wp-statistics/assets/css/frontend.css?ver=12.3.6.1' type='text/css' media='all' />
+<link rel='stylesheet' id='style-css'  href='https://www.yisuo.asia/wp-content/themes/yusi1.0/style.css?ver=1.0' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-fastest-cache-toolbar-css'  href='https://www.yisuo.asia/wp-content/plugins/wp-fastest-cache/css/toolbar.css?ver=1530385613' type='text/css' media='all' />
+<script type='text/javascript' src='//libs.baidu.com/jquery/1.8.3/jquery.min.js?ver=1.0'></script>
+<link rel='https://api.w.org/' href='https://www.yisuo.asia/wp-json/' />
+<link rel='prev' title='一些安全的DNS提供商' href='https://www.yisuo.asia/2018/06/30/%e4%b8%80%e4%ba%9b%e5%ae%89%e5%85%a8%e7%9a%84dns%e6%8f%90%e4%be%9b%e5%95%86/' />
+<link rel="canonical" href="https://www.yisuo.asia/2018/06/30/strongswan-ikev2%e6%9c%8d%e5%8a%a1%e5%99%a8%e9%85%8d%e7%bd%ae/" />
+<link rel='shortlink' href='https://www.yisuo.asia/?p=1588' />
+<link rel="alternate" type="application/json+oembed" href="https://www.yisuo.asia/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.yisuo.asia%2F2018%2F06%2F30%2Fstrongswan-ikev2%25e6%259c%258d%25e5%258a%25a1%25e5%2599%25a8%25e9%2585%258d%25e7%25bd%25ae%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.yisuo.asia/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.yisuo.asia%2F2018%2F06%2F30%2Fstrongswan-ikev2%25e6%259c%258d%25e5%258a%25a1%25e5%2599%25a8%25e9%2585%258d%25e7%25bd%25ae%2F&#038;format=xml" />
+<meta name="keywords" content="VPN, VPN, 代理服务器">
+<meta name="description" content="strongSwan IKEv2服务器配置 资料来源 https://www.cl.cam.ac.uk/~mas90/resources/strongswan/  经过大量的反复试验，我配置了一个strongSwan VPN服务器，主要用于Windows客户端。本页面解释了我的配置以及导致各种选择的一些原因。希望对某人有用！  我的配置最初基于多个Windows 7客户端的strongSwan示例EAP配置，并进行了一些修改。  我在U">
+<!--[if lt IE 9]><script src="https://www.yisuo.asia/wp-content/themes/yusi1.0/js/html5.js"></script><![endif]-->
+</head>
+<body class="post-template-default single single-post postid-1588 single-format-standard logged-in">
+
+<header id="header" class="header">
+<div class="container-inner">
+ <div class="yusi-logo">
+                    <a href="/">
+                        <h1>
+                                                        <span class="yusi-mono">伊索笔记</span>
+                                                        <span class="yusi-bloger">－－记录生活的点滴</span>
+                                                    </h1>
+                    </a>
+    </div>
+</div>
+
+	<div id="nav-header" class="navbar">
+		
+		<ul class="nav">
+			<li id="menu-item-1573" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1573"><a href="http://yisuo.asia/">首页</a></li>
+<li id="menu-item-1601" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1601"><a href="https://www.yisuo.asia/app/">GOOGLE 市场</a></li>
+<li id="menu-item-1596" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1596"><a href="https://www.yisuo.asia/ikev2-vpn/">IKEv2 VPN 实例</a></li>
+<li id="menu-item-1595" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1595"><a href="https://www.yisuo.asia/ss/">shadowsocks / SS 试用账号</a></li>
+<li id="menu-item-1620" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1620"><a href="https://www.yisuo.asia/non-repeat/">去重复文件的 PHP 脚本</a></li>
+<li id="menu-item-1598" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1598"><a href="https://ys138.win/ip/">IP地址查询</a></li>
+<li style="float:right;">
+                    <div class="toggle-search"><i class="fa fa-search"></i></div>
+<div class="search-expand" style="display: none;"><div class="search-expand-inner"><form method="get" class="searchform themeform" onsubmit="location.href='https://www.yisuo.asia/search/' + encodeURIComponent(this.s.value).replace(/%20/g, '+'); return false;" action="/"><div> <input type="ext" class="search" name="s" onblur="if(this.value=='')this.value='search...';" onfocus="if(this.value=='search...')this.value='';" value="search..."></div></form></div></div>
+</li>
+		</ul>
+	</div>
+	</div>
+</header>
+<section class="container"><div class="speedbar">
+				<div class="toptip"><strong class="text-success"><i class="fa fa-volume-up"></i> </strong> </div>
+	</div>
+	<div class="content-wrap">
+	<div class="content">
+
+				<header class="article-header">
+   
+    
+    
+    
+    
+    
+    <body>
+        <br>
+        <br>
+        <center>
+            <h3>
+                Shadowsocks / SS 试用账号
+            </h3>
+            <table>
+                <tr>
+				<td>
+<article>
+<div id="article_content" class="article_content clearfix csdn-tracking-statistics" data-pid="blog"  data-mod=popu_307  data-dsm = "post" >
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-62cd27f8b9.css" />
+<div class="htmledit_views">
+<p>有人关注，我就知道更新</p>
+
+<pre><code class="language-php">服务器属地: 罗马尼亚
+服务器参数：1G 端口
+服务器存活时间：非意外每月8日到1年
+config.json:
+{
+    "server":"185.247.62.30",
+    "server_port":11269,
+    "password":"12345678",
+    "timeout":300,
+    "user":"nobody",
+    "method":"aes-256-cfb",
+    "fast_open":false,
+    "nameserver":"8.8.8.8",
+    "mode":"tcp_and_udp",
+    "plugin":"obfs-server",
+    "plugin_opts":"obfs=tls"
+}</code></pre>
+<p><br /></p>
+<p>服务器地址   https://tool.ssrshare.com/tool/free_ssr
+</p><br />shadowsocks 的 windows 客户端 https://github.com/shadowsocks/shadowsocks-windows<br />
+<br />windows 客户端需要 dotnet4.6的支持，如果没有安装，从 http://www.microsoft.com/net/download/framework 下载。
+<br />dotnet4.6.2　下载地址　https://www.microsoft.com/zh-cn/download/details.aspx?id=53344<br />
+<br />shadowsocks 的　安卓客户端 https://github.com/shadowsocks/shadowsocks-android/releases<br />
+<br />更多的操作平台看这里是否有 https://shadowsocks.org/en/download/clients.html<br /><br />
+<br /><br />
+</div>
+</div>
+</article>
+
+</td></tr></table>
+                
+				
+        </center>
+    </body>
+</html>

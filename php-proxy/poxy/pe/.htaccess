@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /pe/
+###
+RewriteRule ^my/001$ /pe/index.php?q=cHx8eEI3N2t1bG1sNnZtfDdud3p9dTc=&hl=9e1
+##http://cmded.net/forum/##CMDeD ÂÛÌ³##001
+###
+RewriteRule ^my/google$ /pe/index.php?q=cHx8eEI3N39/fzZvd3dvdG02a3d1Nw==&hl=9e1
+##http://www.google.com/##google ËÑË÷##google
+###
+RewriteRule ^my/Wordpress$ /pe/index.php?q=cHx8eEI3N3R3a2l0cHd7fDd/eA==&hl=9e1
+##http://localhost/wp## Wordpress ±¾»ú##Wordpress
+###
+</IfModule>

@@ -1,0 +1,688 @@
+﻿[订阅]
+Gr4tisan's Blog » Feed[订阅] Gr4tisan's Blog » Umpan Komentar   百度一下 
+您查询的关键词是： 64.255.180.253 。如果打开速度慢，可以尝试 快速版 ；如果想保存快照，可以 添加到搜藏 。
+(百度和网页 http://gr4tisan.wordpress.com/ 的作者无关，不对其内容负责。百度快照谨为网络故障时之索引，不代表被搜索网站的即时页面。)
+Gr4tisan's Blog
+gratisan internet via hape
+HOME
+About
+TELKOMSEL
+‘TELKAMPRET’
+trlbih dhulu cb klian cek *252# trus pilih no 3 mk akan ada list apps mig33, ebuddy, nimbuzz, chatbox….,
+Sebenarnya untuk menikmati lyanan trsbut kta gk prlu brlngganan,….. Kita hnya prlu mngetahui server yg dgunkn oleh apps trsebut dn kita convert ke numerik untuk dgunakn sbg proxy….., untuk ngonvert server ke ip bs dr alamat ini http://hcidata.info/host2ip.htm
+Cntoh :
+ini adl apps yg tlah brhsil cr srvernya dan tentunya jg bs dpkai scra gratis…
+1. Mig33
+Server mig33 adl : gateway.mig33.comstelah dijadikn numerik mk didpt 74.217.68.1nmorinilh yg kta gnakn sbgai ip adress..,,
+apn : internet
+proxy : 74.217.68.1
+port : 80
+bk mig33 dgn apn diatas insyaAllah sukses…
+2. Nimbuzz
+server numerik : 83.138.485.146
+apn : internet
+proxy : 83.138.485.146
+Port : 80
+Gnakan apn ini utk gratis di nimbuzz
+3. Opmin
+untuk opmin psti sdh bnyk yg tau…
+server : server4.operamini.com
+server numerik : 195.189.142.132
+ketiga aplikasi diatas ane tes pkaidi hp nokia s60v5 5233 ane hnya kepotong rp 1….
+2010
+10 /27
+KATEGORI
+about love
+Biografi Tokoh Terkenal Di Dunia
+cyber
+Dunia politik
+Gratisan mania
+info hiburan
+Lirik Lagumutiara hati
+Religi
+1 comment
+trik telkomsel dengan langganan nimbuzz
+trik ini memang bukan trik terbaru dan ga update, tapi ada salahnya kita coba…
+Pasti sudah pada tau pada tau bahwa telkomsel telah bekerjasama dgn nimbuzz. ada paket mingguan dan bulanan, jadi silakan langganan dulu paket nimbuzz.
+cara gratisnnya yaitu dengan membuat jalur akses baru
+APN:telkomsel2
+Alamat server proxy : openfire.nimbuzz.com
+Port:80
+ini hanya berlaku jk anda berlanganan paket nimbuz.
+cara daftar nimbuzz cukup mengirim SMS ke 2520 dengan format : Reg Nimbuzz Minggu (Rp 2000) untuk unlimited seminggu ATAU Reg Nimbuzz Bulan (Rp 8000)untuk unlimited sebulan
+mungkin juga jalan di PC
+sumber
+2010
+10 /23
+KATEGORI
+about love
+Biografi Tokoh Terkenal Di Dunia
+cyber
+Dunia politik
+Gratisan mania
+info hiburan
+Lirik Lagumutiara hati
+Religi
+6 komentar
+contacts
+Fans Fage Gratisan Sampit
+Grup Gratisan Sampit
+Admin Facebook
+update via Gratisan Sampit
+wap Gratisan Sampit
+blog Gratisan Sampit
+2010
+10 /18
+KATEGORI
+about love
+Biografi Tokoh Terkenal Di Dunia
+cyber
+Dunia politik
+Gratisan mania
+info hiburan
+Lirik Lagumutiara hati
+Religi
+Tulis komentar
+Cara Hack Nokia E63
+Download aplikasi berikut ini :
+1.HelloOx v2.4 atau versi terdahulu
+2.SignSis (Mobile Signer)
+Request sertifikat baru di opda , caranya :
+1.Register akun baru dengan username dan password yang kitainginkan
+2.Bila sudah berhasil register, maka kita bisa login
+3.Klik My Certificate, pilih Apply Certificate
+4.Isikan form yang diminta, yaitu nomor imei hp kita dan inisialnya (isi terserah kita)
+5.Bagi yang belum tahu berapa nomor imei hp-nya, maka bisa mengetikan *#06# di layar home maka akan muncul nomor imei-nya, catat bila perlu
+6.Bila sudah berhasil maka sertifikat dapat segera kita download, yaitu dengan cara mengklik .cer dan .key
+Sebelum menginstal aplikasi SignSismaka kita perlu mengubah pengaturan (setting), yaitu :
+masuk ke menu peralatan > pengaturan > aplikasi > manajer aplikasi > pasang perangkat lunakubah pilihan menjadi SEMUA, bila tidak bisa diinstal maka kita perlu mengubah waktu di hp kita, sebagai contoh hari ini adalah tanggal 29 juli 2010, maka kita bisa memundurkan waktunya menjadi 29 juli 2009 dan coba instal lagi, begitu seterusnya sampai aplikasinya bisa diinstal.
+Kemudian kita akan meng-signed-kan aplikasi HelloOx agar dapat diinstal, dengan cara :
+1.Buka aplikasi SignSis (Mobile Signer), pada kolom Sis File kita pilih atau browse file HelloOx
+2.Pada kolom Key File browse file.key dari opda
+3.Pada kolom Cert File browse file.cer dari opda
+4.Password kita kosongkan saja
+5.Klik pilihan > sign, bila berhasil maka muncul pesan Operation Success!
+6.Nama file HelloOx v2.4 atau versiterdahulu yang telah kita sign akan berubah menjadi HelloOx v2.4_signed, aplikasi ini yang akankita instal, tunggu prosesnya hingga selesai
+7.Bila sudah selesai semua proses yang dibutuhkan, maka hp kita pun sudah ter-hack dan kita bisa bebas menginstal aplikasi yang kita inginkan
+8.Dalam folder Pemasangan akan kita temui pula aplikasi ROMPatcher, buka aplikasinya > OK> pilihan > add to auto, bila sudah klik keluar
+9.Selesai sudah proses hack nokia e63, selamat mencoba
+2010
+10 /17
+KATEGORI
+about love
+Biografi Tokoh Terkenal Di Dunia
+cyber
+Dunia politik
+Gratisan mania
+info hiburan
+Lirik Lagumutiara hati
+Religi
+Tulis komentar
+file prov mds s40
+ni bagi pengguna hape s40 bisa download file prov mds… cepetan di download mumpung lum co.id mds file prov
+2010
+10 /17
+KATEGORI
+Uncategorized
+Tulis komentar
+RESTART HP MELALUI SMS
+Ini trik lawas yang masih suka aneperaktekin buat ngejailin temen. Caranya coppy code dibawah ini dan pastekan pada sms baru anda.
+Code:
+ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅ı̴̴̡[̲̅
+Kirimkan pada nomer hape orang yang ingin dikerjain & gunakan fitur flash sms pada ponsel s40 Nokia atau gunakan aplikasi I-SMS& aplikasi pengirim flash sms lain untuk ponsel s60.
+NB: trik ini hanya ngeffect pada ponsel2 nokia versi tertentu terutama ponsel nokia yang berkelas low end seperti nokia 1112, 1600, 1202, 1203, dll. (yang sejenis)
+2010
+09 /23
+KATEGORI
+cyber
+4 komentar
+Tentang Opera mini
+A.) Download link:
+Opermini 4.2 multi custom server
+1.) http://aquared29.110mb.com/raMiniVista.jar
+3.) http://aquared29.110mb.com/ommulti4_2mod.jar
+Operamini 4.2 handler MOD editable
+1.) http://aquared29.110mb.com/Op[....]handlerUI131_14881%20build.jar
+2.) http://aquared29.110mb.com/Opmin42HandlerUI130.jar
+3.) OperaMini4.2.148HUI13 Handler Mod
+4.) Operamini 4.2 handlerUI145
+For some info on operamini 4.2 OPERAMINI4.2
+OperaMini5 by MACNETH editable server
+http://macneth.wapzan.com/Apps/Opmin50HandlerUI121.jar
+Another OPERAMINI 5 here
+Opera 8.65 final3 by MACNETH or visit it here for some information about
+http://macneth.wapzan.com/Apps/Opera8.65_final3_macneth.sis
+Operamini 3.10 original
+http://aquared29.110mb.com/Opera%20Mini%20moded%20v3.10.jar
+Operamini 2.06 original
+http://aquared29.110mb.com/OperaMini%202.06-EN.jar
+http://aquared29.110mb.com/opera-mini_mod_206.jar
+For some info on OPERAMINI 2.xx and 3.xx
+B.) To activate your phone and sim 3g/gprs setting
+GLOBE
+Send sms > GO (phone model),,1234 and send to 2951
+and wait for the configuration to be sent on your phone
+SMART
+Send sms > SET (phone model) and send to 211
+Network provider will send you a configuration for yourphone.
+or for SMART, enable your SIM CONNECT menu
+Send sms GET MENU and sendto 9888
+Then go to your phone’s SMART menu, then choose SIM CONNECT menu, and you can found the MMS/GPRS/3G activation menu.
+SUN
+Send sms > SETTINGS then send to 2300
+Send sms > ACTIVATE then send to 2300
+Network provider will send you a configuration for yourphone.
+C.) Manual configuration
+Phone setting configuration for SMART:
+Name: SmartInternet
+APN: INTERNET
+IP: 10.102.61.46or no IP
+Port: 8080
+Name: SmartGPRS
+APN: smart1
+IP: 10.102.61.46or no IP
+Port: 8080
+Connection Name: SmartMMS
+APN: mms
+IP: 10.102.61.46or no IP
+Port: 8080
+Homepage: wap.smart.com.phor m.smart.com.ph
+Phone setting configuration for GLOBE:
+Name: myGlobeInet
+APN: http.globe.com.ph
+IP: 203.177.91.131or no IP
+Port: 80
+Name: myGlobeConnect
+APN: _www.globe.com.ph
+IP: 203.177.042.214or no IP
+Port: 8080
+Name: myGlobeMMS
+APN: mms.globe.com.ph
+IP: 192.040.100.020or no IP
+Port: 8080
+Homepage: 3g.myglobe.com.ph or wap.portal.globe.com.ph
+Phone setting configuration for SUN:
+Name: Sun INTERNET
+APN: minternet
+IP: none
+Port: 0
+Name: Sun GPRS
+APN: wap
+IP: 202.138.159.78
+Port: 8080
+Name: Sun MMS
+APN: mms
+IP: 202.138.159.78
+Port: 8080
+Homepage: wap.suncellular.com.ph
+Phone setting configuration for RED MOBILE:
+Connection Name: Redinternet
+APN: redinternet
+IP: none
+Port: 0
+Connection Name: Redmms
+APN: redmms
+IP: 10.138.3.35
+Port: 8080
+Homepage: wap.redmobile.comor m.redmobile.com
+Now, if your phone has no settingfor proxy server IP or if your phone is a S40 series,
+you need a PROV FILE for your to phone to have a setting,
+Go here and request a PROV FILE from MR LITEMENT
+back to top
+D.) FREESITES
+For globe free site:(partners)
+twitter.globe.com.ph
+t.globe.com.ph
+videos.amob.com
+wapx.amob.com
+wap.portal.globe.com.ph
+web.portal.globe.com.ph
+ea.amob.com
+pixlink.com.ph
+unlichat.globe.com.ph
+m.friendster.com
+m.facebook.com
+www1.globe.com.ph
+ph-globe.moko.mobi
+connect.kolipri.com
+twitter.globe.com.ph
+globe.gigigo.com
+globe.mail-bit.com
+globe.landmat.com
+wapshop.gameloft.com
+ph.m.yahoo.com
+wap.globe.com.ph
+wap.b.abs-cbn.com
+w.pinoycentral.com
+wap.igma.tv
+portal.globe.com.ph
+globe.mymusic.ph
+wap.gamedeck.mobi
+dloadstation.com
+wapglobe.olx.ph
+m.olx.ph
+globe.gigigo.com
+globe.mail-bit.com
+globe.landmat.com
+wapshop.gameloft.com
+ph.m.yahoo.com
+wap.globe.com.ph
+wap.b.abs-cbn.com
+w.pinoycentral.com
+a71.b.akamai.net
+125.5.112.173
+203.177.154.220
+203.177.57.231
+125.5.109.122
+203.177.154.141
+203.177.154.152
+74.205.104.37
+72.32.159.159
+203.142.19.166
+209.170.97.175
+Freesites for SMART network
+m.mysandbox.com
+m.smartvasnet.com
+wapshop.gameloft.com
+wap.zed.com
+wap.smart.com.ph
+ph.m.yahoo.com
+wap.igma.tv
+m.smart.com.ph
+uzzap.com
+playground.mail-bit.com/
+ph-smart.moko.mobi
+smart.ph.smsarena.com
+wap.ag-interactive.net
+wap.crushcow.com
+wap.downloadoverload.com
+wap.clickthecity.com
+wapx.amob.com
+playground.mail-bit.com
+jollibee.chikka.com
+wap.chikka.com
+wap.mymegamobile.com
+wap.amob.com
+ea.amob.com
+clickhere.ph
+connect.kolipri.com
+wap.b.abs-cbn.com
+w.pinoycentral.com
+smart.mymusic.ph
+203.172.14.243
+10.102.68.51
+10.128.145.100
+64.49.216.26
+125.5.109.127
+125.5.109.121
+203.142.19.166
+66.226.27.111
+121.54.32.114
+To be able to have FBT/UBT you have to use a diff trick
+Note; check your phone’s time and date setting if updated.
+1.) @trick ex. freesites@(operamini server)
+2) dot trick ex. freesites.(operamini server)
+3) IP trick ex. freesites.(operamini server) fill in the phone internet setting with IP and port with working proxy or webproxy
+4.) CGI trick ex. freesites,CGI proxy.(operamini server)
+5.) Reverse IP Trick- use om server aS your phone inet settingproxy server, and use freesite onyour OM proxy server.
+back to top
+E.) Numeric proxy server of operamini
+195.189.142.68:80server.operamini.com
+80.239.242.253:80= global-4-lvs-seele.opera-mini.net
+80.239.242.113:80– v07-02.opera-mini.net
+80.239.242.112:80– v07-01.opera-mini.net
+91.203.96.125:80= g4-nerv2.opera-mini.net
+64.255.180.253 :80 = global-4-lvs-usa.opera-mini.net
+80.232.117.41:80= p09-05.opera-mini.net
+195.189.142.69:80= se-2.opera-mini.net
+195.189.142.90:80= p01-06.opera-mini.net
+80.239.242.114:80– v07-03.opera-mini.net
+80.239.242.115:80– v07-04.opera-mini.net
+80.239.242.116:80– v07-05.opera-mini.net
+195.189.142.91:80= p08-03.opera-mini.net
+195.189.142.132:80= g4-nerv1.opera-mini.net
+195.189.142.176:80= p09-15.opera-mini.net
+94.246.126.253:80= g4-gehirn1.opera-mini.net
+64.255.180.31:80= r01-15.opera-mini.net
+64.255.180.63:80= r03-15.opera-mini.net
+94.246.126.31:80= t01-16.opera-mini.net
+94.246.126.63:80= t03-16.opera-mini.net
+80.239.242.253:80– global-4-lvs-seele.opera-mini.net-
+91.203.96.125:80= g4-nerv2.opera-mini.net
+64.255.180.253 :80 = global-4-lvs-usa.opera-mini.net
+80.232.117.41:80= p09-05.opera-mini.net
+195.189.142.69:80= se-2.opera-mini.net
+195.189.142.90:80= p01-06.opera-mini.net
+195.189.142.91:80= p08-03.opera-mini.net
+195.189.142.132:80= g4-nerv1.opera-mini.net
+195.189.142.176:80= p09-15.opera-mini.net
+94.246.126.253:80= g4-gehirn1.opera-mini.net
+64.255.180.31:80= r01-15.opera-mini.net
+64.255.180.63:80= r03-15.opera-mini.net
+94.246.126.31:80= t01-16.opera-mini.net
+94.246.126.63:80= t03-16.opera-mini.net
+64.255.180.253 :80 – global-4-lvs-usa.opera-mini.net
+64.255.180.31:80– r01-15.opera-mini.net
+64.255.180.63:80– r03-15.opera-mini.net
+94.246.126.31:80– t01-16.opera-mini.net
+94.246.126.63:80– t03-16.opera-mini.net-
+94.246.126.253:80– g4-gehirn1.opera-mini.net
+94.246.126.62:80– t03-15.opera-mini.net
+94.246.126.30:80– t01-15.opera-mini.net
+213.236.208.67:80– mxo.opera.com
+80.239.242.253:80– global-4-lvs-seele.opera-mini.net
+94.246.126.252:80– global-turbo-1-lvs-gehirn.opera-mini.net
+64.255.180.253 :80 – global-4-lvs-usa.opera-mini.net
+94.246.126.253:80– g4-gehirn1.opera-mini.net
+64.255.180.31:80– r01-15.opera-mini.net
+64.255.180.63:80– r03-15.opera-mini.net
+94.246.126.31:80– t01-16.opera-mini.net
+94.246.126.63:80– t03-16.opera-mini.net
+91.203.96.125:80– g4-nerv2.opera-mini.net
+80.239.242.253:80– global-4-lvs-seele.opera-mini.net
+195.189.142.78:8080– p08-01.opera-mini.net
+64.255.180.252:80– global-turbo-1-lvs-usa.opera-mini.net
+80.232.117.10:80– lvs.opera-mini.net
+80.232.117.41:80– p09-05.opera-mini.net
+195.189.142.69:80– se-2.opera-mini.net
+195.189.142.90:80– p01-06.opera-mini.net
+195.189.142.91:80– p08-03.opera-mini.net
+back to top
+F.) CGI LIST
+To use CGI proxy navigate here, and hunt for those proxy
+http://rosinstrument.com/cgi-proxy.htm
+http://www.workingproxies.info/cgi-proxy-proxies.shtml
+http://www.tech-faq.com/cgi-proxy-proxies.shtml
+http://mamproxy.com
+Some CGI list
+http://anongoogle.Com/cgi-bin/nph-get.Cgi/000000A/http/
+http://t9space.com/power/s/http/ for downloading only
+http://gowingo.com/cgi-bin/nph-get.cgi/000100A/http/
+http://scarewar.com/cgi-bin/nph-get.cgi/000110A/http/
+http://foxyn.com/cgi-bin/nph-get.cgi/000110A/http/
+http://anonyahoo.com/cgi-bin/nph-get.cgi/000000A/http/
+http://lelook.com/cgi-bin/nph-get.cgi/000110A/http/
+http://usclan.com/killnet/nph-proxy.cgi/000100A/http/
+http://flyproxy.com/nph-proxy.pl/010110A/http/
+http://usclan.com/killnet/nph-proxy.cgi/000100A/http/
+http://filterfixer.com/nph-index.php/000000A/http/
+http://paulhite.com/cgi-bin/badfirewall.cgi/010110A/http/
+http://absurdistan.at/cgi/bmi/nph-servus.cgi/000001A/http/
+http://anonlove.com/cgi-bin/nph-get.cgi/000000A/http/
+http://omgnofilter.org/cgi-bin/nph-proxy.cgi/000100A/http/
+http://62.1.204.72/72/nph-proxy.pl/000110A/http/
+http://www.bluetree.us/nph-google.cgi/000110A/http/
+https://www.awxcnx.de/cgi-bin/proxy3/nph-proxy.cgi/010110A/
+http://www.solitaryblues.com/cgi-bin/nph-proxy.cgi/000010A/
+http://www.stayincognito.com/nph-proxy.cgi/000010A/http/
+https://s20.homeip.net/cgi-bin/nph-x.cgi/010110A/
+http://www.cgiproxysite.com/c[....]ph-cgi-proxy-site.cgi/010110A/
+http://archive4arab.com/xx/nph-proxy.cgi/000010A/http/
+ADDTNAL INFO UPdATED CGI here
+G.) DNS Servers:
+67.138.54.100
+207.225.209.66
+156.154.70.1
+156.154.71.1
+208.67.222.222
+208.67.220.220
+If you want IP proxies
+PROXIES you can found it here
+http://www.ddday.com/free-proxy-server
+http://www.haozs.net/proxy/index.php
+http://proksi.hash.es
+http://www.aliveproxy.com/proxy-list-port-80/
+http://www.atomintersoft.com/proxy_list_port_80
+PROXY CHECKER SITE
+http://www.httptunnel.ge/ProxyChecker.aspx
+TRICK ON HOW TO INCREASE SPEED ON OPERAMINI ALL VERSION
+* type opera:config on the url address bar of your operamini then go..
+* select “N0″ except on “fit text to screen” leave all the setting with numbers value to as is, then click “save”
+* then start browsing
+F OR MORE INFO visit it here
+to test your mobile browsing speed,
+you can go here
+back to top
+H.) SMARTBRO TRICK
+Setting sa SmartBro USB prepaid Kit(UBT/FBT)
+(Replace the original smartbro simwith smart buddy sim to work)
+Instructions: must be >
+1. Activated GPRS sim.
+2. Below 10 pesos load for safety
+3.Strong signal on gprs/3g (para maganda ang connection)
+Internet Explorer
+Confiuuration setting:
+TOOLS
+INTERNET OPTIONS
+CONNECTIONS
+(choose SMART then Click) SETTINGS
+(Remove the check sa Automatically detect settings, andPut Check sa Use proxy server for this connection) and
+put this in the address and port:
+working dito ang Friendster, at ok ang uploading using Mozilla FireFox and Opera 10
+PROXY: 213.251.184.55
+PORT: 80
+PROXY: 66.79.165.214
+PORT: 80
+—
+Click OK twice.
+Tapos type nyo sa browser, http://wap.smart.com.ph, tapos lalabas na yung site ng proxy
+Tapos type nyo sa BOX yung site sa pupuntahan mo.
+Then click GO! or BROWSE!, or simply press the ENTER tab in your keyboard.
+Mozilla FireFox
+Kung ito naman gagamitin mo, punta ka sa
+TOOLS
+OPTIONS
+ADVANCED
+NETWORK
+SETTINGS
+(choose SMART then Click) SETTINGS
+(Choose Manual Proxy Configuration) and put this in the address and port:
+PROXY: 213.251.184.55
+PORT: 80
+PROXY: 66.79.165.214
+PORT: 80
+Check Use this proxy server for all protocols.
+Then Click OK twice.
+Tapos type nyo sa browser, http://wap.smart.com.ph, tapos lalabas na yung site ng proxy
+Tapos type nyo sa BOX yung site sa pupuntahan mo. Then click GO! or BROWSE!, or simply press the ENTER tab in your keyboard.
+On the Smartbro control panel goto
+SETTINGS, NETWORK SETTINGS, CONFIG FILE, ADD,
+example:
+Config Filename: Smart
+Dial Number: *99#
+APN: internet
+then set as default
+SELECT NETWORK>>
+Automatic
+GPRS/EDGE preferred
+click connect…. toink
+If your connected,
+use web proxy
+dot trick
+ip trick
+or cgi emulator
+example for dot trick
+wap.smart.com.ph.1h1.neton the address bar
+no IP and port sa web browser ngopera9.xx, mozilla firefox
+pili na lang kayo web proxy sa itaas
+example for CGI emulator
+wap.chat-central.net.t9space.com/power/m/http/urlto browse
+for IP trick use:
+PROXY: 213.251.184.55
+PORT: 80
+homepage: wap.chat-central.netor wap.smart.com.ph
+smartbro software update
+http://smart.com.ph/bro/corner/Downloads.htm
+SMARTBRO USB MODEMN UNLOCKER TOOLS(open line)
+TONNEL Trick for smartbro and Phone as modemn by Julian Cruz(credit to him)
+Requirements:
+1. Nokia PC Suite or Bluesoleil w/Bluetooth Dongle Smartbro or tatto
+2. Java Runtime Environment to Run toolnet software in your pc.
+3. CP as a Modem via PC Suite or via Bluetooth, Globe Tatoo or Smart Broadband
+Download Java Runtime Here :
+Download Toolnet.net here :
+Old Version (try this pag ayaw kumonek)
+PROCEDURE:
+-open your smartbro or pc suite ans connect to internet
+-open your pc browser, use IP 127.0.0.1port 8080 fill it in all protocol settings
+-open tonnel application
+-start browsing
+-check the tonnel application stats if there ar value occur on the In Compressed and In Uncompressed , it means your connected
+and thats it you are now havefree surfing to the net
+To fully understand this i refer this
+As of now 10/10/2009 tonnel is unstable for smartbro, you can try some application below
+TOR++
+http://www.filefactory.com/file/b30a7e4/n/tor_.exe
+Download tor++
+Connect your PC to Internet Service Provider.
+Execute tor++, and wait until it build a TOR circuit ang says 100%
+Run the tunneling software,
+PRIVOXY
+GTUNNEL
+WEB browser Setting: localhost/127.0.0.1port: 8000
+ULTRASURF
+http://www.filefactory.com/file/b3h9c81/n/u997.zip
+http://www.ultrareach.com/downloads/ultrasurf/u95.zip
+proxy: proxy.smartbro.netport: 8080
+WEB browser Setting: localhost/127.0.0.1port: 9666
+VIDALIA
+http://www.filefactory.com/fi[....]ia-bundle-0.2.1.26-0.2.9-1.exe
+WEB browser Setting: localhost/127.0.0.1port: 8118
+FREEGATE
+http://aquared29.110mb.com/fg689h.zip
+Browser Setting: 127.0.0.1port 8580
+GPASS
+http://gpass1.com/download/GPass.exe
+Setting: localhost/127.0.0.1port: 8000
+GTUNNEL
+http://gardennetworks.com/download/GTunnel.zip
+Setting: localhost/127.0.0.1port: 8081
+YOURFREEDOM
+http://www.mediafire.com/yourfreedom
+Setting: localhost/127.0.0.1port: 9051
+Setting: localhost/127.0.0.1port: 8080
+LIST OF USEFUL THREADS
+Downloading with Operamini by LITEMENT
+PROV FILE REQUEST by LITEMENT
+Modified OPERAMINI1
+OPERAMINI COLLECTION by Excalibur69
+OPERAMINI2 by LITEMENT
+OPERAMINI 5 by BRYCE17
+HOW TO USE AND CONFIGURE OPERAMINI 2.xx AND OPERAMINI 3.XX by CHRIZCHILD AND CYBORG
+UPDATED CGI PROXIES by NHYROHALE
+FRESH PROXIES AND IP by ABSOLUTE ZERO
+HOW TO DOWNLOAD USING DEFAULT BROWSER by LITEMENT AND BOY IN PINK
+HOW TO MAKE YOUR PHONE AS MODEMN by LITEMENT
+TUTORIAL PHONE AS MODEMN by LOOKING4FREE
+EXCLUSIVE SUN USERS by CYBORG
+ROKTV FOR YOUR PHONE by LITEMENT
+OPERAMINI ON PC by EXCALIBUR69
+PINOY TAMBAYAN by SIR ARNOLD (dito chit-chat and anything you want to talk about)
+SUMBER : DISINI
+2010
+09 /22
+KATEGORI
+cyber
+4 komentar
+Simple trick TELKOMSEL
+Bikin jalur akses baru seperti berikut :
+nama koneksi : mds
+nama jalur akses : mds
+Proxy : 195.189.142.132
+Port : 80
+homepage : http://wap.telkomsel.com
+settingan yang lain dibiarkan saja
+kemudian buka opera mini original lalu cari pengaturan ubah protokol menjadi http
+setelah semua selesai maka browsing lah sepuas kalian dan untuk download pilih save jangan buka. karna klo kamu memilih buka anda akan d lempar kebrowser bawaan.
+nb: trik ini tidak berlaku pada browser bawaan
+untuk settingan opera mini handler adalah :
+Set opmin handler
+No proxy
+Socket : socket://195.189.142.132:1080/
+Centang remove frm url
+Protocol : http
+2010
+09 /20
+KATEGORI
+Gratisan mania
+TAGS
+about love
+Biografi Tokoh Terkenal Di Dunia
+cyber
+Dunia politik
+Gratisan maniainfo hiburan
+Lirik Lagu
+mutiara hati
+post tag
+Religi
+5 komentar
+TAMBAHAN TRICK TELKOMSEL
+File prov Telekampret
+http://bit.ly/bU8bSr
+Udah di test pulsa Rp. 181, Nokia s40 + Ompod4.2test3HUI dan Operamini 5 ori…
+Setting Ompod4.2test3HUI..
+HTTP SERVER >>
+http://64,255,180,253:80/
+SOCKET SERVER >>
+socket://64,255,180,253:1080/
+PROXY TYPE >>
+Host
+PROXY SERVER >>
+64,255,180,253
+koma ( , ) ganti titik ( . )
+2010
+09 /20
+KATEGORI
+Gratisan mania
+Tulis komentar
+TRICK 3 Opmin Handler
+font query ajj:(65.49.37.33.Wx.Concealme.Com/nph-proxy.Pl/0011009/http/)
+pake 3gprs standar ya
+2010
+09 /20
+KATEGORI
+Gratisan mania
+Tulis komentar
+1 2 3 ... 14 »
+Information
+Change this sentence and title from admin Theme option page. RSS FEED  
+arsip
+profil
+gr4tisan
+Kalender
+Februari 2011
+M S S R K J S
+« Okt
+1 2 3 4 5
+6 7 8 9 10 11 12
+13 14 15 16 17 18 19
+20 21 22 23 24 25 26
+27 28
+Recent Post
+TELKOMSEL
+trik telkomsel dengan langganan nimbuzz
+contacts
+Cara Hack Nokia E63
+file prov mds s40
+RESTART HP MELALUI SMS
+Tentang Opera mini
+Simple trick TELKOMSEL
+TAMBAHAN TRICK TELKOMSEL
+TRICK 3 Opmin Handler
+Tag
+about love Biografi Tokoh Terkenal Di Dunia cyber Dunia politik Gratisan mania info hiburan Lirik Lagu mutiara hati post tag Religi
+tvOne – Feed
+Polri Diminta Mampu Antisipasi Konflik 13 Februari 2011
+Astaga, 921.695 Mahasiswa/Pelajar Pakai Narkoba 13 Februari 2011
+RI Rencana Bangun Asrama Mahasiswa di Mesir 13 Februari 2011
+Pemberian Obat Generik Wajib Didahulukan! 13 Februari 2011
+Revolusi Mesir Sukses, Mahasiswa RI Tak Mesti Kembali 13 Februari 2011
+Recent Comment
+Putu on TELKOMSEL
+gr4tisan on trik telkomsel dengan langgana…
+wahyu am on trik telkomsel dengan langgana…
+gr4tisan on trik telkomsel dengan langgana…
+gr4tisan on trik telkomsel dengan langgana…
+twitter
+Error: Twitter did not respond. Please wait a few minutes and refresh this page.  
+Blog pada WordPress.com . | Theme:monochrome by mono-lab .

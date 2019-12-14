@@ -1,0 +1,175 @@
+测试 knproxy 时发现的问题，不当之处敬请谅解
+
+可能是您的php.ini设置的问题，存在下面的提示，这可能使图片无法显示
+
+index.php on line 28   if(isset($_POST['force_http']) || isset($_COOKIE['knprox_force_unsecure']) && $_COOKIE['knprox_force_unsecure']=='true'){
+index.php on line 40   if(!empty($_POST['knUSER']) || isset($_COOKIE['__knLogin'])){
+index.php on line 116  if(isset($_GET['enp']) && $_GET['enp'] =='true'){
+
+module_url.php on line 84       if (empty($base['POSITION']))  $base['POSITION'] .='/';
+module_parser.php on line 147   isset($url[0]) && $url[0]=='#' 
+
+module_http.php on line 98
+module_http.php on line 119
+
+加密解密的问题
+
+* 太多的网页采用的编码并不是UTF8，确实让人头痛，我不知道代码中是怎么处理编码的，大多网页META中有charset，提取它然后转为UTF8，或者是让用户自己选择编码，这样对加密解密很重要
+ 
+  这是我找到的相关代码
+
+$char = str_replace(array('charset =','charset="','charset= '), "charset=", $knParser->output);
+preg_match("'<meta.*?charset=(.+?)\".*?\>'s",$char,$meta_charset);
+if (isset($meta_charset[1]) && !empty($meta_charset[1])){
+    $charset = str_replace(array(' ','"'), "", $meta_charset[1]);
+    $charset = strtolower($charset); 
+    if(strstr($charset,'iso-8859-1') && $lang == 'zh-cn') $charset = 'GBK';
+}
+if(strstr($charset,'gb2312')) $charset = 'GBK';
+
+if($charset !== 'utf-8'){
+    //$knParser->output = mb_convert_encoding($knParser->output, 'UTF-8', $charset);
+    $knParser->output = iconv($charset, 'UTF-8//IGNORE//TRANSLIT', $knParser->output);
+}
+
+
+* 用BASE64巨耗CPU，操作百KB的数据反应很明显，尤其给客户机造成压力更大，建议使用 addcslashes，firefox下效率非常明显，这样可以注销掉 //toDEC = this.unBase64(toDEC);
+
+function addJsSlashes($str, $flag) {
+    if ($flag) {
+        $str = addcslashes($str, "\0..\006\010..\012\014..\037\042\047\134\177..\377");
+    }else {
+        $str = addcslashes($str, "\0..\006\010..\012\014..\037\042\047\134");
+    }
+    return str_replace(array(chr(7), chr(11)), array('\007', '\013'), $str);
+}
+
+
+* PHP中默认是UTF8，而JS中默认的是UTF16，需要把解密后的数据转换为UTF16
+
+/*--------------------utf.js--------------------*/
+/*
+ * Interfaces:
+ * var utf8, utf16;
+ * utf16 = "我爱code";
+ * utf8 = utf16.toUTF8();
+ * utf16 = utf8.toUTF16();
+ */
+
+String.prototype.toUTF8 = function() {
+    var str = this;
+    if (str.match(/^[\x00-\x7f]*$/) != null) {
+        return str.toString();
+    }
+    var out, i, j, len, c, c2;
+    out = [];
+    len = str.length;
+    for (i = 0, j = 0; i < len; i++, j++) {
+        c = str.charCodeAt(i);
+        if (c <= 0x7f) {
+            out[j] = str.charAt(i);
+        }
+        else if (c <= 0x7ff) {
+            out[j] = String.fromCharCode(0xc0 | (c >>> 6),
+                                         0x80 | (c & 0x3f));
+        }
+        else if (c < 0xd800 || c > 0xdfff) {
+            out[j] = String.fromCharCode(0xe0 | (c >>> 12),
+                                         0x80 | ((c >>> 6) & 0x3f),
+                                         0x80 | (c & 0x3f));
+        }
+        else {
+            if (++i < len) {
+                c2 = str.charCodeAt(i);
+                if (c <= 0xdbff && 0xdc00 <= c2 && c2 <= 0xdfff) {
+                    c = ((c & 0x03ff) << 10 | (c2 & 0x03ff)) + 0x010000;
+                    if (0x010000 <= c && c <= 0x10ffff) {
+                        out[j] = String.fromCharCode(0xf0 | ((c >>> 18) & 0x3f),
+                                                     0x80 | ((c >>> 12) & 0x3f),
+                                                     0x80 | ((c >>> 6) & 0x3f),
+                                                     0x80 | (c & 0x3f));
+                    }
+                    else {
+                       out[j] = '?';
+                    }
+                }
+                else {
+                    i--;
+                    out[j] = '?';
+                }
+            }
+            else {
+                i--;
+                out[j] = '?';
+            }
+        }
+    }
+    return out.join('');
+}
+
+String.prototype.toUTF16 = function() {
+    var str = this;
+    if ((str.match(/^[\x00-\x7f]*$/) != null) ||
+        (str.match(/^[\x00-\xff]*$/) == null)) {
+        return str.toString();
+    }
+    var out, i, j, len, c, c2, c3, c4, s;
+
+    out = [];
+    len = str.length;
+    i = j = 0;
+    while (i < len) {
+        c = str.charCodeAt(i++);
+        switch (c >> 4) { 
+            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+            // 0xxx xxxx
+            out[j++] = str.charAt(i - 1);
+            break;
+            case 12: case 13:
+            // 110x xxxx   10xx xxxx
+            c2 = str.charCodeAt(i++);
+            out[j++] = String.fromCharCode(((c  & 0x1f) << 6) |
+                                            (c2 & 0x3f));
+            break;
+            case 14:
+            // 1110 xxxx  10xx xxxx  10xx xxxx
+            c2 = str.charCodeAt(i++);
+            c3 = str.charCodeAt(i++);
+            out[j++] = String.fromCharCode(((c  & 0x0f) << 12) |
+                                           ((c2 & 0x3f) <<  6) |
+                                            (c3 & 0x3f));
+            break;
+            case 15:
+            switch (c & 0xf) {
+                case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+                // 1111 0xxx  10xx xxxx  10xx xxxx  10xx xxxx
+                c2 = str.charCodeAt(i++);
+                c3 = str.charCodeAt(i++);
+                c4 = str.charCodeAt(i++);
+                s = ((c  & 0x07) << 18) |
+                    ((c2 & 0x3f) << 12) |
+                    ((c3 & 0x3f) <<  6) |
+                     (c4 & 0x3f) - 0x10000;
+                if (0 <= s && s <= 0xfffff) {
+                    out[j++] = String.fromCharCode(((s >>> 10) & 0x03ff) | 0xd800,
+                                                  (s         & 0x03ff) | 0xdc00);
+                }
+                else {
+                    out[j++] = '?';
+                }
+                break;
+                case 8: case 9: case 10: case 11:
+                // 1111 10xx  10xx xxxx  10xx xxxx  10xx xxxx  10xx xxxx
+                i+=4;
+                out[j++] = '?';
+                break;
+                case 12: case 13:
+                // 1111 110x  10xx xxxx  10xx xxxx  10xx xxxx  10xx xxxx  10xx xxxx
+                i+=5;
+                out[j++] = '?';
+                break;
+            }
+        }
+    }
+    return out.join('');
+}

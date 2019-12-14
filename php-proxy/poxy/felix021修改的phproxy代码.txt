@@ -1,0 +1,21 @@
+
+40      'compress_output'          => 1                   //启用压缩输出
+369     return rawurlencode(base64_encode(trim($url)));   //对base64编码URL添加了去空格函数
+547     $_request_headers .= " HTTP/1.1\r\n";             //变更为 HTTP/1.1，这将造成一些网站缓慢或者链接失败
+
+562修改了放盗链  
+        /* commented by felix021
+        if ($_flags['show_referer'] && isset($_SERVER['HTTP_REFERER']) && preg_match('#^\Q' . $_script_url . '?' . $_config['url_var_name'] . '=\E([^&]+)#', $_SERVER['HTTP_REFERER'], $matches))
+        {
+            $_request_headers .= 'Referer: ' . decode_url($matches[1]) . "\r\n";
+        }
+        */
+       $tmp = parse_url($_url);
+       $_request_headers .= 'Referer: ' . $tmp['scheme'] . '://' . $tmp['host'] . "\r\n";
+
+683增加一个if语句
+       //added by felix021 for block-divided downloading
+       if(!empty($_SERVER['HTTP_RANGE'])){
+           $_request_headers .= 'Range: ' . $_SERVER['HTTP_RANGE'] . "\r\n";
+       }
+       $_request_headers .= "\r\n";

@@ -1,0 +1,178 @@
+﻿
+php截取html摘要，自动检查html标签闭合
+
+日志一般需要生成摘要，手动填写太麻烦，于是使用mb_substr自动截取，问题来了。如果纯文本还基本准确，要是html代码过多，截取出来的差得太 多。比如设定摘要300字，前面空格、html代码就可能占了100。怎么办呢？最好的办法是遇到html代码，跳过，不计数。这样较为准确，当然，美中 不足的是，万一是 img 标签呢？什么事都不能十全十美，就这样了。
+utf编码，unicode字符1 - 6个字节都有可能，但 html 代码肯定都是 1 字节，并且以 < 开始，以> 结束，所以稍候分析一下，就出来了。但有个问题，html 标签不能成为对闭合，比如 300 个字符满了，后面还有几个 html 标签，这就造成标签不闭合，页面布局全乱了。记得 php 有个扩展库，专门检查 html 规范的，但一般主机都没装，就试着写了一下。逻辑相当复杂，自己看了都头晕，觉得有些地方多余了，但也没找到另好的办法。
+在这几天的测试中，都能正确处理未闭合的 html 标签。但是如果使用 php 过滤器，就会比较麻烦，php 代码内可能会出现非常多的 < 和 >，现在的解决办法是，如果是输入格式中包含有 php 过滤器，就不处理。字符串中没有 html 标签，直接调用  mb_substr 处理，含有摘要截取标记，优先从标记处截断。
+下面是代码：
+/**
+* 生成摘要
+* @param (string) $body
+*  正文
+* @param (int) $size
+*  摘要长度
+* @param (int) $format
+*  输入格式 id
+*/
+function blog_summary( $body , $size , $format = NULL){
+$_size = mb_strlen( $body , 'utf-8' );
+
+if ( $_size <= $size ) return $body ;
+
+// 输入格式中有 PHP 过滤器
+if (!isset( $format ) && filter_is_php( $format )){
+return $body ;
+}
+
+$strlen_var = strlen ( $body );
+
+// 不包含 html 标签
+if ( strpos ( $body , '<' ) === false){
+return mb_substr( $body , 0, $size );
+}
+
+// 包含截断标志，优先
+if ( $e = strpos ( $body , '<!-- break -->' )){
+return mb_substr( $body , 0, $e );
+}
+
+// html 代码标记
+$html_tag = 0;
+
+// 摘要字符串
+$summary_string = '' ;
+
+/**
+* 数组用作记录摘要范围内出现的 html 标签
+* 开始和结束分别保存在 left 和 right 键名下
+* 如字符串为：<h3><p><b>a</b></h3>，假设 p 未闭合
+* 数组则为：array('left' => array('h3', 'p', 'b'), 'right' => 'b', 'h3');
+* 仅补全 html 标签，<? <% 等其它语言标记，会产生不可预知结果
+*/
+$html_array = array ( 'left' => array (), 'right' => array ());
+for ( $i = 0; $i < $strlen_var ; ++ $i ) {
+if (! $size ){
+break ;
+}
+
+$current_var = substr ( $body , $i , 1);
+
+if ( $current_var == '<' ){
+// html 代码开始
+$html_tag = 1;
+$html_array_str = '' ;
+} else if ( $html_tag == 1){
+// 一段 html 代码结束
+if ( $current_var == '>' ){
+/**
+* 去除首尾空格，如 <br /  >< img src="" / > 等可能出现首尾空格
+*/
+$html_array_str = trim( $html_array_str );
+
+/**
+* 判断最后一个字符是否为 /，若是，则标签已闭合，不记录
+*/
+if ( substr ( $html_array_str , -1) != '/' ){
+
+// 判断第一个字符是否 /，若是，则放在 right 单元
+$f = substr ( $html_array_str , 0, 1);
+if ( $f == '/' ){
+// 去掉 /
+$html_array [ 'right' ][] = str_replace ( '/' , '' , $html_array_str );
+} else if ( $f != '?' ){
+// 判断是否为 ?，若是，则为 PHP 代码，跳过
+
+/**
+* 判断是否有半角空格，若有，以空格分割，第一个单元为html 标签
+* 如 <h2 class="a"> <p class="a">
+*/
+if ( strpos ( $html_array_str , ' ' ) !== false){
+// 分割成2个单元，可能有多个空格，如：<h2 class="" id="">
+$html_array [ 'left' ][] = strtolower (current( explode ( ' ' , $html_array_str , ;
+} else {
+/**
+* * 若没有空格，整个字符串为 html 标签，如：<b> <p> 等
+* 统一转换为小写
+*/
+$html_array [ 'left' ][] = strtolower ( $html_array_str );
+}
+}
+}
+
+// 字符串重置
+$html_array_str = '' ;
+$html_tag = 0;
+} else {
+/**
+* 将< >之间的字符组成一个字符串
+* 用于提取 html 标签
+*/
+$html_array_str .= $current_var ;
+}
+} else {
+// 非 html 代码才记数
+-- $size ;
+}
+
+$ord_var_c = ord( $body { $i });
+
+switch (true) {
+case (( $ord_var_c & 0xE0)== 0xC0):
+// 2 字节
+$summary_string .= substr ( $body , $i , 2);
+$i += 1;
+break ;
+case (( $ord_var_c & 0xF0)== 0xE0):
+
+// 3 字节
+$summary_string .= substr ( $body , $i , 3);
+$i += 2;
+break ;
+case (( $ord_var_c & 0xF8)== 0xF0):
+// 4 字节
+$summary_string .= substr ( $body , $i , 4);
+$i += 3;
+break ;
+case (( $ord_var_c & 0xFC)== 0xF8):
+// 5 字节
+$summary_string .= substr ( $body , $i , 5);
+$i += 4;
+break ;
+case (( $ord_var_c & 0xFE)== 0xFC):
+// 6 字节
+$summary_string .= substr ( $body , $i , 6);
+$i += 5;
+break ;
+default :
+// 1 字节
+$summary_string .= $current_var ;
+}
+}
+
+if ( $html_array [ 'left' ]){
+/**
+* 比对左右 html 标签，不足则补全
+*/
+
+/**
+* 交换 left 顺序，补充的顺序应与 html 出现的顺序相反
+* 如待补全的字符串为：<h2>abc<b>abc<p>abc
+* 补充顺序应为：</p></b></h2>
+*/
+$html_array [ 'left' ] = array_reverse ( $html_array [ 'left' ]);
+
+foreach ( $html_array [ 'left' ] as $index => $tag ){
+// 判断该标签是否出现在 right 中
+$key = array_search ( $tag , $html_array [ 'right' ]);
+if ( $key !== false){
+// 出现，从 right 中删除该单元
+unset( $html_array [ 'right' ][ $key ]);
+} else {
+// 没有出现，需要补全
+$summary_string .= '</' . $tag . '>' ;
+}
+}
+}
+return $summary_string ;
+}
+URL: http://www.dongge.org/node/2

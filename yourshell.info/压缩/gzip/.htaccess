@@ -1,0 +1,19 @@
+################## GZip Files ###################
+<FilesMatch "\.js$">
+AddHandler application/x-httpd-php .js
+php_value default_mimetype "text/javascript"
+</FilesMatch>
+<FilesMatch "\.css$">
+AddHandler application/x-httpd-php .css
+php_value default_mimetype "text/css"
+</FilesMatch>
+<FilesMatch "\.(htm|html|shtml)$">
+AddHandler application/x-httpd-php .html
+php_value default_mimetype "text/html"
+</FilesMatch>
+<FilesMatch "\.(gif|jpg|jpeg|png|swf)$">
+AddHandler application/x-httpd-php .html
+php_value default_mimetype "text/html"
+</FilesMatch>
+
+php_value auto_prepend_file /htdocs/pe/gzip.php

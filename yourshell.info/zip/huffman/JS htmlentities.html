@@ -1,0 +1,27 @@
+HTML字符实体转换：       http://www.chenjiliang.com/Article/View.aspx?ArticleID=2630
+JavaScript htmlentities:  http://phpjs.org/functions/htmlentities:425
+<script type="text/javascript">
+function html_entity_decode(str) //还原html实体转
+{ 
+    return str=str.replace(/&#(\d+);/g, function(match,n)
+                                    {return String.fromCharCode(n)}
+                       );
+} 
+
+function html_entity_encode(str)  //转为html实体
+{ 
+    return str.replace(/[^\x00-\xff]/g, function(x)
+                                      {return "&#"+x.charCodeAt(0)+";"}
+                     ); 
+} 
+
+var enstr1="hi,all&#22823;&#23478;&#22909;"; 
+var str= html_entity_decode(enstr1); 
+alert(str); // hi,all大家好 
+
+var str="hi,all大家好"; 
+var enstr2=html_entity_encode(str); 
+alert(enstr2);
+
+alert(enstr1===enstr2); // true
+</script>

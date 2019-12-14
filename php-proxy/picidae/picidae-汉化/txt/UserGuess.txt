@@ -1,0 +1,15 @@
+== Find the name of your PHP user ==
+
+To find out the name of your PHP user you can run the following php-script on your Server
+
+{{{
+<?php
+
+$uname = shell_exec ('whoami');
+echo ("user name is: <b>$uname </b>");
+
+?>
+}}}
+
+It is important to know the name of your PHP user, because you have to give it the sudo right to generate the picture in the visudo file.
+

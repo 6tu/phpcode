@@ -1,0 +1,590 @@
+﻿用PHP实现POP3邮件的解码一
+
+本文简要说明了通过POP3协议收取邮件、MIME邮件的解码的原理；针对收取和MIME解码，提供了两个实用的PHP类，并提供了使用的样例。分为邮件收取、MIME解码两个部分。我们已经向您介绍过了邮件的收取，现在让我们来为您介绍本文的解码部。
+
+　　在上一篇里，我们已经完成了一个用PHP通过POP3收取邮件的实例，可是在使用这个类的时候，相信你已经看到了，很多的邮件收下来是一堆乱码，自己根本看不懂！是的。现在的邮件大部分都已经经过了编码，需要一个解码的过程才能变成我们习惯的文字、图片、或是其它的附件。
+
+　　邮件的源文件
+
+　　首先，我们来看一段简单的邮件的源文件：（在Foxmail中，选中邮件，点选“查看源文件”就会看到这样的些内容了）
+
+　　From: <boss_ch@netease.com>
+
+　　To: <boss_ch@china.com>
+
+　　Subject: =?gb2312?B?xOO6w6Oh?=
+
+　　Date: Sun, 8 Oct 2000 20:28:45 +0800
+
+　　MIME-Version: 1.0
+
+　　Content-Type: multipart/alternative;
+
+　　 boundary="----=_NextPart_000_0007_01C03166.5B1E9510"
+
+　　X-Priority: 3
+
+　　X-MSMail-Priority: Normal
+
+　　X-Mailer: Microsoft Outlook Express 5.00.2919.6700
+
+　　X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+
+　　This is a multi-part message in MIME format.
+
+　　------=_NextPart_000_0007_01C03166.5B1E9510
+
+　　Content-Type: text/plain;
+
+　　 charset="gb2312"
+
+　　Content-Transfer-Encoding: base64
+
+　　w7vT0MLSwuuwyaO/DQo=
+
+　　------=_NextPart_000_0007_01C03166.5B1E9510
+
+　　Content-Type: text/html;
+
+　　 charset="gb2312"
+
+　　Content-Transfer-Encoding: base64
+
+　　PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+
+　　L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
+
+　　MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBjb250ZW50PSJNU0hUTUwgNS4w
+
+　　MC4yOTIwLjAiIG5hbWU9R0VORVJBVE9SPg0KPFNUWUxFPjwvU1RZTEU+DQo8L0hFQUQ+DQo8Qk9E
+
+　　WSBiZ0NvbG9yPSNmZmZmZmY+DQo8RElWPjxGT05UIHNpemU9Mj7Du9PQwtLC67DJo788L0ZPTlQ+
+
+　　PC9ESVY+PC9CT0RZPjwvSFRNTD4NCg==
+
+　　------=_NextPart_000_0007_01C03166.5B1E9510-
+
+　　这样的一段邮件，我想没有人能看得懂的。不要急，我们来仔细看看这些内容。
+
+　　From: <boy@netease.com>
+
+　　To: <boss_ch@china.com>
+
+　　这个是好理解的，邮件由boy@netease.com发送，收件人是boss_ch@china.com，这些标签的含义我们基本可从字面上理解到，像Date:Sun, 8 Oct 2000 20:28:45 +0800表示的是时间，X-Priority: 3表示的是邮件的优先级，X-Mailer: Microsoft Outlook Express 5.00.2919.6700表示的是邮件发送器的名字，这里用的是Outllook 5，不过，这些东西跟邮件的内容是没有很大关系的。我们不需要深究。
+
+
+用PHP实现POP3邮件的收取二
+
+现在让我们来用PHP实现一个通过POP3协议收取信件的类吧，这个类中所用到的一些sock操作的函数，不另做特殊说明，请参考php的有关资料。通过这个实例，相信你也会和我一样，感觉到PHP中对于sock操作的灵活、方便和功能的强大。
+
+　　首先，我们来说明一下这个类中需要用到的一些内部成员变量：（这些变量应该都是对外封闭的，可是由于php对类的成员变量没有private与publice之类的分别，只好就这么直接定义了。这是PHP的一个令人遗憾的地方。）
+
+　　
+
+　　１.成员变量说明
+
+　　class pop3
+　　{
+
+　　　　　　var $hostname=""; // POP主机名
+
+　　　　　　var $port=110; // 主机的POP3端口，一般是110号端口
+
+　　 var $timeout=5;　　// 连接主机的最大超时时间　
+
+　　　　　　var $connection=0; // 保存与主机的连接
+
+　　　　　　var $state="DISCONNECTED"; // 保存当前的状态　
+
+　　　　　　var $debug=0;　　// 做为标识，是否在调试状态，是的话，输出调试信息
+
+　　 var $err_str='';　　// 如果出错，这里保存错误信息
+
+　　 var $err_no;　　　//如果出错，这里保存错误号码
+
+　　 var $resp; // 临时保存服务器的响应信息
+
+　　 var $apop; // 指示需要使用加密方式进行密码验证，一般服务器不需要
+
+　　 var $messages; //　邮件数
+
+　　 var $size; //各邮件的总大小
+
+　　 var $mail_list; // 一个数组，保存各个邮件的大小及其在邮件服务器上序号 　
+
+　　 var $head=array(); // 邮件头的内容，数组
+
+　　 var $body=array(); // 邮件体的内容，数组;
+
+　　
+
+　　２.当然，这其中的有些变量，仅通过这样一个简单的说明并不能完全了解如何使用，下面我就逐个来说明这个类实现中的一些主要方法：
+　　Function pop3($server="192.100.100.1",$port=110,$time_out=5)
+
+　　{$this->hostname=$server;
+
+　　 $this->port=$port;
+
+　　 $this->timeout=$time_out;
+
+　　 return true;
+　　}
+
+　　熟悉面向对象编程的朋友一看就会知道，这是这个类的构造函数，在初始化这个类时，可以给出这几个最基本的参数：pop3服务器的地址，端口号，及连接服务器时的最大超时时间。一般来说，只需要给出POP3服务器的地址就行了。
+
+　　Function open()
+　　{
+　　if($this->hostname=="")
+
+　　　　{$this->err_str="无效的主机名!!";
+
+　　 return false;
+　　 } 　
+
+　　if ($this->debug) echo "正在打开　$this->hostname,$this->port,&$err_no, &$err_str, $this->timeout<BR>";
+
+　　if (!$this->connection=fsockopen($this->hostname,$this->port,&$err_no, &$err_str, $this->timeout))
+　　 {
+
+　　 $this->err_str="连接到POP服务器失败，错误信息：".$err_str."错误号：".$err_no;
+
+　　 return false;
+
+　　 }
+　　 else
+　　 {
+　　 $this->getresp();
+
+　　 if($this->debug)　　　　　　　　
+
+　　 　　 $this->outdebug($this->resp);
+
+　　 if (substr($this->resp,0,3)!="+OK")
+
+　　 {$this->err_str="服务器返回无效的信息：".$this->resp."请检查POP服务器是否正确";
+
+　　 return false;
+　　 }
+
+　　 $this->state="AUTHORIZATION";
+
+　　 return true;
+
+　　 }
+
+　　}
+
+　　该方法不需要任何参数就可建立与POP3服务器的sock连接。该方法又用到了另一个类中的方法$this->getresp();下面是这个方法的声明：
+
+　　Function getresp()
+
+　　 {
+
+　　 for($this->resp="";;)
+
+　　　　 {
+
+　　　　　　　　 if(feof($this->connection))
+
+　　　　　　　　　　　　　　 return false;
+
+　　　　　　　　　　 $this->resp.=fgets($this->connection,100);
+
+　　　　　　　　　　 $length=strlen($this->resp);
+
+　　　　　　　　　　 if($length>=2 && substr($this->resp,$length-2,2)=="\r\n")
+
+　　　　　　　　　　 {
+
+　　　　　　　　 　　 $this->resp=strtok($this->resp,"\r\n");
+
+　　 return true;
+
+　　　　　　　　　　 }
+　　　　　　　　　　}
+　　　　　　}
+
+　　这个方法取得服务器端的返回信息并进行简单的处理：去掉最后的回车换行符，将返回信息保存在resp这个内部变量中。这个方法在后面的多个操作中都将用到。另外，还有个小方法也在后面的多个操作中用到：
+
+　　Function outdebug($message)
+　　{
+　　 echo htmlspecialchars($message)."<br>\n";
+　　}
+
+　　它的作用就是把调试信息$message显示出来，并把一些特殊字符进行转换以及在行尾加上<br>标签，这样是为了使其输出的调试信息便于阅读和分析。
+
+　　建立起与服务器的sock连接之后，就要给服务器发送相关的命令了（请参见上面的与服务器对话的过程）从上面对　POP对话的分析可以看到，每次都是发送一条命令，然后服务器给予一定的回应，如果命令的执行是对的，回应一般是以+OK开头，后面是一些描述信息，所以，我们可以做一个通过发送命令的方法:
+
+　　Function command($command,$return_lenth=1,$return_code='+')
+　　{
+　　 if ($this->connection==0)
+　　 {
+　　 $this->err_str="没有连接到任何服务器，请检查网络连接";
+
+　　 return false;
+　　 }
+
+　　 if ($this->debug)
+　　 $this->outdebug(">>> $command");
+
+　　 if (!fputs($this->connection,"$command\r\n"))
+
+　　 {
+
+　　 $this->err_str="无法发送命令".$command;
+
+　　 return false;
+　　 }
+　　 else
+　　 {
+
+　　 $this->getresp();
+
+　　 if($this->debug)
+
+　　 　　 $this->outdebug($this->resp);
+
+　　 if (substr($this->resp,0,$return_lenth)!=$return_code)
+
+　　 {
+
+　　 $this->err_str=$command." 命令服务器返回无效:".$this->resp;
+
+　　 return false;
+
+　　 }
+
+　　　　else
+
+　　 return true;
+
+　　　　}
+　　}
+
+　　这个方法可以接受三个参数: $command--> 发送给服务器的命令; $return_lenth,$return_code ，指定从服务器的返回中取多长的值做为命令返回的标识以及这个标识的正确值是什么。对于一般的pop操作来说，如果服务器的返回第一个字符为"+"，则可以认为命令是正确执行了。也可以用前面提到过的三个字符"+OK"做为判断的标识。
+
+　　下面介绍的几个方法则可以按照前述收取信件的对话去理解，因为有关的内容已经在前面做了说明，因此下面的方法不做详细的说明，请参考其中的注释：
+
+　　Function Login($user,$password)　//发送用户名及密码，登录到服务器
+　　{
+
+　　if($this->state!="AUTHORIZATION")
+　　 {
+
+　　 $this->err_str="还没有连接到服务器或状态不对";
+
+　　 return false;
+　　 }
+
+　　if (!$this->apop) //服务器是否采用APOP用户认证
+　　 {
+
+　　 if (!$this->command("USER $user",3,"+OK")) return false;
+
+　　 if (!$this->command("PASS $password",3,"+OK")) return false;
+
+　　 }
+
+　　else
+
+　　 {
+
+　　 //echo $this->resp=strtok($this->resp,"\r\n");
+
+　　 if (!$this->command("APOP $user ".md5($this->greeting.$password),3,"+OK")) return false;
+
+　　 }
+
+　　$this->state="TRANSACTION"; // 用户认证通过，进入传送模式
+
+　　return true;
+　　}
+
+　　
+
+　　Function stat() // 对应着stat命令，取得总的邮件数与总的大小
+　　{
+　　if($this->state!="TRANSACTION")
+　　 {
+
+　　 $this->err_str="还没有连接到服务器或没有成功登录";
+
+　　 return false;
+　　 }
+
+　　if (!$this->command("STAT",3,"+OK"))
+　　 return false;
+
+　　 else
+
+　　 {
+
+　　 $this->resp=strtok($this->resp," ");
+
+　　 $this->messages=strtok(" "); // 取得邮件总数
+
+　　 $this->size=strtok(" "); //取得总的字节大小
+
+　　 return true;
+　　 }
+　　}
+
+　　Function listmail($mess=null,$uni_id=null) //对应的是LIST命令，取得每个邮件的大小及序号。一般来说用到的是List命令，如果指定了$uni_id ，则使用UIDL命令，返回的是每个邮件的标识符，事实上，这个标识符一般是没有什么用的。取得的各个邮件的大小返回到类的内部变量mail_list这个二维数组里。
+
+　　{
+　　if($this->state!="TRANSACTION")
+　　 {
+
+　　 $this->err_str="还没有连接到服务器或没有成功登录";
+
+　　 return false;
+　　 }
+
+　　if ($uni_id)
+
+　　 $command="UIDL ";
+
+　　 else
+
+　　 $command="LIST ";
+
+　　if ($mess)
+
+　　 $command.=$mess;
+　
+
+　　if (!$this->command($command,3,"+OK"))
+　　 {
+
+　　 //echo $this->err_str;
+
+　　 return false;
+
+　　 }
+　　 else
+　　 {
+
+　　 $i=0;
+
+　　 $this->mail_list=array();
+
+　　 $this->getresp();
+
+　　 while ($this->resp!=".")
+
+　　 { $i++;
+
+　　 if ($this->debug)
+　　 {
+
+　　 $this->outdebug($this->resp);
+　　 }
+
+　　 if ($uni_id)
+　　 {
+　　 $this->mail_list[$i][num]=strtok($this->resp," ");
+
+　　 $this->mail_list[$i][size]=strtok(" ");
+　　 }
+　　 else
+　　 {
+　　 $this->mail_list[$i]["num"]=intval(strtok($this->resp," "));
+
+　　 $this->mail_list[$i]["size"]=intval(strtok(" "));
+
+　　 }
+
+　　 $this->getresp();
+
+　　 }
+
+　　 return true;
+　　 }
+　　}
+
+　　function getmail($num=1,$line=-1)　// 取得邮件的内容，$num是邮件的序号，$line是指定共取得正文的多少行。有些时候，如邮件比较大而我们只想先查看邮件的主题时是必须指定行数的。默认值$line=-1，即取回所有的邮件内容，取得的内容存放到内部变量$head，$body两个数组里，数组里的每一个元素对应的是邮件源代码的一行。
+
+　　{
+
+　　if($this->state!="TRANSACTION")
+　　 {
+　　 $this->err_str="不能收取信件，还没有连接到服务器或没有成功登录";
+
+　　 return false;
+　　 }
+
+　　if ($line<0)
+
+　　 $command="RETR $num";
+
+　　else
+
+　　 $command="TOP $num $line";
+
+　　
+
+　　if (!$this->command("$command",3,"+OK"))
+
+　　 return false;
+
+　　 else
+　　 {
+
+　　 $this->getresp();
+
+　　 $is_head=true;
+
+　　 while ($this->resp!=".") // . 号是邮件结束的标识
+　　 {
+
+　　 if ($this->debug)
+
+　　 $this->outdebug($this->resp);
+
+　　 if (substr($this->resp,0,1)==".")
+
+　　 $this->resp=substr($this->resp,1,strlen($this->resp)-1);
+
+　　 if (trim($this->resp)=="") // 邮件头与正文部分的是一个空行
+
+　　 $is_head=false;
+
+　　 if ($is_head)
+
+　　 $this->head[]=$this->resp;
+
+　　 else
+
+　　 $this->body[]=$this->resp;
+
+　　 $this->getresp();
+
+　　 }
+
+　　 return true;
+　　 } 
+　　} // end function
+
+　　
+
+　　function dele($num) // 删除指定序号的邮件，$num 是服务器上的邮件序号
+
+　　{
+
+　　 if($this->state!="TRANSACTION")
+　　 {
+
+　　 $this->err_str="不能删除远程信件，还没有连接到服务器或没有成功登录";
+
+　　 return false;
+　　 }
+
+　　 if (!$num)
+　　 {
+
+　　 $this->err_str="删除的参数不对";
+
+　　 return false;
+　　 }
+
+　　 if ($this->command("DELE $num ",3,"+OK"))
+　　 return true;
+
+　　 else
+
+　　 return false;
+　　}
+
+　　通过以上几个方法，我们已经可以实现邮件的查看、收取、删除的操作，不过别忘了最后要退出，并关闭与服务器的连接，调用下面的这个方法：
+
+　　Function Close()
+　　{
+
+　　if($this->connection!=0)
+　　 {
+
+　　 if($this->state=="TRANSACTION")
+
+　　 $this->command("QUIT",3,"+OK");
+
+　　 fclose($this->connection);
+
+　　　　 $this->connection=0;
+
+　　 $this->state="DISCONNECTED";
+　　 }
+
+　　}
+
+
+
+
+
+
+
+
+
+
+
+
+用PHP实现POP3邮件的收取三
+
+POP3收取邮件的类在前面的文章中已经给大家做了详细的介绍，下面我们来看看如何应用这个类：
+
+　　<?
+　　include("pop3.inc.php");
+
+　　$host="pop.china.com";
+
+　　$user="boss_ch";
+
+　　$pass="026007";
+
+　　$rec=new pop3($host,110,2);
+
+　　if (!$rec->open()) die($rec->err_str);
+
+　　echo "open ";
+
+　　if (!$rec->login($user，$pass)) die($rec->err_str);
+
+　　echo "login";
+
+　　if (!$rec->stat()) die($rec->err_str);
+
+　　echo "共有".$rec->messages."封信件，共".$rec->size."字节大小<br>"; 　
+
+　　if ($rec->messages>0)
+　　 {
+　　 if (!$rec->listmail()) die($rec->err_str);
+
+　　 echo "有以下信件：<br>";
+
+　　 for ($i=1;$i<=count($rec->mail_list);$i++)
+　　 {
+
+　　 echo "信件".$rec->mail_list[$i][num]."大小：".$rec->mail_list[$i][size]."<BR>";
+
+　　 }
+
+　　 $rec->getmail(1);
+
+　　 echo "邮件头的内容：<br>";
+
+　　 for ($i=0;$i<count($rec->head);$i++)
+
+　　 echo htmlspecialchars($rec->head[$i])."<br>\n";
+
+　　 echo "邮件正文　：<BR>";
+
+　　 for ($i=0;$i<count($rec->body);$i++)
+
+　　 echo htmlspecialchars($rec->body[$i])."<br>\n";
+　　 }
+
+　　$rec->close();
+　　?>
+
+　　如果你把pop3类中的debug设为true的话，你还可以看到程序与pop3服务器是如何对话的，用于正在调试的程序来说，这样显得更为直观。
+
+

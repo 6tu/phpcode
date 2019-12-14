@@ -1,0 +1,24 @@
+用SafeWeb安全上网
+
+
+在SafeWeb界面中点击“Favorites”按钮，可以将用SafeWeb服务器正访问的网站加入“SafeWeb收藏夹”（点击此收藏夹中的网站，将始终用SafeWeb服务器访问）。
+
+点击“Configure”按钮，可以根据需要配置安全选项（^07040408b^2）。
+其中，系统本身预置了4级安全等级，可以随意选择，当然可以手动配置，
+“Disable Java Applets”表示禁用Java小程序，
+“Disable Plugins”表示禁用Flash 等插件，
+“Hide Referrer”表示隐藏你的访问行踪，使某些网站不能跟踪你的访问行踪；
+“Permit Cookies”表示允许任何网站把Cookies文件存放在你的电脑中，
+“Filter Profiling Cookies”表示禁止那些已知利用Cookies侵犯你的个人隐私的网站在你的电脑中存放Cookies文件，
+“Block All Cookies”表示禁止任何站点在你的电脑中存放Cookies文件，
+“Erase New Cookies When Browser Closes”表示在关闭浏览器时将删除新建的Cookies文件；
+“recommended （推荐）”和“paranoid（偏执）”表示SafeWeb有两种级别供选择来清理网站中的JavaScript和VBScript代码，从而使你能安全上网；
+“Block Pop-Up Windows ”表示禁止某些网站被访问时弹出的广告窗口以及“Web Bug”（网络窃听器：一种不可见的弹出窗口，暗中监视你的行动）。
+
+以上项目选好后，点击“Update Options”按钮将保存设置（只对某一个SafeWeb浏览窗口而言），若要在所有的SafeWeb浏览窗口中使用相同的设置，则应点击下面的“Set these options permanently”。
+
+在SafeWeb界面中点击“Window”按钮，可以另开一个SafeWeb安全浏览窗口。
+通过SafeWeb浏览窗口访问其他网站时，若SafeWeb 界面中出现“小锁”图标表示你要访问的网站要求安全连接，例如某些电子商务网站在需输入信用卡号码时；
+
+若SafeWeb 界面中出现一个“动画小甜饼”图标表示此刻有Cookies被阻止了；
+若SafeWeb 界面中出现一个“动画小窗口”图标表示此刻有弹出式窗口被禁止了（^07040408c^3）。

@@ -1,0 +1,48 @@
+Huffman Coding with PHP and JavaScript
+There may be times when you want to compress data on the server or in the browser. I'm providing an implementation of the Huffman Coding algorithm in PHP and in JavaScript. 
+
+Download Source Code
+huffman.zip (9 KB) 
+
+Simple String Compression
+PHP Example (in JavaScript, it's almost the same): 
+
+$original = "This is the text that you want to compress.";
+$huffman = new Huffman();
+$compressed = $huffman->compress($original);
+/* ... */
+$huffman2 = new Huffman();
+$decompressed = $huffman2->decompress($compressed);
+echo $decompressed; // Should output "This is a text..."Simple Array Compression
+You can also compress arrays which may contain any kind of data (numbers, objects, strings, etc.). What you get after compression, however, is also an array which contains these objects. This is needed to properly restore the original data during decompression. 
+
+JavaScript example (it's the same in PHP): 
+
+var original = new Array(1000,1000,"text",1000,1000,"text",new Array());
+var huffman = new Huffman();
+var compressed = huffman.compress(original);
+/* ... */
+var huffman2 = new Huffman();
+alert(huffman2.decompress(compressed)); // Should display the original array items.Re-using Huffman Trees
+In the above examples, the Huffman tree (also called the ¡°dictionary¡±) which maps values (or characters) to bits is embedded in the compressed data. Sometimes, however, you may want to re-use the dictionary for more than one item to compress. This is how it works: 
+
+$original1 = "This is the first text we want to compress.";
+$original2 = "This is the second text we want to compress.";
+$huffman = new Huffman();
+$huffman->buildTree($original1.$original2);
+$dictionary = $huffman->getDictionary();
+$compressed1 = $huffman->compressData($original1,false);
+$compressed2 = $huffman->compressData($original2,false);
+/* ... */
+$huffman2 = new Huffman($dictionary);
+echo $huffman->decompressData($compressed1,false)."\n";
+echo $huffman->decompressData($compressed2,false);
+// Should output both original strings.This works exactly the same with arrays but you'll have to let the functions know that you want arrays with ¡°true¡± instead of ¡°false¡± in the functions above. See also documentation in source code. 
+
+And of course, this also works in JavaScript. 
+
+Javascript Tip
+If you load a binary file from the server using AJAX, you should make sure you override the MIME type as follows: 
+
+// xmlhr is an XMLHttpRequest object.
+xmlhr.overrideMimeType('text/plain; charset=x-user-defined');

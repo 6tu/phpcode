@@ -1,0 +1,26 @@
+
+googleplaydownloader
+
+git clone https://framagit.org/tuxicoman/googleplaydownloader.git
+apt-get install python-wxgtk2.8 python-requests python-pyasn1 default-jre
+
+--------------------------------------------------
+gplaycli
+
+https://github.com/matlink/gplaycli
+apt-get install python-dev libffi-dev libssl-dev
+
+/root/.config/gplaycli/credentials.conf
+/etc/gplaycli/credentials.conf
+
+--------------------------------------------------
+
+在线的  https://apps.evozi.com/apk-downloader/
+
+
+没有更新的 https://github.com/egirault/googleplay-api/
+PHP  https://github.com/gellweiler/app-download.org
+
+
+
+

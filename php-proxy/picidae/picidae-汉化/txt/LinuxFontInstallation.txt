@@ -1,0 +1,45 @@
+= How to Install Fonts on your Server =
+
+== Basic X Fonts ==
+||                                      || '''Debian'''                || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| ''Basic X Fonts''                 || apt-get install xfonts-100dpi xfonts-100dpi-transcoded xfonts-75dpi xfonts-75dpi-transcoded xfonts-base ||                                      ||               ||                                      ||
+
+
+----
+
+== True Type fonts ==
+To be able to display nice fonts from any language in the world, one can use True Type Fonts (TTF) and install as many language packages as possible:
+
+'''Debian'''[[BR]]
+Install defoma (Debian Font Manager):
+{{{
+apt-get install defoma
+}}}
+
+Install True Type Font reader ttmkfdir
+{{{
+apt-get install ttmkfdir
+}}}
+
+Install fonts
+{{{
+apt-get install ttf-bitstream-vera msttcorefonts ttf-junicode ttf-kochi-gothic ttf-kochi-mincho
+}}}
+
+For further information you may want to read also the following tutorial: http://wiki.splitbrain.org/debianfonts
+
+'''Suse'''[[BR]]
+open yast2 and install the following packages:[[BR]]
+fonts-thai, fonts-arabic, farsifonts, indic-fonts, sazanami-fonts, fonts-thryomanes '' (... add more usable font packages here)''
+
+----
+
+== Check if its working ==
+Check which languages that are working by browsing the following page with your pici-server: 
+ * http://dev.picidae.net/dev/wiki/LanguageSite
+ * http://www.wikipedia.org
+Wherever you see squares instead of letters, means that there was no suitable font found.
+
+----
+----
+

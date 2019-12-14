@@ -1,0 +1,32 @@
+www.asiplease.net/computing/javascript/crypto.htm
+
+<script language="javascript" >
+
+function encrypt(str,key){
+    var key;
+    var estr='';
+    var n = str.length;
+    for (var i=0; i<n; i++){
+        e=str.charCodeAt(i)+key;
+        estr+=String.fromCharCode(e);
+    }
+    return estr;
+}
+
+function decrypt(estr,key){
+    var key;
+    var str='';
+    var n = estr.length;
+    for (var i=0; i<n; ++i){
+        s=estr.charCodeAt(i)-key;
+        str+=String.fromCharCode(s);
+    }
+    return str;
+}
+
+var m = "abc";
+var key = 102135456;
+var m = encrypt(m,key);
+var m = decrypt(m,key);
+alert(m);
+</script>

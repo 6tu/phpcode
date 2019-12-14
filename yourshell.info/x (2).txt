@@ -1,0 +1,16 @@
+Win8.1系统怎么清理WinSXS文件夹？
+
+有的用户可能会发现在使用win8.1系统一段时间后Windows目录会变得越来越大，其实很大的原因都是WinSXS文件夹变大了，不段的安装更新使WinSXS中存在了大量的垃圾及更新备份，不过很多用户也知道WinSXS文件夹是比较重要的，我们不能单纯的使用删除来解决，怎么样才能安全的清理WinSXS文件夹呢？下面小编分享了一些方法供大家参考
+
+方法一、使用Win8.1自带的DISM.EXE来清理
+
+操作方法
+1、按WIN+R打开运行对话框，输入CMD，并回车；
+　　
+2、然后在命令提示符中输入Dism.exe /Online /Cleanup-Image /AnalyzeComponentStore 回车，查看WinSXS文件夹的大小。如下图
+　　Win8.1如何安全地清理Winsxs文件夹垃圾
+3、继续在命令提示符中输入Dism.exe /online /Cleanup-Image /StartComponentCleanup 回车；
+
+4、第三步执行完毕后，再执行 Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase
+
+5、全部执行完毕后WINSXS中的更新备份被释放，清理完成。

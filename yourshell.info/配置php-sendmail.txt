@@ -1,0 +1,53 @@
+XAMPP下配置SMTP mail服务，使PHP的mail() 函数可以发送邮件
+
+PHP的mail() 邮件函数很简单，但也导致了不能使用目前流行的 带验证功能的 SMTP 服务器（gmail, 163, 126等）
+现在通过配置 XAMPP 提供的 sendmail 来使得 PHP 的 mail() 函数可以正常发送邮件，下面以：smtp.126.com 为例：
+1.  找到 xampp/php/php.ini 文件，找到 [mail function] 语句块，修改如下：
+1 [mail function]
+2 SMTP = smtp.126.com
+3 smtp_port = 25
+4 sendmail_from = xxx@126.com
+5 sendmail_path = "\"你的xampp安装目录\xampp\sendmail\sendmail.exe\" -t"
+2. 找到 xampp/sendmail/sendmail.ini 文件，修改如下：
+1 [sendmail]
+2 smtp_server = smtp.126.com
+3 smtp_port = 25
+4 default_domain = 126.com
+5 auth_username = 你的邮箱@126.com
+6 auth_password = 你的密码
+7 
+8 force_sender = xxx@126.com
+3. 配置 SSL 服务（可选）
+因为gmail, 163, 126 等需要使用SSL来连接SMTP邮件服务器，而xampp里的sendmail程序不支持ssl连接。
+如果你使用的是其它邮箱，且不需要SSL来连接SMTP，那把smtp.126.com改成对应的SMTP服务器地址就好了。
+我们可以下载安装一个SSL代理软件，我们这里使用http://www.stunnel.org/
+安装成功后，打开stunnel里面的stunnel.conf文件，找到下面的代码，修改如下：
+这里我们增加了一个 [126-smtp] 节点：
+1 ;[gmail-smtp]
+2 ;client = yes
+3 ;accept = 127.0.0.1:25
+4 ;connect = smtp.gmail.com:465
+5 
+6 [126-smtp]
+7 client = yes
+8 accept = 127.0.0.1:25
+9 connect = smtp.126.com:465
+4. 测试你的 PHP mail() 函数吧，呵呵！
+view source
+print?  www.2cto.com
+01 <?php
+02     $from_name = 'xxx';
+03     $from_email = 'xxx@126.com';
+04     $headers = 'From: $from_name <$from_email>';
+05     $body = 'This is a test mail';
+06     $subject = 'Test email from php mail()';
+07     $to = 'xxx@xxx.com';
+08     if (mail($to, $subject, $body, $headers)) {
+09         echo "success!";
+10     } else {
+11         echo "fail…";
+12     }
+13 ?>
+5. 你已经成功了！
+
+任务计划用CMD命令：开始～运行～CMD～输入“at  19:00  c:\filename”（命令格式：at  时间  文件完整路径）上面的命令是在晚七点执行C盘filename，扩展名别忘了！不会的话可以在“开始菜单～程序”里找“任务计划”或“控制面板”里的“任务计划”！

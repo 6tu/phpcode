@@ -1,0 +1,40 @@
+$DB_ref2url = "ref2url";
+$DB_url2pic = "url2pic";
+
+cd /home/wwwroot/default/pici-server
+mkpicture_xvfb.sh
+
+Êý¾Ý¿â picidae
+±í     url2pic  ref2url  from
+×Ö¶Î
+idx
+url
+pic
+ref
+ip
+created
+cipher_key
+formfields
+hiddenfields
+loading
+displaynr
+url_idx
+
+url2pic
+imgnr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

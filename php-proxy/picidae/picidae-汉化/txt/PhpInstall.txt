@@ -1,0 +1,29 @@
+= Install PHP on your Linux system =
+
+||                           || '''Debian'''                || '''Suse via yast2'''              || '''Fedora''' || ''add your Distribution here'' ||
+|| PHP5                   || apt-get install libapache2-mod-php5 php5-cli php5-common php5-cgi ||                                      ||               ||                                      ||
+|| Additional Libraries || apt-get install php5-mysql php5-gd php5-mcrypt ||                                      ||               ||                                      ||
+
+Restart Apache after you installed the additional libraries.
+{{{
+sudo  /etc/init.d/apache2 restart
+}}}
+
+
+== check php ==
+create a file phpinfo.php in your webdirectory:
+{{{
+<?php
+phpinfo.php
+?>
+}}}
+
+Navigate with your web browser to this file and you should get a page with your php set-up.
+In this php set-up search for the following entries:
+ * safe-mode off
+ * mcrypt (if you find a section by that name, mcrypt is installed and working)
+ * gd (if you find a section by that name, gd is installed and working)
+
+
+
+

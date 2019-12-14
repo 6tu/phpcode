@@ -1,0 +1,42 @@
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = '4889c826f9c258befbdd8abe57cb810d'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = '898034f1f265a20a80fcb0781ad5b363'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = 'd864df3166b5b1e71e8337d1f76e8b0a'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = 'c3910c133f23c553dde439b9bf37e1b3'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = '4c74c4e507d0cddf1d63087a8ecec7fa'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = 'f147c9e9c7fb68d0d25a6aa703b1d96d'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 
+-------------------------------------------------- 
+UPDATE `url2pic` set `loading` = '1', `displaynr` = '10' where `pic` = '9bfd997068eba2f615ac2ca3f98e25f6'; 
+ps_out:   PID CMD
+ 
+no web2pici_id found, no loop created 
+cleanup: no web2pici process found 

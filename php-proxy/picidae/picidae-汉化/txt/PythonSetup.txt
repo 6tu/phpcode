@@ -1,0 +1,16 @@
+[[TOC(InstallationInstructions, MySqlSetup, PhpSetup, PythonSetup, AppleWebKit, svnAccess)]]
+
+= Setup Python =
+
+(In Mac OSX 10.5 - Leopard - this does not need to be installed, because it is already included.)
+
+To install python 2.4 it is the easiest to install this package[[BR]]
+http://pythonmac.org/packages/py24-fat/
+
+(If you installed another version than this one you may have to setup the correct path to the framework in ADMIN/mkpicture.sh )
+
+== pyobjc ==
+Further you need to install the pyobjc 1.4 framework:[[BR]]
+http://sourceforge.net/projects/pyobjc/files/
+
+----

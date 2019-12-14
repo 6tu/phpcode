@@ -1,0 +1,28 @@
+< ?php
+        include_once('pclzip.lib.php');
+        $archive = new PclZip('archive.zip');
+        $v_list = $archive->create('file.txt,data/text.txt,folder');
+        if ($v_list == 0) {
+            die("Error : ".$archive->errorInfo(true));
+        }
+?>
+用法二：
+
+< ?php
+        include_once('pclzip.lib.php');
+        $archive = new PclZip('archive.zip');
+        $v_list = $archive->create('data/file.txt,data/text.txt',
+                                         PCLZIP_OPT_REMOVE_PATH, 'data',
+                                         PCLZIP_OPT_ADD_PATH, 'install');
+        if ($v_list == 0) {
+            die("Error : ".$archive->errorInfo(true));
+        }
+?>
+看见create方法的参数没有，再看看方法原型你就知道如何淫荡了。至少我还没有这样用过。
+
+相关文档：
+PclZip官方地址：http://www.phpconcept.net/pclzip/index.php
+PclZip手册地址：http://www.phpconcept.net/pclzip/man/en/index.php
+PEAR类创建ZIP档案文件：http://www.ccvita.com/10.html
+PclZip简介与使用：http://www.ccvita.com/59.html
+PclZip:强大的PHP压缩与解压缩zip类：http://www.ccvita.com/330.html

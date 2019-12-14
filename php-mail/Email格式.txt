@@ -1,0 +1,17 @@
+邮件头：日期，发送者，收件者，标题，MIME版本，邮件类型，不带两短杠的分界线，之后用空格隔开，说明邮件头结束，然后出现的一句标记加空格之后邮件体开始
+Date: 
+From: 
+To: 
+Subject: 
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=分界线(前面没有两短杠)
+X-Mailer: PHP Mailer 0.51
+
+This is a multi-part message in MIME format.
+
+邮件体：首先是带两短杠的分界线，邮件类型，传输编码方式(这个重要)，空格之后是编码后的邮件内容加空格，反复如此
+--分界线
+Content-Type: text/plain; charset="GBK"
+Content-Transfer-Encoding: base64
+
+邮件尾：当某一类型的邮件体结束标记是两短杠分界线两短杠

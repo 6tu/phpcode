@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en_GB">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Parsing HTML to find Links &lt; PHP | The Art of Web</title>
+  <meta name="description" content="Tutorial on using PHP to parse HTML files and extract links using pcre regex regexp regular expression patterns.">
+  <meta name="keywords" content="html, parse, links, link, find, regex, href, parsing, page, parser, from, regular, expression, preg_match_all, preg_match, with, string, extract, search, regexp">
+  <meta name="author" content="Chirp Internet">
+  <link rel="stylesheet" type="text/css" href="//resources.chirp.com.au/form_formatting.css+table_formatting.css,Mcc.8aMvLk8ULY.css.pagespeed.cf.Pt-5zLtqNU.css">
+  
+  <link rel="stylesheet" type="text/css" href="/style.css.pagespeed.ce.It4K0YmBbl.css">
+  <style type="text/css" media="print">#container{width:768px}body{margin:0;border:none;width:768px;font-size:12px}#content{width:728px}.noprint{display:none}</style>
+  <script type="text/javascript">if(self!=top)top.location.href=self.location.href;window.onload=function(){buildMenu('submenu','h2',true);}
+var hilite=new RegExp("\\b(php|html|tag|preg_match)\\b","i");var hilite_id="content";</script>
+  <script type="text/javascript" src="//resources.chirp.com.au/searchhilite.js.pagespeed.jm.Xi11SYlwhQ.js"></script>
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://search.twitter.com/search.atom?q=from%3Atheartofweb+New+Article">
+</head>
+
+<body>
+
+<a class="chirplink" href="#content">skip navigation</a>
+
+<table id="container" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td id="header">
+<div id="menu" class="noprint">
+<ul>
+  <li><a accesskey="1" href="/">Home</a></li>
+  <li><a accesskey="2" href="/html/">HTML</a></li>
+  <li><a accesskey="3" href="/css/">CSS</a></li>
+  <li><a accesskey="4" href="/javascript/">JavaScript</a></li>
+  <li><a accesskey="5" href="/php/">PHP</a></li>
+  <li><a accesskey="6" href="/sql/">SQL</a></li>
+  <li><a accesskey="7" href="/system/">System</a></li>
+  <li><a accesskey="8" href="/links/">Links</a></li>
+  <li><a accesskey="9" href="/javascript/preferences/">Preferences</a></li>
+  <li><a accesskey="8" href="/search.html">Search</a></li>
+</ul>
+</div>
+</td>
+<td class="noprint"><img src="/images/head_02.jpg" width="192" height="122" alt=""></td>
+</tr>
+<tr style="vertical-align: top;">
+<td id="content">
+<div class="noprint" style="margin: 0.5em 0;">
+<script type="text/javascript">google_ad_client="pub-9789897350102210";google_ad_slot="6258627248";google_ad_width=728;google_ad_height=90;</script>
+<script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>
+
+<div id="submenu" class="noprint">building menu...</div>
+
+<h1>PHP: Parsing HTML to find Links</h1>
+
+<p>From blogging to log analysis and search engine optimisation (SEO)
+people are looking for scripts that can parse web pages and RSS feeds
+from other websites - to see where their traffic is coming from among
+other things.</p>
+
+<p><a href="//www.google.com/search?q=define:parsing" target="_blank">Parsing</a> your own HTML should be no problem - 
+assuming that you use consistent formatting - but once you set your 
+sights at parsing other people's HTML the frustration really sets in.  
+This page presents some regular expressions and a commentary that will 
+hopefully point you in the right direction.</p>
+
+
+<h2>Simplest Case</h2>
+
+<p>Let's start with the simplest case - a well formatted link with no
+extra attributes:</p>
+
+<code>/&lt;a href=\&quot;([^\&quot;]*)\&quot;&gt;(.*)&lt;\/a&gt;/iU</code>
+
+<p>This, believe it or not, is a very simple regular expression (or
+&quot;regexp&quot; for short).  It can be broken down as follows:</p>
+
+<ul>
+  <li>starts with: <b>&lt;a href=&quot;</b></li>
+  <li>a series of characters up to, but not including, the next double-quote (&quot;) - 1st capture</li>
+  <li>the string: <b>&quot;&gt;</b></li>
+  <li>a series of any characters - 2nd capture</li>
+  <li>ends with: <b>&lt;/a&gt;</b></li>
+</ul>
+
+<p>We're also using two 'pattern modifiers':</p>
+
+<ul>
+  <li>i - matches are 'caseless' (upper or lower case doesn't matter)</li>
+  <li>U - matches are 'ungreedy'</li>
+</ul>
+
+<p>The first modifier means that we're matching &lt;A&gt; as well as
+&lt;a&gt;.  The 'ungreedy' modifier is necessary because otherwise the
+second captured string could (by being 'greedy') extend from the
+contents of one link all the way to the end of another link.</p>
+
+<p>One shortcoming of this regexp is that it won't match link tags that
+include a line break - fortunately there's a modifer for this as
+well:</p>
+
+<code>/&lt;a<span>\s</span>href=\&quot;([^\&quot;]*)\&quot;&gt;(.*)&lt;\/a&gt;/<span>s</span>iU</code>
+
+<p>Now the '.' character will match any character
+<strong>including</strong> line breaks.  We've also changed the first
+space to a 'whitespace' character type so that it can match a space, tab
+or line break.  It's necessary to have some kind of whitespace in that
+position so we don't match other tags such as <tt>&lt;area&gt;</tt>.</p>
+
+<p>For more information on pattern modifiers see the link at the bottom
+of this page.</p>
+
+
+<h2>Room for Extra Attributes</h2>
+
+<p>Most link tags contain a lot more than just an <tt>href</tt>
+attribute.  Other common attributes include: rel, target and title. 
+They can appear before or after the href attribute:</p>
+
+<code>/&lt;a\s<span>[^&gt;]*</span>href=\&quot;([^\&quot;]*)\&quot;<span>[^&gt;]*</span>&gt;(.*)&lt;\/a&gt;/siU</code>
+
+<p>We've added extra patterns before and after the href attribute.  They
+will match any series of characters NOT containing the <tt>&gt;</tt>
+symbol.  It's always better when writing regular expressions to specify
+<strong>exactly</strong> which characters are allowed and not allowed -
+0rather that using the wildcard ('.') character.</p>
+
+
+<h2>Allow for Missing Quotes</h2>
+
+<p>Up to now we've assumed that the link address is going to be enclosed
+in double-quotes.  Unfortunately there's nothing enforcing this so a lot
+of people simply leave them out.  The problem is that we were relying on
+the quotes to be there to indicate where the address starts <b>and</b>
+ends.  Without the quotes we have a problem.</p>
+
+<p>It would be simple enough (even trivial) to write a second regexp,
+but where's the fun in that when we can do it all with one:</p>
+
+<code class="final">/&lt;a\s[^&gt;]*href=<span>(\&quot;??)</span>([^\&quot;<span> &gt;</span>]*<span>?</span>)<span>\\1</span>[^&gt;]*&gt;(.*)&lt;\/a&gt;/siU</code>
+
+<p>What can I say?  Regular expressions are a lot of fun to work with
+but when it takes a half-hour to work out where to put an extra
+<tt>?</tt> your really know you're in deep.</p>
+
+<p>Firstly, what's with those extra <tt>?</tt>'s?</p>
+
+<p>Because we used the <tt>U</tt> modifier, all patterns in the regexp
+default to 'ungreedy'.  Adding an extra <tt>?</tt> after a <tt>?</tt> or
+<tt>*</tt> reverses that behaviour back to 'greedy' but just for the
+preceding pattern.  Without this, for reasons that are difficult to
+explain, the expression fails.  Basically anything following
+<tt>href=</tt> is lumped into the <tt>[^&gt;]*</tt> expression.</p>
+
+<p>We've added an extra capture to the regexp that matches a
+double-quote if it's there: <tt>(\"??)</tt>.  There is then a
+backreference <tt>\\1</tt> that matches the closing double-quote - if
+there was an opening one.</p>
+
+<p>To cater for links without quotes, the pattern to match the link
+address itself has been changed from <tt>[^\"]*</tt> to <tt style="white-space: nowrap;">[^\"
+>]*?</tt>.  That means that the link can be terminated by not just a
+double-quote (the previous behaviour) but also a space or <tt>&gt;</tt> 
+symbol.  This means that <b>links with addresses containing <a href="/javascript/escape/">unescaped</a> spaces will no longer be 
+captured</b>.</p>
+
+
+<h2 id="refining">Refining the Regexp</h2>
+
+<p>Given the nature of the WWW there are always going to be cases where
+the regular expression breaks down.  Small changes to the patterns can
+fix these.</p>
+
+<h4>spaces around the <tt>=</tt> after href:</h4>
+
+<code>/&lt;a\s[^&gt;]*href<span>\s*</span>=<span>\s*</span>(\&quot;??)([^\&quot; &gt;]*?)\\1[^&gt;]*&gt;(.*)&lt;\/a&gt;/siU</code>
+
+<h4>matching only links starting with http:</h4>
+
+<code>/&lt;a\s[^&gt;]*href=(\&quot;??)(<span>http</span>[^\&quot; &gt;]*?)\\1[^&gt;]*&gt;(.*)&lt;\/a&gt;/siU</code>
+
+<h4>single quotes around the link address:</h4>
+
+<code>/&lt;a\s[^&gt;]*href=(<span>[</span>\&quot;<span>\']</span>??)([^\&quot; &gt;]*?)\\1[^&gt;]*&gt;(.*)&lt;\/a&gt;/siU</code>
+
+<p>And yes, all of these modifications can be used at the same time to 
+make one super-regexp, but the result is just too painful to look at so 
+I'll leave that as an exercise.</p>
+
+<p><small><b>Note:</b> All of the expressions on this page have been
+tested to some extent, but mistakes can occur in transcribing so please
+report any errors you may have found when implementing these
+examples.</small></p>
+
+
+<h2>Using the Regular Expression to parse HTML</h2>
+
+<p>Using the default for <a href="//www.php.net/preg_match_all" target="_blank">preg_match_all</a> the array returned contains an array
+of the first 'capture' then an array of the second capture and so
+forth.  By capture we mean patterns contained in <tt>()</tt>:</p>
+
+<code class="final">&lt;?PHP
+  <i>// Original PHP code by Chirp Internet: www.chirp.com.au
+  // Please acknowledge use of this code by including this header.</i>
+
+  $url = &quot;http://www.example.net/somepage.html&quot;;
+  $input = @<a href="//www.php.net/file_get_contents" target="_blank">file_get_contents</a>($url) or die(&quot;Could not access file: $url&quot;);
+  $regexp = &quot;<tt>&lt;a\s[^&gt;]*href=(\&quot;??)([^\&quot; &gt;]*?)\\1[^&gt;]*&gt;(.*)&lt;\/a&gt;</tt>&quot;;
+  if(preg_match_all(&quot;/$regexp/siU&quot;, $input, $matches)) {
+    <i>// $matches[2] = array of link addresses
+    // $matches[3] = array of link text - including HTML code</i>
+  }
+?&gt;</code>
+
+<p>Using <tt>PREG_SET_ORDER</tt> each link matched has it's own array in
+the return value:</p>
+
+<code class="final">&lt;?PHP
+  <i>// Original PHP code by Chirp Internet: www.chirp.com.au
+  // Please acknowledge use of this code by including this header.</i>
+
+  $url = &quot;http://www.example.net/somepage.html&quot;;
+  $input = @file_get_contents($url) or die(&quot;Could not access file: $url&quot;);
+  $regexp = &quot;<tt>&lt;a\s[^&gt;]*href=(\&quot;??)([^\&quot; &gt;]*?)\\1[^&gt;]*&gt;(.*)&lt;\/a&gt;</tt>&quot;;
+  if(preg_match_all(&quot;/$regexp/siU&quot;, $input, $matches<span>, PREG_SET_ORDER</span>)) {
+    foreach($matches as $match) {
+      <i>// $match[2] = link address
+      // $match[3] = link text</i>
+    }
+  }
+?&gt;</code>
+
+<p>If you find any cases where this code falls down, let us know using
+the Feedback link below.</p>
+
+<p>Before using this or similar scripts to fetch pages from other
+websites, we suggest you read through the related article on <a href="/php/parse-robots/">setting a user agent and parsing robots.txt</a>.</p>
+
+
+<h2>First checking robots.txt</h2>
+
+<p>As mentioned above, before using a script to download files you 
+should always <a href="/php/parse-robots/">check the robots.txt 
+file</a>.  Here we're making use of the <tt>robots_allowed</tt> function 
+from the article linked above to determine whether we're allowed to 
+access files:</p>
+
+<code class="final">&lt;?PHP
+  <i>// Original PHP code by Chirp Internet: www.chirp.com.au
+  // Please acknowledge use of this code by including this header.</i>
+
+<span>  ini_set('user_agent', '<i>NameOfAgent (http://www.example.net)</i>');</span>
+
+  $url = &quot;http://www.example.net/somepage.html&quot;;
+<span>  if(robots_allowed($url, &quot;<i>NameOfAgent</i>&quot;)) {</span>
+    $input = @file_get_contents($url) or die(&quot;Could not access file: $url&quot;);
+    $regexp = &quot;<tt>&lt;a\s[^&gt;]*href=(\&quot;??)([^\&quot; &gt;]*?)\\1[^&gt;]*&gt;(.*)&lt;\/a&gt;</tt>&quot;;
+    if(preg_match_all(&quot;/$regexp/siU&quot;, $input, $matches, PREG_SET_ORDER)) {
+      foreach($matches as $match) {
+        <i>// $match[2] = link address
+        // $match[3] = link text</i>
+      }
+    }
+<span>  } else {
+    die('Access denied by robots.txt');
+  }</span>
+?&gt;</code>
+
+<p>Now you're well on the way to building a professional web spider.  If
+you're going to use this in practice you might want to look at: caching
+the robots.txt file so that it's not downloaded every time (a la Slurp);
+checking the server headers and <a href="/system/logstatus/">server
+response codes</a>; and adding a pause between multiple requests - for
+starters.</p>
+
+
+<h2>Related Articles</h2>
+
+<ul>
+  <li><b>Parsing HTML to find Links</b></li>
+  <li><a href="/php/parse-robots/">Parsing robots.txt</a></li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+  <li><a href="//www.php.net/reference.pcre.pattern.modifiers" target="_blank">PCRE: Pattern Modifiers</a></li>
+</ul>
+
+<h2>Translations</h2>
+
+<ul>
+  <li><a href="//www.siteduzero.com/forum-83-517857-p1-extraire-les-liens-d-une-page-html.html#r4977381" target="_blank">French</a></li>
+</ul>
+
+<p class="noprint"><a href="/php/">&lt; PHP</a></p>
+
+<br style="clear: both;">
+
+<div class="noprint">
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style ">
+<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+<a class="addthis_button_tweet"></a>
+<a class="addthis_counter addthis_pill_style"></a>
+</div>
+<script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#username=xa-4d3acc9a481c2aef"></script>
+<!-- AddThis Button END -->
+</div>
+
+<div id="comments">
+<h2 id="user_comments">User Comments and Notes</h2>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/5637a756ae652c4305cc50b604d90f48.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><big>Johnathan</big> <span class="comment_time">5 August, 2008</span></p>
+<p>If the link href contains a space, it gets loaded into the matches[2] array as a null element.</p>
+<div class="response"><p>It's not possible to have a single regexp that allows for both the case where there are no quotes around the href <b>and</b> the case where the href can contain spaces.  If it's your website any spaces in the href should be encoded using <tt>+</tt> or <tt>%20</tt> to avoid this problem.</p></div>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/5d435dbfe8000a558098c4d5080a5e1f.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><big>Arek</big> <span class="comment_time">12 May, 2009</span></p>
+<p>Great article. Works fine for me <img src="/smilies/icon_smile.gif" width="15" height="15" border="0" alt=""><br>
+thx</p>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/39596c35bfe422365ef8584cb76eb4e1.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><a href="//phpro.org/" target="_blank" rel="nofollow"><big>Kevin Waterson</big></a> <span class="comment_time">15 May, 2009</span></p>
+<p>Parsing HTML with regex is riddled with gotcha's and the look aheads and look behinds to accomplish this make it very slow. In PHP, this is better accomplished by using the build in DOM class.</p>
+<div class="response"><p>I'm curious as to whether you've done any testing on this?  Perl regular expressions are pretty fast and the DOM class would have to use something similar internally so I'd be surprised if it was any quicker...</p></div>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/26b194d94ee8016f5d7d0ee5bc21e93b.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><big>Lauri Raittila</big> <span class="comment_time">3 June, 2009</span></p>
+<p>Surely regexp is faster. At least when you leave holes in it. The thing with classes etc for this is that you don't need to rewrite html parser, which is not a simple thing to do. Much better to learn to use something that is already tested<br>
+This won't work with your regexp:<br>
+&lt;a href='example.com'&gt;Link&lt;/a&gt;<br>
+nor this<br>
+&lt;a href=example<br>
+&gt;Link&lt;/a&gt;<br>
+(note line break instead space)<br>
+&lt;a href=&quot;example.com&quot; title=&quot;&gt;&quot;&gt;<br>
+<br>
+There is propably many others as well.</p>
+<div class="response"><p>Actually, the regexp presented here <b>does</b> work with those links, if you properly escape the title attribute.  Just use the modification for 'single quotes around the link address' <a href="#refining">shown above</a>.  The DOM functions might do better in some extreme cases, but they won't be faster than regular expressions. <IMG src="/smilies/icon_cool.gif" width="15" height="15" border="0" alt=""></p></div>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/675cb79cdc958d0fd4eb243e1748a62c.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><a href="//goohackle.com/" target="_blank" rel="nofollow"><big>Google HTML Parser</big></a> <span class="comment_time">28 September, 2010</span></p>
+<p>I think that PHP regular expressions are going to be faster than using the DOM structure.<br>
+<br>
+Anyway, I found that using DOM is better and reliable to find all the URLs in the Google HTML. Besides, I use this for big projects and the CPU needed to parse this pages is very low, so, in most of the cases it isn't a problem.</p>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/a0205edbd83b3a3081c2a365e8072b90.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><a href="//27mb.info/" target="_blank" rel="nofollow"><big>mark 1959</big></a> <span class="comment_time">23 November, 2010</span></p>
+<p>Have to agree with the guy above. Regex may be quicker - moot point really though - but using the dom is much easier and more intuitive... especially if you find regex like a foreign language.</p>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/4f27ad3e4e2e0c3b91ca10d689315afd.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><big>Sean</big> <span class="comment_time">13 December, 2010</span></p>
+<p>hi there,<br>
+<br>
+does anyone know how i would extract the title value from the link also please ?<br>
+<br>
+what changes would i need to make to : <br>
+<br>
+     $regexp = &quot;/&lt;as[^&gt;]*href=(&quot;??)(http[^&quot; &gt;]*?)1[^&gt;]*&gt;(.*)&lt;/a&gt;/siU&quot;; <br>
+<br>
+Many thanks !</p>
+<div class="response"><p>It's not quite that simple.  You don't know whether the <tt>title</tt> attribute is going to appear before or after the <tt>href</tt> so it can't be done in a single regular expression.  You would have to apply a second regexp on the <tt>$matches</tt> array (first element) to detect and extract the title text if it's present. <IMG src="/smilies/icon_cool.gif" width="15" height="15" border="0" alt=""></p></div>
+</div>
+
+<div class="comment" style="background-image: url(http://www.gravatar.com/avatar/f4edf6bf63ef4dde66e889167ec00911.jpg?s=48&amp;d=mm);">
+<p class="comment_author"><a href="//www.backlinkvortex.com/" target="_blank" rel="nofollow"><big>Ron</big></a> <span class="comment_time">12 May, 2011</span></p>
+<p>Sometimes, every bit is critical, and you can't afford the extra RAM and CPU. Even if its just a small change. For example changing the file_get_contents to CURL, will save you on one of our serves typically 0.04-6 seconds, and use a bit less resource. Now, when checking 2000 pages for a waiting client, that adds up to about 80 seconds faster. That one step though tiny in some circumstances, makes a significant difference.<br>
+<br>
+Having DOM v. regex might offer a simular resource time saving in heavy load environments. It's worthwhile knowing your regex in those situations.</p>
+<div class="response"><p>Both very good points <IMG src="/smilies/icon_cool.gif" width="15" height="15" border="0" alt=""></p></div>
+</div>
+
+</div>
+
+<h2 id="send_feedback">Send Feedback</h2>
+
+<script type="text/javascript">function checkFeedbackForm(form)
+{if(form.name.value==''){alert('Please enter your Name');form.name.focus();return false;}
+if(form.email.value==''){alert('Please enter a valid Email address');form.email.focus();return false;}
+if(form.message.value==''){alert('Please enter your comment or question');form.message.focus();return false;}
+if(!form.captcha.value.match(/^\d{5}$/)){alert('Please enter the CAPTCHA digits in the box provided');form.captcha.focus();return false;}
+return true;}</script>
+
+<form method="POST" action="/feedback.html" onsubmit="return checkFeedbackForm(this);">
+<input type="hidden" name="pageTitle" value="PHP: Parsing HTML to find Links">
+<input type="hidden" name="pageURL" value="/php/parse-links/">
+
+<fieldset>
+<legend>Send Your Feedback</legend>
+<label for="field_name">Name<strong>*</strong></label><span><input id="field_name" required type="text" size="48" name="name" value=""></span>
+<label for="field_email">Email Address<strong>*</strong></label><span><input id="field_email" type="email" required size="48" name="email" value=""> <small>(will not be published)</small></span>
+<label for="field_website">Website</label><span><input onchange="if(this.value != '' && !this.value.match(/^http/)) alert('Error - the website address needs to start with http');" id="field_website" type="url" pattern="^http.*" size="48" name="website" value=""> <small>(optional)</small></span>
+<label for="field_message">Message<strong>*</strong></label><span><textarea id="field_message" name="message" required cols="48" rows="8"></textarea></span>
+<span><img id="captcha" style="border: 1px outset #666;" src="/captcha.png" width="120" height="30" border="1" alt="CAPTCHA">
+<small><a href="#" onclick="
+  document.getElementById('captcha').src = '/captcha.png?' + Math.random();
+  document.getElementById('captcha_code').value = '';
+  return false;
+">refresh</a></small></span>
+<label><a href="/php/captcha/">CAPTCHA</a><strong>*</strong></label><span><input id="captcha_code" type="text" required pattern="\d{5}" name="captcha" size="6" maxlength="5" onkeyup="this.value = this.value.replace(/[^\d]+/g, '');"> <small>&lt;- copy the digits from the image into this box</small></span>
+<span><input type="submit" name="submit" value="Send Feedback"></span>
+</fieldset>
+</form>
+</td>
+<td id="rhs" class="noprint">
+<p style="margin: 0;"><img src="/images/head_04.jpg" width="146" height="302" alt=""></p>
+
+<div class="noprint" style="margin: 2em 0;">
+<script type="text/javascript">google_ad_client="pub-9789897350102210";google_ad_slot="6614597854";google_ad_width=160;google_ad_height=600;</script>
+<script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>
+
+</td>
+</tr>
+<tr>
+<td colspan="2" id="footer">
+<div id="copyright"><a href="/copyright.html">&copy; Copyright 2011</a> <a href="//www.chirp.com.au/" target="_blank">Chirp Internet</a> 
+- Page Last Modified: 14 December 2010</div>
+</td>
+</tr>
+</table>
+
+<div id="totop" class="noprint"><a href="#content">[top]</a></div>
+
+
+<!-- start google analytics -->
+<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-3458555-1']);_gaq.push(['_trackPageview']);(function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src=('https:'==document.location.protocol?'https://ssl':'http://www')+'.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s);})();</script>
+<!-- end google analytics -->
+
+<script type="text/javascript" src="/buildmenu.js.pagespeed.jm.o4MxX7hWAg.js"></script>
+<!-- web development by chirp internet -->
+</body>
+</html>

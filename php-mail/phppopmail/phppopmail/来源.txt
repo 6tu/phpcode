@@ -1,0 +1,29 @@
+Manuel Lemos   WebMaster@E-na.Net
+
+MIME E-mail message parser 
+Base name: mimeparser 
+http://www.phpclasses.org/package/3169-PHP-Decode-MIME-e-mail-messages.html
+
+POP3 e-mail client 
+Base name: pop3class 
+http://www.phpclasses.org/package/2-PHP-Access-to-e-mail-mailboxes-using-the-POP3-protocol.html
+
+pop3ml
+http://www.phpclasses.org/package/5184-PHP-Manage-mailing-lists-using-a-POP3-account.html
+
+Name: Simple Authentication and Security Layer 
+Base name: sasl 
+http://www.phpclasses.org/package/1888-PHP-Single-API-for-standard-authentication-mechanisms.html
+
+
+SMTP E-mail sending class 
+Base name: smtpclass 
+http://www.phpclasses.org/package/14-PHP-Sends-e-mail-messages-via-SMTP-protocol.html
+
+
+
+Base name: phpresolver 
+http://www.phpclasses.org/package/569-PHP-DNS-resolver-library.html
+
+
+
