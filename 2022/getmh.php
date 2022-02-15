@@ -76,7 +76,7 @@ $year =  date("Y", strtotime($date));
 $month = date("n", strtotime($date));
 $day =   date("j", strtotime($date));
 
-$temp_save_path = $cwd .'/'. $mhdata.$year.$month.$day .'/';
+$temp_save_path = $cwd .'/'. $mhdata.$year.$month.$day;
 if(!is_dir($temp_save_path)) mkdir($temp_save_path, 0777, true);
 
 $monthday = cal_days_in_month(CAL_GREGORIAN, $month, $year);
@@ -149,6 +149,7 @@ echo "\r\n</pre><br>正在离线下载 <br><pre>\r\n";
 $file_index = '/mmh/articles/' .$path_date. 'index.html';
 $url = $host . $file_index;
 $file = make_path($temp_save_path, $url);
+
 $array_res = getResponse($url, $data = [], $cookie_file = '', $progress=true);
 $html = $array_res['body'];
 file_put_contents($file, $html);
@@ -211,7 +212,7 @@ foreach($array_url_two as $url_2){
     $modi_ts = header_last_modified($array_header);
     touch($file, $modi_ts);
 ++$ii;
-    if(is_int($ii/50)) echo '.';
+    if(is_int($ii/10)) echo '.';
     // file_put_contents($cwd .'/'. $mhdata . $year.$month.$day . '_url2.log', $url_2 ."\r\n", FILE_APPEND);
     flush();
 }
@@ -236,34 +237,28 @@ $basename = strstr($index_fn, '.', true);
 $fn_zip = $mhdata . $basename . '.zip';
 $fn_p7m = $fn_zip . '.p7m';
 if(file_exists($fn_zip)) unlink($fn_zip);
-
 $array_url_all = array_unique(array_merge($array_url_two, $array_url_one));
 $array_url_all[] .= '/pub/mobile.css';
 $array_url_all[] .= $file_index;
 // file_put_contents($cwd .'/'. $mhdata . $year.$month.$day . '_url_all.log', print_r($array_url_all, true));
 // print_r($array_url_one);  print_r($array_url_two);
 
-$cmd = bin($type='7z') .' a -mx0 -bb0 -bd -tzip -r '. $fn_zip .' '. $temp_save_path;
+$cmd = bin($type='7z') .' a -mx0 -bd -tzip -r '. $cwd .'/'. $fn_zip .' '. $temp_save_path;
 exec($cmd, $log, $status);
 
 if($status){
     foreach($array_url_all as $url){
         $file = trim(parse_url($url, PHP_URL_PATH)); # 返回一个包含文件名的path
-        $file = ltrim($file, '/');
-        $file = $temp_save_path . $file;
-        zip_file($file, $fn_zip);
-        // if(!strpos($file, '.css')) unlink($file);
-        // $dir = dirname($file);
-        // if(is_dir($dir) and count(scandir($dir))==2) rmdir($dir);
+        $file = $mhdata.$year.$month.$day . $file;
+        zip_files($file, $fn_zip, $add_path=1);
     }
 }
 
-
-echo "$fn_zip 打包完毕<br>\r\n";
+echo "$basename.zip 打包完毕<br>\r\n";
 
 sleep(1);
-echo pkcs7_encrypt($fn_zip, $fn_p7m);
-echo zip_file($fn_p7m, $mhdata . $fn_out);
+echo pkcs7_encrypt($cwd .'/'. $fn_zip, $cwd .'/'. $fn_p7m);
+echo zip_files($fn_p7m, $mhdata . $fn_out, $add_path=0);
 
 echo "压缩包地址 " . $url_out ."<br>\r\n";
 
@@ -361,13 +356,14 @@ function preg_htmllink($html){
     return($out[1]);
 }
 
-function zip_file($txtname, $zipname){
+function zip_files($txtname, $zipname, $add_path=1){
     if(false !== function_exists("zip_open")){
         $zip = new ZipArchive();
         if($zip -> open($zipname, ZIPARCHIVE :: CREATE) !== TRUE){
             exit("can not open <$zipname>\n");
         }
-        $zip -> addFile($txtname);
+        if($add_path) $zip -> addFile($txtname); # 不带路径
+        else $zip -> addFile($txtname, pathinfo($txtname, PATHINFO_BASENAME)); # 不带路径
         $zip -> close();
     }else{
         # include('zip.class.php');
