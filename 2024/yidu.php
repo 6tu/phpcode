@@ -1,6 +1,6 @@
 <?php
 set_time_limit(0);
-require_once '/home/libs/config.php';
+require_once '/projects/libs/config.php';
 
 $libs_path = LIBS;
 $article_path = ARTICLE;
@@ -11,16 +11,19 @@ $elements_tag = LIBS . '/article-elements-tag.txt';
 // $dir = getcwd();#当前工作目录
 // chdir('/path/to/new_directory');
 
-$url = 'https://gmachine1729.livejournal.com/140968.html';
-$url = '/data/article/livejournal/140968.html';
+$url = 'https://liuyun.org/index.html';
+$url = '/data/article/liuyun/whatisit.html';
 
 # ================ 提交URL ================ #
 header("Content-type: text/html; charset=utf-8");
 $cli = preg_match("/cli/i", php_sapi_name());
 if($cli){
-    # print_r($argv);
     if(!empty($argv[1])){
         $url = $argv[1];
+        // echo "\n 注意给网址两端加双引号   输入的网址是\n\n\033[31m  $argv[1]\033[0m\n\n";
+        // fwrite(STDOUT, " 输入的网址对吗? 如果正确请输入 Y 或者 y : ");
+        // if(strtolower(trim(fgets(STDIN)) !== 'y')) die(" \n\n 输入的网址不对，请重新输入\n\n");
+        // else $url = $argv[1];
     }else{
         fwrite(STDOUT, "\n\n Enter url or file: ");
         $url = trim(fgets(STDIN));
@@ -30,7 +33,7 @@ if($cli){
     if(isset($_GET['url'])) $url = $_GET['url'];
 }
 if(empty(trim($url))) die("\n 输入为空，请输入本地文件名或者网址\n\n");
-else print_r("\n $url\n\n");
+else print_r("\n\033[31m 输入网址时，注意在网址两端加双引号\033[0m   $url\n\n");
 
 # ================ 设定文件名 ================ #
 $time = date('YmdHis');
@@ -43,8 +46,9 @@ if(empty($url_array['host'])){
     $scheme = $url_array['scheme'];
     $domain_key = get_domain_key($host);
 }
+
 $url_array = pathinfo($url);
-if(empty($url_array['basename'])){
+if(empty($url_array['filename']) or !empty(url_get_filename($url)['query'])){
     $fn = $time.'-'.$fn_key . '.html';
     $cache_fn = $domain_key .'_'. $fn_key . '.bak';
 }else if(empty($url_array['extension'])){
@@ -87,6 +91,8 @@ if(file_exists($article_path)){
 
 # ================ 修改head 内容 ================ #
 $str = html_pretreat($str);
+$str = str_replace('="//', '="'. $scheme .'://', $str);
+
 $str = preg_replace('/<\/head>/i', '</head>', $str);
 if(strpos($str, '</head>') === false){
     die("文件没有找到 </head>\n\n");
@@ -101,8 +107,6 @@ $head = add_head($title, $url);
 
 # ================ 修改body 内容 ================ #
 $str = $head_array[1];
-$article_titile = preg_match("/<h1[^>]*?>.*?<\/h1>/is", $str, $temp) ? strtolower($temp[0]): "";
-print_r(" $article_titile\n\n");
 
 # 常用网站建立标签文件
 $tags = file_get_contents($elements_tag);
@@ -111,72 +115,79 @@ if(strpos($tags, $host) !== false){
     $tag = explode($host, $tags, 2)[1];
     $tag = explode("\n", $tag, 2)[0];
     $tag_array = explode(",", $tag);
-
-    $main_array = explode("=", $tag_array[1]);
+# 主体
+    $main_array = explode("=", $tag_array[1], 2);
     if(trim($main_array[0]) === 'class'){
-        $mainclass = str_replace('"', '', trim($main_array[1]));
+        $mainclass = trim($main_array[1], '"');
         $article_main = getElementByClassname($str, $mainclass);
         $article_main = mb_convert_encoding($article_main, 'UTF-8', 'HTML-ENTITIES');
     }
     if(trim($main_array[0]) === 'id'){
-        $mainid = str_replace('"', '', trim($main_array[1]));
+        $mainid = trim($main_array[1], '"');
+        $str = mb_convert_encoding($str, 'HTML-ENTITIES', 'UTF-8');
         $article_main = getElementByIdname($str, $mainid);
-        $article_main = mb_convert_encoding($article_main, 'UTF-8', 'HTML-ENTITIES');
     }
     if(trim($main_array[0]) === 'custom'){
-        $main_custom = str_replace('"', '', trim($main_array[1]));
+        $main_custom = trim($main_array[1], '"');
         $article_main = getElementByCustomname($str, $main_custom);
     }
-
+# 文章头部
     if(!empty(trim($tag_array[2]))){
-        $info_array = explode("=", $tag_array[2]);
+        $info_array = explode("=", $tag_array[2], 2);
         if(trim($info_array[0]) === 'class'){
-            $infoclass = str_replace('"', '', trim($info_array[1]));
+            $infoclass = trim($info_array[1], '"');
             $article_info = getElementByClassname($str, $infoclass);
             $article_info = mb_convert_encoding($article_info, 'UTF-8', 'HTML-ENTITIES');
         }
         if(trim($info_array[0]) === 'id'){
-            $infoid = str_replace('"', '', trim($info_array[1]));
+            $infoid = trim($info_array[1], '"');
             $article_info = getElementByIdname($str, $infoid);
-            $article_info = mb_convert_encoding($article_info, 'UTF-8', 'HTML-ENTITIES');
         }
         if(trim($info_array[0]) === 'custom'){
-            $infocustom = str_replace('"', '', trim($info_array[1]));
+            $infocustom = trim($info_array[1], '"');
             $article_info = getElementByCustomname($str, $infocustom);
         }
     }
+# 额外的，冗余的，需要删除
     if(!empty(trim($tag_array[3]))){
-        $ext_array = explode("=", $tag_array[3]);
+        $ext_array = explode("=", $tag_array[3], 2);
         if(trim($ext_array[0]) === 'class'){
-            $extclass = str_replace('"', '', trim($ext_array[1]));
+            $extclass = trim($ext_array[1], '"');
             $article_ext = getElementByClassname($str, $extclass);
             $article_ext = mb_convert_encoding($article_ext, 'UTF-8', 'HTML-ENTITIES');
         }
         if(trim($ext_array[0]) === 'id'){
-            $extid = str_replace('"', '', trim($ext_array[1]));
+            $extid = trim($ext_array[1], '"');
             $article_ext = getElementByIdname($str, $extid);
-            $article_ext = mb_convert_encoding($article_ext, 'UTF-8', 'HTML-ENTITIES');
         }
         if(trim($ext_array[0]) === 'custom'){
-            $extcustom = str_replace('"', '', trim($ext_array[1]));
+            $extcustom = trim($ext_array[1], '"');
             $article_ext = getElementByCustomname($str, $extcustom);
         }
     }
 }
 if(empty($article_info)) $article_info = '';
 if(empty($article_ext)) $article_ext = '';
-$str = $article_info .$article_main . $article_ext;
 
+$article_titile = preg_match("/<h1[^>]*?>.*?<\/h1>/is", $str, $temp) ? trim($temp[0]): "";
+if(!empty($article_titile)){
+    $article_titile = preg_replace("/\s(?=\s)/is", "\\1", $article_titile); # 去空格
+    print_r(" $article_titile\n\n");
+}
+$str = $article_info .$article_main;
+$str = str_replace($article_ext, '', $str);
 
-
+if(!empty($article_titile) and strpos($str, $article_titile) !== false) $article_titile ='';
 
 # pre 标签语法加亮风格
 if(strpos($str, '<pre') !== false){
-    $pre_array = explode("<pre", $str);
+    $pre_array = explode('<pre', $str);
     $str = '';
     foreach($pre_array as $value){
         if(strpos($value, '</pre>') !== false){
             $array = explode('</pre>', $value, 2);
+            $array[0] = htmlspecialchars($array[0]);
+            //$array[0] = filter_greater_less($array[0]);
             $pre = "\n<pre" . $array[0] . '</pre>';
             $nopre = nonewline($array[1]);
             $nopre = imglink($nopre);
@@ -187,6 +198,7 @@ if(strpos($str, '<pre') !== false){
             $str .= $value;
         }
     }
+    $str = str_replace('<pre class=&quot;brush:php;toolbar:false&quot;&gt;', '<pre class="brush:php;toolbar:false">', $str);
 }else{
     $str = nonewline($str);
     $str = imglink($str);
@@ -194,6 +206,8 @@ if(strpos($str, '<pre') !== false){
 
 $str = modify_code($str);
 $str = del_script($str);
+$str = superfluity_replace($str);
+
 $str = $head .'<body>'.$article_titile. $str ."<hr>\n$url<br><br></body></html>";
 
 $str = beautify_html($str);
@@ -266,16 +280,18 @@ function nonewline($str){
 function imglink($str){
     $gt_array = explode('>', $str);
     $gt = '';
-    foreach($gt_array as $value){
+    foreach($gt_array as $key => $value){
         if(empty(trim($value))) continue;
-        $value = $value . '>';
+        if($key === count($gt_array)-1)$value = trim($value);
+        else $value = trim($value) . '>'; # 这里会给最后一行追加 >
         preg_match_all('/<img.*?src=/i', $value, $img_array);
         // print_r($img_array[0]);
         if(!empty($img_array[0])){
             $value = str_replace($img_array[0][0], '<img src=', $value);
             $value = str_replace("src='", 'src="', $value);
             $src_array = explode('<img src="', $value, 2);
-            $imgsrc = str_replace("' ", '" ', $src_array[1]);
+            $imgsrc = str_replace(">", ' >', $src_array[1]);
+            $imgsrc = str_replace("' ", '" ', $imgsrc);
             $imgsrc = explode('" ', $imgsrc, 2)[0];
             $value = $src_array[0] . '<img src="' . $imgsrc . '">';
         }
@@ -381,6 +397,16 @@ function add_head($title, $url){
         height:32px;
         line-height:32px
     }
+    .summary {
+        margin: 10px 0px;
+        padding: 10px;
+        background: #ebf5fd;
+        color: #333;
+        border-left: 3px solid #49a7ea;
+        font-size: 16px;
+        line-height: 26px;
+    }
+
   </style>
 </head>';
     return $head;
@@ -541,7 +567,8 @@ function get_domain_key($host){
         $domain_key = crc32($host); //md5($host);
     }else{
         $host_array = explode('.', $host);
-        $num_dot = count($host_array);
+        $num_dot = count($host_array);       # 有几个元素
+        $num_dot = substr_count($host, '.'); # 有几个指定的字符
         if($num_dot === 1) $domain_key = $host_array[0];
         elseif($num_dot === 2) $domain_key = $host_array[1];
         else $domain_key = $host_array[$num_dot-2];
@@ -590,8 +617,12 @@ function getElementByClassname($html, $classname){
 
 # 自定义 闭合标签，比如 article
 function getElementByCustomname($html, $tag){
-    $tag1 = '<'. $tag;
-    $tag2 = '</'. $tag .'>';
+    $tag1 = trim($tag);
+    if(strpos($tag1, ' ') !== false){
+        $tag2 = '</'.trim(substr($tag1, 1, stripos($tag1, ' '))).'>';
+        $tag2 = explode(' ', $tag1, 2)[0];
+        $tag2 = str_replace('<', '</', $tag2) . '>';
+    }else $tag2 = str_replace('<', '</', $tag1) . '>';
     $article = explode($tag1, $html, 2)[1];
     $article = explode($tag2, $article, 2)[0];
     $article = $tag1 . $article . $tag2;
@@ -626,16 +657,42 @@ function del_script($str){
 
 # 修改 code 标签
 function modify_code($str){
-    /* $str = preg_replace("'<div[^>]*?>'iUs", '<div>', $str); */
-    $str = preg_replace("'<span[^>]*?>'iUs", '', $str);
-    $str = preg_replace("'</span>'iUs", '', $str);
     preg_match_all('/<code.*?>/i', $str, $code_array);
     // print_r($code_array);
     foreach($code_array[0] as $value){
         $str = str_replace($value, $value ."\n", $str);
         $str = str_replace("\n\n", "\n", $str);
     }
+    $str = str_replace("</code>", "\n</code>", $str);
     return $str;
+}
+
+# 简化标签的属性
+function superfluity_replace($str){
+    $str = preg_replace("/<p\s+[^>]*?>/i", "<p>", $str);
+    $str = preg_replace("/<\/p>/i", "</p>", $str);
+    $str = preg_replace("/<br[^>]*?>/i", "<br>", $str);
+    $str = preg_replace("/\s+<br>\s+/i", "<br>", $str);
+    $str = preg_replace("/\n<br>\n/i", "<br>", $str);
+    $str = preg_replace("'<div[^>]*?>'iUs", '<div>', $str);
+    $str = preg_replace("'<span[^>]*?>'iUs", '', $str);
+    $str = preg_replace("'</span>'iUs", '', $str);
+    return $str;
+}
+
+# url 返回 文件路径了文件名，数组
+function url_get_filename($url){
+    $url = trim($url);
+    $url_array = parse_url($url);
+    $path_array = pathinfo($url_array['path']);
+    return array_merge($url_array, $path_array);
+}
+
+# 只转义 > <
+function filter_greater_less($str) {
+    // htmlspecialchars() htmlentities()
+    $filtered = str_replace(array('>', '<'), array('&gt;', '&lt;'), $str);
+    return htmlentities($filtered);
 }
 
 
